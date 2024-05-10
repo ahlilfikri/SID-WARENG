@@ -6,7 +6,7 @@ const RtModel = db.rt;
 const RwModel = db.rw;
 
 const crypto = require('crypto');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');

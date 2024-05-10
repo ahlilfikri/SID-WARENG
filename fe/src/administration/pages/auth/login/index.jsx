@@ -1,10 +1,35 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../../../../shared/layout/navBar'
 import Footer from '../../../../shared/layout/footer'
+import axios from 'axios'; // tambahkan import axios
 import './index.css';
 
 const SignUp = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        password: ''
+    });
+
+    const { name, password } = formData;
+
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const onSubmit = async e => {
+        e.preventDefault();
+        
+        try {
+            const res = await axios.post('http://localhost:3555/api/v1/warga/login', {
+                "name" : name.toUpperCase(),
+                "password" : password
+            });
+            localStorage.setItem('token', res.data.data.token);
+            window.location.href = '/informasi-desa';
+
+        } catch (err) {
+            console.error(err.response.data);
+        }
+    };
 
     return (
         <Fragment>
@@ -16,31 +41,55 @@ const SignUp = () => {
                         <div className="col-10 col-md-8 mb-5">
                             <div className="card card-form-login text-light pt-5 ">
                                 <p className='text-center' style={{ fontSize: '45px', fontWeight: 'bold' }}>LOGIN</p>
-                                <div className="row">
-                                    <div className="col-1"></div>
-                                    <div className="col-10">
-                                        <div className="NIK mb-2">
-                                            <p style={{ fontSize: '24px' }} className='mb-0'>NIK</p>
-                                            <input className='py-3 ps-3' style={{ width: '100%', borderRadius: '0.5vw' }} type="text" placeholder="Masukkan Nomor NIK" />
-                                        </div>
-                                        <div className="Password mb-2">
-                                            <p style={{ fontSize: '24px' }} className='mb-0'>Password</p>
-                                            <input className='py-3 ps-3' style={{ width: '100%', borderRadius: '0.5vw' }} type="text" placeholder="Masukkan Password" />
-                                        </div>
-                                        <div className="btn-warp d-block d-sm-flex justify-content-between align-items-center">
-                                            <button className='btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2' style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}>Login</button>
-                                            <div className="text-warp d-block d-sm-flex justify-content-between align-items-center mb-5 mb-sm-0">
-                                                <p className='mx-0 mx-sm-3'>
-                                                    <Link to="/forgot-password" style={{ color: '#00BF7C', textDecoration: 'none' }}>Lupa Pasword ?</Link>
-                                                </p>
-                                                <p className='mx-0 mx-sm-3'>
-                                                    <Link to="/sign-up" style={{ color: '#00BF7C', textDecoration: 'none' }}>Belum punya akun ?</Link>
-                                                </p>
+                                <form onSubmit={e => onSubmit(e)}>
+                                    <div className="row">
+                                        <div className="col-1"></div>
+                                        <div className="col-10">
+                                            <div className="NIK mb-2">
+                                                <p style={{ fontSize: '24px' }} className='mb-0'>Nama</p>
+                                                <input
+                                                    className='py-3 ps-3'
+                                                    style={{ width: '100%', borderRadius: '0.5vw' }}
+                                                    type="text"
+                                                    placeholder="Masukkan Nama"
+                                                    name="name"
+                                                    value={name}
+                                                    onChange={e => onChange(e)}
+                                                />
+                                            </div>
+                                            <div className="Password mb-2">
+                                                <p style={{ fontSize: '24px' }} className='mb-0'>Password</p>
+                                                <input
+                                                    className='py-3 ps-3'
+                                                    style={{ width: '100%', borderRadius: '0.5vw' }}
+                                                    type="password"
+                                                    placeholder="Masukkan Password"
+                                                    name="password"
+                                                    value={password}
+                                                    onChange={e => onChange(e)}
+                                                />
+                                            </div>
+                                            <div className="btn-warp d-block d-sm-flex justify-content-between align-items-center">
+                                                <button
+                                                    type="submit"
+                                                    className='btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2'
+                                                    style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}
+                                                >
+                                                    Login
+                                                </button>
+                                                <div className="text-warp d-block d-sm-flex justify-content-between align-items-center mb-5 mb-sm-0">
+                                                    <p className='mx-0 mx-sm-3'>
+                                                        <Link to="/forgot-password" style={{ color: '#00BF7C', textDecoration: 'none' }}>Lupa Pasword ?</Link>
+                                                    </p>
+                                                    <p className='mx-0 mx-sm-3'>
+                                                        <Link to="/sign-up" style={{ color: '#00BF7C', textDecoration: 'none' }}>Belum punya akun ?</Link>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div className="col-2"></div>
                                     </div>
-                                    <div className="col-2"></div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div className="col-1 col-md-1"></div>
