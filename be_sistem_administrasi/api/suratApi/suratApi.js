@@ -32,6 +32,9 @@ Router.put('/baypassRW/:suratAcaraId',suratController.baypassSuratAcaraRW_TAVERS
 //baypass Perangkat Desa
 Router.put('/baypassKasi/:suratAcaraId',suratController.baypassSuratAcaraKasi_TAVERSION);
 
+//passing surat acara
+Router.put('/passing/:suratAcaraId',suratController.passingSuratAcara_TAVERSION);
+
 module.exports = Router;
 
 
@@ -54,3 +57,7 @@ module.exports = Router;
 // baypass surat acara RT : http://localhost:3555/api/v1/surat/baypassRT/:suratAcaraId
 // baypass surat acara RW : http://localhost:3555/api/v1/surat/baypassRW/:suratAcaraId
 // baypass surat acara Perangkat Desa : http://localhost:3555/api/v1/surat/baypassKasi/:suratAcaraId
+
+// passing surat acara : http://localhost:3555/api/v1/surat/passing/:suratAcaraId
+
+// devin
