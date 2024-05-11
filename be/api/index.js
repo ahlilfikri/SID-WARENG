@@ -36,6 +36,15 @@ Router.use('/konter', konterApi);
 const adminApi = require('./adminApi/adminApi');
 Router.use('/admin', adminApi);
 
+const visiMisiApi = require('./informasiApi/visiMisiApi');
+Router.use('/visi-misi', visiMisiApi);
+
+const kegiatanApi = require('./informasiApi/kegiatanApi');
+Router.use('/kegiatan', kegiatanApi);
+
+const informasiApi = require('./informasiApi/informasiApi');
+Router.use('/informasi', informasiApi);
+
 module.exports = Router;
 
 

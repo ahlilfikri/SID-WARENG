@@ -11,6 +11,10 @@ const pimpinanDesa = require('./userModels/pimpinanDesa/pimpinanDesaModels')
 const admin = require('./adminModels/adminModels')
 const konter = require('./konterModel/KonterModel')
 const pelayanan = require('./konterModel/PelayananModels')
+const agenda = require('./informasiModels/agendaModel')
+const informasi = require('./informasiModels/informasiModel')
+const kegiatan = require('./informasiModels/kegiatanModel')
+const visiMisi = require('./informasiModels/visiMisiModel')
 
 //db object
 const db = {
@@ -23,7 +27,11 @@ const db = {
     // pelayanan,
     suratAcara,
     PerangkatDesaModel,
-    admin
+    admin,
+    agenda,
+    informasi,
+    kegiatan,
+    visiMisi
 }
 
 
