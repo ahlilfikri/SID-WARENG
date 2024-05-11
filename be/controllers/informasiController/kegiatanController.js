@@ -32,7 +32,6 @@ exports.getKegiatanById = async (req, res) => {
     }
 }
 
-
 exports.postKegiatan = async (req, res) => {
     uploadProjectImages(req, res, async (error) => {
         if (error) {
@@ -43,12 +42,13 @@ exports.postKegiatan = async (req, res) => {
         }
 
         try {
-            const { title, content } = req.body;
-            console.log(title, content);
+            const { title, content, date, location } = req.body;
             const imgs = req.files.map((file) => file.filename);
             const newKegiatan = new kegiatanModel({
                 title,
                 content,
+                date,
+                location,
                 img: imgs,
             });
 
@@ -66,6 +66,7 @@ exports.postKegiatan = async (req, res) => {
         }
     });
 }
+
 exports.putKegiatan = async (req, res) => {
     uploadProjectImages(req, res, async (error) => {
         if (error) {
@@ -76,10 +77,10 @@ exports.putKegiatan = async (req, res) => {
 
         try {
             const { id } = req.params;
-            const { title, content } = req.body;
-            let updateFields = { title, content };
+            const { title, content, date, location } = req.body;
 
-            // If new images are uploaded, update the image field
+            let updateFields = { title, content, date, location };
+
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
                 updateFields.img = newImages;
@@ -103,46 +104,6 @@ exports.putKegiatan = async (req, res) => {
         }
     });
 }
-// exports.putKegiatan = async (req, res) => {
-//     const id = req.params._id;
-//     upload.many(req, res, async (error) => {
-//         if (error) {
-//             console.error(error.message);
-//             res.status(500).send({ message: 'Internal Server Error', error: error.message });
-//             return;
-//         }
-//         const { title, content } = req.body;
-//         const { confirmUpdateImage } = req.body;
-//         const updatedProduct = {
-//             title,
-//             content,
-//         };
-
-//         let images = [];
-//         if (confirmUpdateImage === 'true') {
-//             // menghapus gambar lama
-//             const product = await kegiatanModel.findById(id);
-//             product.img.forEach((img) => {
-//                 fs.unlinkSync(`assets/${img}`);
-//             });
-//             // menambahkan gambar baru
-//             imgs = req.files.map((file) => file.filename);
-//             updatedProduct.img = imgs;
-//         }
-//         try {
-//             const result = await kegiatanModel.findByIdAndUpdate(id, updatedProduct, { new: true });
-//             res.status(200).send({
-//                 message: "Success put kegiatan",
-//                 data: newKegiatan
-//             });
-//         } catch (error) {
-//             console.error(error.message);
-//             res.status(500).send({
-//                 message: err.message || "Some error occurred while put kegiatan."
-//             });
-//         }
-//     });
-// }
 
 exports.deleteKegiatan = async (req, res) => {
     try {
