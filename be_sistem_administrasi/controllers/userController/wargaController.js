@@ -24,7 +24,7 @@ exports.LoginWarga = async (req,res) => {
         if (!dataUser) {
             throw new Error('user not found with name :  ' + name);
         }
-        const comparePassword = await bcrypt.compare(password, dataUser.password);
+        const comparePassword = bcrypt.compare(password, dataUser.password);
         if (!comparePassword) {
             return res.status(400).send({
                 message: "Invalid Password!"
@@ -305,10 +305,12 @@ exports.getAllwargaLessDetail = async (req, res) => {
 
 
 
-exports.getWargaById = async (req,res) => {
+exports.getWargaByIdUser = async (req,res) => {
     const id = req.params.id;
     try{
-        const warga = await WargaModel.findById(id).populate('user').populate('suratAcara');
+
+        // mencari warga dengan id dari user 
+        const warga = await WargaModel.findOne({user: id}).populate('user');
         if (!warga) {
             return res.status(404).send({
                 message: "warga not found with id " + id

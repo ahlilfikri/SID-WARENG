@@ -8,6 +8,8 @@ import DetailKegiatanDesa from "./sid/pages/detailKegiatanDesa";
 import KegiatanProgramDesa from "./sid/pages/kegiatanProgramDesa";
 // import SignIn from "./pages/siginPage/SiginPage";
 
+import WargaPage from "./administration/pages/administration/warga/warga.page";
+
 import App from "./App";
 
 const Routing = createBrowserRouter([
@@ -43,6 +45,11 @@ const Routing = createBrowserRouter([
         path: "/detail-kegiatan-desa",
         element: <DetailKegiatanDesa />,
       },
+      {
+        path: "/warga",
+        element: <WargaPage />,
+      },
+
     ],
   },
 ]);
