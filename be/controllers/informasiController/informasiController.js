@@ -1,5 +1,6 @@
 const db = require('../../models');
 const informasiModel = require('../../models/informasiModels/informasiModel');
+const { uploadProjectImages } = require('../../middleware/imageUpload');
 
 exports.getInformasi = async (req, res) => {
     try {
@@ -30,50 +31,82 @@ exports.getInformasiById = async (req, res) => {
 }
 
 exports.postInformasi = async (req, res) => {
-    try {
-        const { contentVisi, contentMisi } = req.body;
+    uploadProjectImages(req, res, async (error) => {
+        if (error) {
+            console.error(error);
+            console.error(error.message);
+            res.status(500).send({ message: 'Internal Server Error', error: error.message });
+            return;
+        }
 
-        const newInformasi = new informasiModel({
-            contentVisi,
-            contentMisi
-        });
+        try {
+            const { title, content } = req.body;
+            console.log(title, content);
+            const imgs = req.files.map((file) => file.filename);
+            const newInformasi = new informasiModel({
+                title,
+                content,
+                img: imgs,
+            });
 
-        await newInformasi.save();
-        res.status(200).send({
-            message: "Success post informasi",
-            data: newInformasi
-        });
-    } catch (error) {
-        console.log("error", error.message);
-        res.status(500).send({
-            message: err.message || "Some error occurred while post informasi."
-        });
-    }
+            const savedInformasi = await newInformasi.save();
+
+            res.status(200).send({
+                message: "Success post informasi",
+                data: savedInformasi
+            });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send({
+                message: error.message || "Some error occurred while post informasi."
+            });
+        }
+    });
 }
 
 
 exports.putInformasi = async (req, res) => {
-    const id = req.params._id;
+    uploadProjectImages(req, res, async (error) => {
+        if (error) {
+            console.error(error.message);
+            res.status(500).send({ message: 'Internal Server Error', error: error.message });
+            return;
+        }
 
-    try {
-        const { contentVisi, contentMisi } = req.body;
-        let update = { contentVisi, contentMisi };
+        try {
+            const { id } = req.params;
+            const { title, content } = req.body;
+            let updateFields = { title, content };
 
-        const updatedInformasi = await informasiModel.findByIdAndUpdate(id, update, { new: true });
+            // If new images are uploaded, update the image field
+            if (req.files && req.files.length > 0) {
+                const newImages = req.files.map((file) => file.filename);
+                updateFields.img = newImages;
+            }
 
-        res.status(200).send({
-            message: "Success update informasi",
-            data: updatedInformasi
-        });
-    } catch (error) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while update informasi."
-        });
-    }
+            const updatedInformasi = await informasiModel.findByIdAndUpdate(id, updateFields, { new: true });
+
+            if (!updatedInformasi) {
+                return res.status(404).send({ message: "Informasi not found" });
+            }
+
+            res.status(200).send({
+                message: "Success update Informasi",
+                data: updatedInformasi
+            });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send({
+                message: error.message || "Some error occurred while updating Informasi."
+            });
+        }
+    });
 }
+
 exports.deleteInformasi = async (req, res) => {
     try {
-        const id = req.params._id;
+        const id = req.params.id;
+        console.log(id);
         const result = await informasiModel.findByIdAndDelete(id);
         res.status(200).send({
             message: "Success delete informasi",

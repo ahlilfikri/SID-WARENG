@@ -1,5 +1,5 @@
 const {getKegiatan,postKegiatan,getKegiatanById,putKegiatan,deleteKegiatan}=
-require('../../controllers/informasiController/KegiatanController');
+require('../../controllers/informasiController/kegiatanController');
 const express = require('express');
 const Router = express.Router();
 

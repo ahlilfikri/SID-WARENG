@@ -14,6 +14,7 @@ exports.getVisiMisi = async (req, res) => {
         });
     }
 }
+
 exports.getVisiMisiById = async (req, res) => {
     id = req.params.id
     try {
@@ -31,17 +32,17 @@ exports.getVisiMisiById = async (req, res) => {
 
 exports.postVisiMisi = async (req, res) => {
     try {
-        const { contentVisi, contentMisi } = req.body;
+        const { visi, misi } = req.body;
 
-        const newvisiMisi = new visiMisiModels({
-            contentVisi,
-            contentMisi
+        const newVisiMisi = new visiMisiModels({
+            visi,
+            misi
         });
 
-        await newvisiMisi.save();
+        await newVisiMisi.save();
         res.status(200).send({
             message: "Success post visi misi",
-            data: newvisiMisi
+            data: newVisiMisi
         });
     } catch (error) {
         console.log("error", error.message);
@@ -53,17 +54,16 @@ exports.postVisiMisi = async (req, res) => {
 
 
 exports.putVisiMisi = async (req, res) => {
-    const id = req.params._id;
+    const id = req.params.id;
 
     try {
-        const { contentVisi, contentMisi } = req.body;
-        let update = { contentVisi, contentMisi };
+        const { visi, misi } = req.body;
+        let update = { visi, misi };
 
-        const updatedvisiMisi = await visiMisiModels.findByIdAndUpdate(id, update, { new: true });
-
+        const updatedVisiMisi = await visiMisiModels.findByIdAndUpdate(id, update, { new: true });
         res.status(200).send({
             message: "Success update visi misi",
-            data: updatedvisiMisi
+            data: updatedVisiMisi
         });
     } catch (error) {
         res.status(500).send({
@@ -73,7 +73,7 @@ exports.putVisiMisi = async (req, res) => {
 }
 exports.deleteVisiMisi = async (req, res) => {
     try {
-        const id = req.params._id;
+        const id = req.params.id;
         const result = await visiMisiModels.findByIdAndDelete(id);
         res.status(200).send({
             message: "Success delete visi misi",
