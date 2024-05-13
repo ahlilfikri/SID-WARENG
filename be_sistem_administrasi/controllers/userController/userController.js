@@ -4,7 +4,7 @@ const crypto = require('crypto');//import crypto
 require('dotenv').config();
 
 
-exports.getAllUser = async (req,res) => {
+exports.getPaginateUser = async (req,res) => {
     try{
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
@@ -33,6 +33,29 @@ exports.getAllUser = async (req,res) => {
         });
     }
 }
+
+exports.getAllUser = async (req, res) => {
+    try {
+        console.log(`Received GET request to /api/v1/user/get without pagination`);
+
+        const dataUser = await userModel.find();
+
+        const dataTotal = await userModel.countDocuments();
+
+        res.status(200).send({
+            message: "Success get all user",
+            data: dataUser,
+            totalDocument: dataTotal
+        });
+
+    } catch (error) {
+        console.log('Error while handling GET request to /api/v1/user/get:', error);
+        res.status(500).send({
+            message: error.message || "Some error occurred while get all user."
+        });
+    }
+}
+
 
 exports.getUserById = async (req,res) => {
     try{

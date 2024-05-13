@@ -78,7 +78,7 @@ const KegiatanProgramDesa = () => {
                         </div>
                         <div className="row">
                             {data.map((item, index) => {
-                                const imageSrc = `http://localhost:3555/upload/${encodeURIComponent(item.img[0])}`;
+                                const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
                                 return (
                                     <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }}>
                                         <div>

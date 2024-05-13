@@ -12,8 +12,16 @@ const PerangkatDesa = () => {
 
     const GetFromAPI = async () => {
         try {
-            const response = await axios.get(`${port}v1/user/get`);
+            const response = await axios.get(`${port}v1/perangkatDesa/get`);
             setData(response.data.data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const FilteredData = async () => {
+        try {
+            data 
         } catch (error) {
             console.log(error.message);
         }
@@ -21,6 +29,7 @@ const PerangkatDesa = () => {
 
     useEffect(() => {
         GetFromAPI();
+        // FilteredData();
     }, []);
 
     console.log(data);
@@ -40,7 +49,7 @@ const PerangkatDesa = () => {
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="content ">
-                                                <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>{item.name}</p>
+                                                <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>{item.user.name}</p>
                                                 <p style={{ fontFamily: 'poppins', fontSize: '14px' }}>{item.jabatan}</p>
                                                 <p style={{ fontFamily: 'poppins', fontWeight: 'bold',fontSize: '16px', textAlign: 'justify' }}>{item.status}</p>
                                             </div>

@@ -30,7 +30,7 @@ const KegiatanDesa = () => {
                 <p>Kegiatan Desa</p>
                 <Slider {...Setting}>
                     {data.map((item, index) => {
-                        const imageSrc = `http://localhost:3555/upload/${encodeURIComponent(item.img[0])}`;
+                        const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
                         return(
                             <div key={index}  >
                                 <div className="card kegiatan-desa-card m-3 py-4 mx-2" style={{ borderRadius: '1vw', border: '1px solid #00917C', transition: 'transform 0.3s ease' }}>

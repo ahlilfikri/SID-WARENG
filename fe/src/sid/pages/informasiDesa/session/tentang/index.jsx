@@ -29,7 +29,7 @@ const Tentang = () => {
             <div className="container-fluid tentang-container mt-3 mt-md-5 mb-3 mb-md-5">
                 <div className="row">
                     {data[0]?.img.map((item, index) => {
-                        const imageSrc = `http://localhost:3555/upload/${encodeURIComponent(item)}`;
+                        const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item)}`;
                         return (
                             <div className="col-12 col-md-4 p-0">
                                 <ImageTentang Foto={imageSrc} />

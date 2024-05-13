@@ -11,7 +11,8 @@ exports.getAllPerangkatDesa = async (req, res) => {
     try {
         const perangkatDesaList = await perangkatDesa.find()
             .limit(limit)
-            .skip((page - 1) * limit);
+            .skip((page - 1) * limit)
+            .populate('user');
         const total = await perangkatDesa.countDocuments();
 
         res.status(200).send({
