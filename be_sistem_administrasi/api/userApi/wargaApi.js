@@ -8,7 +8,7 @@ Router.get('/get/less/:id',wargaController.getAllwargaLessDetail);// http://loca
 
 Router.post('/post-warga/:id',wargaController.postWarga);   // http://localhost:3555/api/v1/warga/post-warga
 
-Router.get('/get/:id',wargaController.getWargaById);
+Router.get('/get/:id',wargaController.getWargaByIdUser); // http://localhost:3555/api/v1/warga/get/:id
 Router.post('/create/suratAcara/:id',wargaController.CreateSuratAcara); 
 Router.post('/pengajuan/SuratAcara/:userId/:suratAcaraId',wargaController.pengajuanSuratAcara);
 
@@ -36,7 +36,7 @@ module.exports = Router;
 // get warga by id : http://localhost:3555/api/v1/warga/get/:id
 // post warga : http://localhost:3555/api/v1/warga/post-warga
 // post many warga : http://localhost:3555/api/v1/warga/post-many-warga
-// get warga by id : http://localhost:3555/api/v1/warga/get/:id
+// get warga by user id : http://localhost:3555/api/v1/warga/get/:id
 // update warga by id : http://localhost:3555/api/v1/warga/update/:id
 // delete warga by id : http://localhost:3555/api/v1/warga/delete/:id
 // create surat acara : http://localhost:3555/api/v1/warga/create/suratAcara/:id

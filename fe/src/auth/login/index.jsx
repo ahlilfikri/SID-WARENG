@@ -10,6 +10,10 @@ const SignUp = () => {
         name: '',
         password: ''
     });
+    localStorage.removeItem('token');
+
+
+
 
     const { name, password } = formData;
 
@@ -17,6 +21,7 @@ const SignUp = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
+        
         
         try {
             const res = await axios.post('http://localhost:3555/api/v1/warga/login', {

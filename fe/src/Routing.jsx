@@ -8,6 +8,8 @@ import Login from "./auth/login";
 import ForgotPassword from "./auth/forgotPassword";
 // import SignIn from "./pages/siginPage/SiginPage";
 
+import WargaPage from "./administration/pages/administration/warga/warga.page";
+import RtPage from "./administration/pages/administration/rt/rt.page";
 import App from "./App";
 
 const Routing = createBrowserRouter([
@@ -43,6 +45,15 @@ const Routing = createBrowserRouter([
         path: "/detail-kegiatan-desa",
         element: <DetailKegiatanDesa />,
       },
+      {
+        path: "/warga",
+        element: <WargaPage />,
+      },
+      {
+        path: "/rt",
+        element: <RtPage />,
+      },
+
     ],
   },
 ]);
