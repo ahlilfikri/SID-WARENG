@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const PopUpDetailSurat = ({ surat, handleCloseModal,idTokoh,condition,role}) => {
 
-    console.log('url : \n','http://localhost:3555/api/v1/surat/persetujuan-surat-acara-'+role+'/'+idTokoh+'/'+surat._id);
+    // console.log('url : \n','http://localhost:3555/api/v1/surat/persetujuan-surat-acara-'+role+'/'+idTokoh+'/'+surat._id);
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try{

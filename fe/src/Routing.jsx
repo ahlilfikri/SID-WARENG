@@ -15,6 +15,7 @@ import WargaPage from "./administration/pages/administration/warga/warga.page";
 import RtPage from "./administration/pages/administration/rt/rt.page";
 import RwPage from "./administration/pages/administration/rw/rw.page";
 import KasiPage from "./administration/pages/administration/kasi/kasi.page";
+import KadesPage from "./administration/pages/administration/kades/kades.page";
 
 import App from "./App";
 
@@ -74,6 +75,10 @@ const Routing = createBrowserRouter([
       {
         path: "/kasi",
         element: <KasiPage />,
+      },
+      {
+        path: "/kades",
+        element: <KadesPage />,
       },
     ],
   },

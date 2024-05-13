@@ -52,6 +52,28 @@ exports.getKades = async (req, res) => {
     }
 }
 
+exports.getPimpinanDesaById = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const dataKades = await KadesModel.findOne({'user': id}).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
+        if (!dataKades){
+            return res.status(404).send({
+                message: "Data kades not found"
+            });
+        }
+        res.status(200).send({
+            message: "Success get kades by id",
+            data: dataKades
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while get kades by id."
+        });
+    }
+
+}
+
 exports.getAllPimpinanDesa = async (req, res) => {
     try{
         const dataKades = await KadesModel.find();
