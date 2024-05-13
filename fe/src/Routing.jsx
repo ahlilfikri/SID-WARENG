@@ -13,6 +13,8 @@ import Aspirasi from "./aspirasi/page";
 //ADMINISTRATION
 import WargaPage from "./administration/pages/administration/warga/warga.page";
 import RtPage from "./administration/pages/administration/rt/rt.page";
+import RwPage from "./administration/pages/administration/rw/rw.page";
+
 import App from "./App";
 
 const Routing = createBrowserRouter([
@@ -63,6 +65,10 @@ const Routing = createBrowserRouter([
       {
         path: "/rt",
         element: <RtPage />,
+      },
+      {
+        path: "/rw",
+        element: <RwPage />,
       },
     ],
   },

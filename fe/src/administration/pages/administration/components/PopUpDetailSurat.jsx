@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-const PopUpDetailSurat = ({ surat, handleCloseModal,idTokoh,condition}) => {
+const PopUpDetailSurat = ({ surat, handleCloseModal,idTokoh,condition,role}) => {
+
+    console.log('url : \n','http://localhost:3555/api/v1/surat/persetujuan-surat-acara-'+role+'/'+idTokoh+'/'+surat._id);
+
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try{
-            const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-rt/${idTokoh}/${surat._id}`,{
+            const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`,{
                 statusPersetujuan : statusPersetujuan
             });
             console.log(request);
@@ -75,7 +78,8 @@ PopUpDetailSurat.propTypes = {
     }).isRequired,
     handleCloseModal: PropTypes.func.isRequired,
     idTokoh: PropTypes.string.isRequired, // id dari rt
-    condition: PropTypes.bool.isRequired
+    condition: PropTypes.bool.isRequired,
+    role: PropTypes.string.isRequired
     
 };  
 

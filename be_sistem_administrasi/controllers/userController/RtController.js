@@ -22,6 +22,11 @@ exports.getAllRt = async (req, res) => {
 exports.getRtById = async (req, res) => {
     try {
         const rt = await RtModel.findOne({'user': req.params.id}).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
+        if (!rt) {
+            return res.status(404).send({
+                message: "rt not found with id " + req.params.id
+            });
+        }
         res.status(200).send({
             message: "Success get rt by id",
             data: rt
