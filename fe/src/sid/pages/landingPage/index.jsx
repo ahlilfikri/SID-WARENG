@@ -23,7 +23,7 @@ const LandingPage = () => {
                         <div className="col-12 col-md-10">
                             <div className="wrap-btn">
                                 <ButtonLandingPage title="Informasi Desa" path="informasi-desa" ></ButtonLandingPage>
-                                <ButtonLandingPage title="Kegiatan Desa" path="informasi-desa" ></ButtonLandingPage>
+                                <ButtonLandingPage title="Kegiatan Desa" path="kegiatan-program-desa" ></ButtonLandingPage>
                                 <ButtonLandingPage title="Pelayanan Desa" path="informasi-desa" ></ButtonLandingPage>
                                 <ButtonLandingPage title="Aspirasi" path="informasi-desa"></ButtonLandingPage>
                             </div>

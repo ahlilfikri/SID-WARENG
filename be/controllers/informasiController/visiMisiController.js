@@ -1,17 +1,13 @@
 const db = require('../../models');
 const visiMisiModels = require('../../models/informasiModels/visiMisiModel');
+const response = require('../../res/response');
 
 exports.getVisiMisi = async (req, res) => {
     try {
         const content = await visiMisiModels.find();
-        res.status(200).send({
-            message: "Success get visi misi",
-            data: content
-        });
+        response(200, res, content, 'Success get visi misi');
     } catch (err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while get visi misi."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while get visi misi.');
     }
 }
 
@@ -19,14 +15,9 @@ exports.getVisiMisiById = async (req, res) => {
     id = req.params.id
     try {
         const content = await visiMisiModels.findOne({ _id: id });
-        res.status(200).send({
-            message: "Success get visi misi",
-            data: content
-        });
+        response(200, res, content, 'Success get visi misi');
     } catch (err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while get visi misi."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while get visi misi.');
     }
 }
 
@@ -40,15 +31,11 @@ exports.postVisiMisi = async (req, res) => {
         });
 
         await newVisiMisi.save();
-        res.status(200).send({
-            message: "Success post visi misi",
-            data: newVisiMisi
-        });
+        response(200, res, content, 'Success post visi misi');
+
     } catch (error) {
         console.log("error", error.message);
-        res.status(500).send({
-            message: err.message || "Some error occurred while post visi misi."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while post visi misi.');
     }
 }
 
@@ -61,28 +48,20 @@ exports.putVisiMisi = async (req, res) => {
         let update = { visi, misi };
 
         const updatedVisiMisi = await visiMisiModels.findByIdAndUpdate(id, update, { new: true });
-        res.status(200).send({
-            message: "Success update visi misi",
-            data: updatedVisiMisi
-        });
+        response(200, res, content, 'Success put visi misi');
+
     } catch (error) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while update visi misi."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while put visi misi.');
     }
 }
 exports.deleteVisiMisi = async (req, res) => {
     try {
         const id = req.params.id;
         const result = await visiMisiModels.findByIdAndDelete(id);
-        res.status(200).send({
-            message: "Success delete visi misi",
-            data: result
-        });
+        response(200, res, content, 'Success delete visi misi');
+
     } catch (error) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while delete visi misi."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while delete visi misi.');
     }
 }
 

@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Landing from './sid/pages/landingPage';
-import SignUp from './administration/pages/auth/signUp';
-import Login from "./administration/pages/auth/login";
-import ForgotPassword from "./administration/pages/auth/forgotPassword";
 import InformasiDesa from "./sid/pages/informasiDesa";
 import DetailKegiatanDesa from "./sid/pages/detailKegiatanDesa";
 import KegiatanProgramDesa from "./sid/pages/kegiatanProgramDesa";
+import SignUp from './auth/signUp';
+import Login from "./auth/login";
+import ForgotPassword from "./auth/forgotPassword";
 // import SignIn from "./pages/siginPage/SiginPage";
 
 import App from "./App";

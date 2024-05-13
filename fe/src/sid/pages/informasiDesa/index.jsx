@@ -13,13 +13,13 @@ const InformasiDesa = () => {
 
     return (
         <Fragment>
-            <div className="conatiner-fluid informasi-desa-container" style={{overflow:'hidden'}}>
-                <Navbar type={0}></Navbar>
+            <Navbar type={0}></Navbar>
+            <div className="conatiner-fluid informasi-desa-container" style={{ overflow: 'hidden' }}>
                 <div className="row">
                     <div className="col-0 col-md-1"></div>
                     <div className="col-12 col-md-10">
                         <Tentang />
-                        <VisiMisi/>
+                        <VisiMisi />
                         <KegiatanDesa />
                         <PerangkatDesa />
                     </div>

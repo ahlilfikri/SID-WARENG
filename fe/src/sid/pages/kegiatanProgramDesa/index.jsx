@@ -3,50 +3,17 @@ import Footer from "../../../shared/layout/footer";
 import Navbar from "../../../shared/layout/navBar";
 import GambarDummy from "./assets/Foto.svg";
 import { Link } from "react-router-dom"
+import axios from 'axios';
+
+const port = import.meta.env.VITE_BASE_API_URL;
 
 const KegiatanProgramDesa = () => {
     const [data, setData] = useState([]);
 
     const GetFromAPI = async () => {
         try {
-            setData([
-                {
-                    title: 'Nama Agenda 1',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                },
-                {
-                    title: 'Nama Agenda 2',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                },
-                {
-                    title: 'Nama Agenda 3',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                },
-                {
-                    title: 'Nama Agenda 4',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                },
-                {
-                    title: 'Nama Agenda 5',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                },
-                {
-                    title: 'Nama Agenda 6',
-                    date: Date.now(),
-                    location: 'Desa lorem Kec.ipsum',
-                    img: GambarDummy
-                }
-            ]);
+            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
+            setData(response.data.data);
         } catch (error) {
             console.log(error.message);
         }
@@ -64,6 +31,8 @@ const KegiatanProgramDesa = () => {
         GetFromAPI();
     }, []);
 
+
+    console.log(data);
     return (
         <Fragment>
             <Navbar type={0}></Navbar>
@@ -108,12 +77,15 @@ const KegiatanProgramDesa = () => {
                             </div>
                         </div>
                         <div className="row">
-                            {data.map((item, index) => (
-                                <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }}>
-                                    <Link to="/detail-kegiatan-desa">
+                            {data.map((item, index) => {
+                                const imageSrc = `http://localhost:3555/upload/${encodeURIComponent(item.img[0])}`;
+                                return (
+                                    <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }}>
                                         <div>
-                                            <img src={item.img} alt="" style={{ width: '100%', maxHeight: '100%' }} />
-                                            <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
+                                            <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%' }} />
+                                            <Link to="/detail-kegiatan-desa">
+                                                <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
+                                            </Link>
                                         </div>
                                         <p style={{ fontSize: '20px', fontWeight: 'bold' }}>{item.title}</p>
                                         <div className="row">
@@ -130,9 +102,9 @@ const KegiatanProgramDesa = () => {
                                             <i className="fa-regular fa-calendar me-1"></i>
                                             <p style={{ fontSize: '14px' }}>{formatDate(new Date(item.date))}</p>
                                         </div>
-                                    </Link>
-                                </div>
-                            ))}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                     <div className="col-0 col-md-1"></div>

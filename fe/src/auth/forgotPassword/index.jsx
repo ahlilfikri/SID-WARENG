@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../../../../shared/layout/navBar'
-import Footer from '../../../../shared/layout/footer'
+import NavBar from '../../shared/layout/navBar'
+import Footer from '../../shared/layout/footer'
 import './index.css';
 
 const SignUp = () => {

@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../../../../shared/layout/navBar'
-import Footer from '../../../../shared/layout/footer'
+import NavBar from '../../shared/layout/navBar'
+import Footer from '../../shared/layout/footer'
 import './index.css';
 
 const SignUp = () => {
@@ -27,8 +27,8 @@ const SignUp = () => {
                                             <input className='py-3 ps-3' style={{ width: '100%', borderRadius: '0.5vw' }} type="text" placeholder="Masukkan Password" />
                                         </div>
                                         <div className="Nomor mb-2">
-                                            <p style={{ fontSize: '24px' }} className='mb-0'>Nomor</p>
-                                            <input className='py-3 ps-3' style={{ width: '100%', borderRadius: '0.5vw' }} type="text" placeholder='Masukkan Nomor Kartu Kluarga Anda' />
+                                            <p style={{ fontSize: '24px' }} className='mb-0'>Nomor Kartu Keluarga</p>
+                                            <input className='py-3 ps-3' style={{ width: '100%', borderRadius: '0.5vw' }} type="text" placeholder='Masukkan Nomor Kartu Keluarga Anda' />
                                         </div>
                                         <div className="btn-warp  d-block d-md-flex justify-content-between align-items-center">
                                             <button className='btn mt-4 mb-2 mb-md-5 text-light px-5 py-2 me-2' style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}>Register</button>

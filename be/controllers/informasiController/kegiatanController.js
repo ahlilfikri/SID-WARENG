@@ -1,19 +1,15 @@
 const db = require('../../models');
 const kegiatanModel = require('../../models/informasiModels/kegiatanModel');
 const { uploadProjectImages } = require('../../middleware/imageUpload');
+const response = require('../../res/response');
 
 
 exports.getKegiatan = async (req, res) => {
     try {
         const content = await kegiatanModel.find();
-        res.status(200).send({
-            message: "Success get kegiatan",
-            data: content
-        });
+        response(200, res, content, 'Success get kegiatan');
     } catch (err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while get kegiatan."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while get informasi.');
     }
 }
 
@@ -21,14 +17,9 @@ exports.getKegiatanById = async (req, res) => {
     try {
         const id = req.params._id;
         const content = await kegiatanModel.findById(id).populate('kategori');
-        res.status(200).send({
-            message: "Success get kegiatan",
-            data: content
-        });
+        response(200, res, content, 'Success get kegiatan');
     } catch (err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while get kegiatan."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while get informasi.');
     }
 }
 
@@ -37,7 +28,7 @@ exports.postKegiatan = async (req, res) => {
         if (error) {
             console.error(error);
             console.error(error.message);
-            res.status(500).send({ message: 'Internal Server Error', error: error.message });
+            response(500, res, 'error', err.message || 'Internal Server Error');
             return;
         }
 
@@ -54,15 +45,11 @@ exports.postKegiatan = async (req, res) => {
 
             const savedKegiatan = await newKegiatan.save();
 
-            res.status(200).send({
-                message: "Success post kegiatan",
-                data: savedKegiatan
-            });
+            response(200, res, savedKegiatan, 'Success post kegiatan');
+
         } catch (error) {
             console.error(error.message);
-            res.status(500).send({
-                message: error.message || "Some error occurred while post kegiatan."
-            });
+            response(500, res, 'error', err.message || 'Some error occurred while post informasi.');
         }
     });
 }
@@ -71,7 +58,7 @@ exports.putKegiatan = async (req, res) => {
     uploadProjectImages(req, res, async (error) => {
         if (error) {
             console.error(error.message);
-            res.status(500).send({ message: 'Internal Server Error', error: error.message });
+            response(500, res, 'error', err.message || 'Internal Server Error');
             return;
         }
 
@@ -92,15 +79,11 @@ exports.putKegiatan = async (req, res) => {
                 return res.status(404).send({ message: "Kegiatan not found" });
             }
 
-            res.status(200).send({
-                message: "Success update kegiatan",
-                data: updatedKegiatan
-            });
+            response(200, res, savedKegiatan, 'Success put kegiatan');
+
         } catch (error) {
             console.error(error.message);
-            res.status(500).send({
-                message: error.message || "Some error occurred while updating kegiatan."
-            });
+            response(500, res, 'error', err.message || 'Some error occurred while put informasi.');
         }
     });
 }
@@ -109,14 +92,9 @@ exports.deleteKegiatan = async (req, res) => {
     try {
         const id = req.params.id;
         const result = await kegiatanModel.findByIdAndDelete(id);
-        res.status(200).send({
-            message: "Success delete kegiatan",
-            data: result
-        });
+        response(200, res, savedKegiatan, 'Success delete kegiatan');
     } catch (error) {
-        res.status(500).send({
-            message: error.message || "Some error occurred while delete kegiatan."
-        });
+        response(500, res, 'error', err.message || 'Some error occurred while delete informasi.');
     }
 }
 

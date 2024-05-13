@@ -3,45 +3,17 @@ import Setting from '../../../../constant/carouselSertting2';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import GambarDummy from '../../assets/Foto.svg';
+import axios from 'axios';
+
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const PerangkatDesa = () => {
     const [data, setData] = useState([]);
 
     const GetFromAPI = async () => {
         try {
-            setData([
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-                {
-                    jabatan: 'Jabatan Perangkat Desa',
-                    status: 'Sedang Di Kantor',
-                    img: GambarDummy
-                },
-            ]);
+            const response = await axios.get(`${port}v1/user/get`);
+            setData(response.data.data);
         } catch (error) {
             console.log(error.message);
         }
@@ -51,10 +23,12 @@ const PerangkatDesa = () => {
         GetFromAPI();
     }, []);
 
+    console.log(data);
+
     return (
         <Fragment>
             <div className="container-fluid perangkat-desa-container mb-0 mb-md-5">
-                <p>Kegiatan Desa</p>
+                <p>Perangkat Desa</p>
                 <Slider {...Setting}>
                     {data.map((item, index) => (
                         <div key={index} style={{ borderRadius: '1vw', border: '1px solid #00917C' }}>
@@ -66,7 +40,7 @@ const PerangkatDesa = () => {
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="content ">
-                                                <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>Perangkat Desa</p>
+                                                <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>{item.name}</p>
                                                 <p style={{ fontFamily: 'poppins', fontSize: '14px' }}>{item.jabatan}</p>
                                                 <p style={{ fontFamily: 'poppins', fontWeight: 'bold',fontSize: '16px', textAlign: 'justify' }}>{item.status}</p>
                                             </div>
