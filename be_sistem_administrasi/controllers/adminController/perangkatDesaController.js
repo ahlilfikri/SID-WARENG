@@ -58,8 +58,8 @@ exports.postPerangkatDesa = async (req,res) => {
 exports.getPerangkatDesaById = async (req,res) => {
     const id = req.params.id;
     try{
-        const Datakonter = await perangkatDesa.findById(id);
-        if (!Datakonter) {
+        const dataPerangkatDesa = await perangkatDesa.findOne({'user': id}).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
+        if (!dataPerangkatDesa) {
             return res.status(404).send({
                 message: "perangkat desa not found with id " + id
             });
@@ -67,7 +67,7 @@ exports.getPerangkatDesaById = async (req,res) => {
 
         res.status(200).send({
             message: "Success get perangkat desa by id",
-            data: Datakonter
+            data: dataPerangkatDesa
         });
     }catch(error){
         res.status(500).send({

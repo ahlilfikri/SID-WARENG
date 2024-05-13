@@ -18,10 +18,10 @@ Router.put('/persetujuan-surat-acara-rt/:rtId/:suratAcaraId',suratController.per
 Router.put('/persetujuan-surat-acara-rw/:RwId/:SuratId',suratController.persetujuanSuratAcaraRw_TAVERSION);
 
 //perangkat desa
-Router.put('/submit/:perangkatDesaId/:suratAcaraId',suratController.persetujuanSuratAcaraPerangkatDesa_TAVERSION);
+Router.put('/persetujuan-surat-acara-pd/:perangkatDesaId/:suratAcaraId',suratController.persetujuanSuratAcaraPerangkatDesa_TAVERSION);
 
 //kepala desa
-Router.put('/submit/:kadesId/:suratAcaraId',suratController.persetujuanSuratAcaraKades_TAVERSION);
+Router.put('/persetujuan-surat-acara-pp/:kadesId/:suratAcaraId',suratController.persetujuanSuratAcaraKades_TAVERSION);
 
 //baypass RT 
 Router.put('/baypassRT/:suratAcaraId',suratController.baypassSuratAcaraRT_TAVERSION);
