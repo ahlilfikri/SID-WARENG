@@ -15,8 +15,8 @@ exports.getKegiatan = async (req, res) => {
 
 exports.getKegiatanById = async (req, res) => {
     try {
-        const id = req.params._id;
-        const content = await kegiatanModel.findById(id).populate('kategori');
+        const id = req.params.id;
+        const content = await kegiatanModel.findById(id);
         response(200, res, content, 'Success get kegiatan');
     } catch (err) {
         response(500, res, 'error', err.message || 'Some error occurred while get informasi.');

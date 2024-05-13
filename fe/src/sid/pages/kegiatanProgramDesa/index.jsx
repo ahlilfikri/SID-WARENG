@@ -4,6 +4,7 @@ import Navbar from "../../../shared/layout/navBar";
 import GambarDummy from "./assets/Foto.svg";
 import { Link } from "react-router-dom"
 import axios from 'axios';
+import ImageError from '../../../assets/ImageErrorHandling.svg'
 
 const port = import.meta.env.VITE_BASE_API_URL;
 
@@ -31,8 +32,6 @@ const KegiatanProgramDesa = () => {
         GetFromAPI();
     }, []);
 
-
-    console.log(data);
     return (
         <Fragment>
             <Navbar type={0}></Navbar>
@@ -82,8 +81,8 @@ const KegiatanProgramDesa = () => {
                                 return (
                                     <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }}>
                                         <div>
-                                            <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%' }} />
-                                            <Link to="/detail-kegiatan-desa">
+                                            <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%' }} onError={(e) => { e.target.src = ImageError; }} />
+                                            <Link to={`/detail-kegiatan-desa/${item._id}`}>
                                                 <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
                                             </Link>
                                         </div>

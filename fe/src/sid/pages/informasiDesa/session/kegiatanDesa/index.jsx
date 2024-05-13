@@ -3,8 +3,10 @@ import Setting from '../../../../constant/carouselSertting';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import './index.css'
+import './index.css';
 import axios from 'axios';
+import ImageError from '../../../../../assets/ImageErrorHandling.svg';
+
 
 const port = import.meta.env.VITE_BASE_API_URL;
 
@@ -37,7 +39,7 @@ const KegiatanDesa = () => {
                                     <div className="row">
                                         <div className="col-1"></div>
                                         <div className="col-10 ">
-                                            <img src={imageSrc} alt="" style={{borderRadius: '1vw', height: '210px', width: '100%' }} />
+                                            <img src={imageSrc} alt="" style={{borderRadius: '1vw', height: '210px', width: '100%' }} onError={(e) => { e.target.src = ImageError; }}/>
                                             <div className="content pt-4">
                                                 <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.title}</p>
                                                 <p style={{ fontFamily: 'poppins', fontSize: '12px', textAlign: 'justify' }}>{item.content}</p>

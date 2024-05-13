@@ -1,13 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
+//SID
 import Landing from './sid/pages/landingPage';
 import InformasiDesa from "./sid/pages/informasiDesa";
 import DetailKegiatanDesa from "./sid/pages/detailKegiatanDesa";
 import KegiatanProgramDesa from "./sid/pages/kegiatanProgramDesa";
+//AUTHENTICATION
 import SignUp from './auth/signUp';
 import Login from "./auth/login";
 import ForgotPassword from "./auth/forgotPassword";
-// import SignIn from "./pages/siginPage/SiginPage";
-
+//ASPIRASI
+import Aspirasi from "./aspirasi/page";
+//ADMINISTRATION
 import WargaPage from "./administration/pages/administration/warga/warga.page";
 import RtPage from "./administration/pages/administration/rt/rt.page";
 import App from "./App";
@@ -21,6 +24,7 @@ const Routing = createBrowserRouter([
         path: "/",
         element: <Landing />,
       },
+      //AUTHENTICATION
       {
         path: "/sign-up",
         element: <SignUp />,
@@ -33,6 +37,7 @@ const Routing = createBrowserRouter([
         path: "/forgot-password",
         element: <ForgotPassword />,
       },
+      //SID
       {
         path: "/informasi-desa",
         element: <InformasiDesa />,
@@ -42,9 +47,15 @@ const Routing = createBrowserRouter([
         element: <KegiatanProgramDesa />,
       },
       {
-        path: "/detail-kegiatan-desa",
+        path: "/detail-kegiatan-desa/:id",
         element: <DetailKegiatanDesa />,
       },
+      //ASPIRATION
+      {
+        path: "/aspirasi",
+        element: <Aspirasi />,
+      },
+      //ADMINISTRATION
       {
         path: "/warga",
         element: <WargaPage />,
@@ -53,7 +64,6 @@ const Routing = createBrowserRouter([
         path: "/rt",
         element: <RtPage />,
       },
-
     ],
   },
 ]);

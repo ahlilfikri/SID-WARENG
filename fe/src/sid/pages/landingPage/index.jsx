@@ -25,7 +25,7 @@ const LandingPage = () => {
                                 <ButtonLandingPage title="Informasi Desa" path="informasi-desa" ></ButtonLandingPage>
                                 <ButtonLandingPage title="Kegiatan Desa" path="kegiatan-program-desa" ></ButtonLandingPage>
                                 <ButtonLandingPage title="Pelayanan Desa" path="informasi-desa" ></ButtonLandingPage>
-                                <ButtonLandingPage title="Aspirasi" path="informasi-desa"></ButtonLandingPage>
+                                <ButtonLandingPage title="Aspirasi" path="aspirasi"></ButtonLandingPage>
                             </div>
                         </div>
                         <div className="col-0 col-md-1"></div>

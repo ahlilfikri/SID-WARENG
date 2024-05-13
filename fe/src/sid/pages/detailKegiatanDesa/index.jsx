@@ -2,13 +2,42 @@
 
 //component
 import { Fragment, useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import Footer from "../../../shared/layout/footer";
 import Navbar from "../../../shared/layout/navBar";
 import Foto from "./assets/Foto.svg";
+import axios from 'axios';
+import ImageError from '../../../assets/ImageErrorHandling.svg'
+
+const port = import.meta.env.VITE_BASE_API_URL;
 
 const DetailKegiatanDesa = () => {
     const [SM, setSM] = useState(window.innerWidth <= 768);
+    const [data, setData] = useState([]);
+    const { id } = useParams();
+    const [Image, setImage] = useState();
 
+    const GetFromAPI = async () => {
+        try {
+            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${id}`);
+            setData(response.data.data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const formatDate = (date) => {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const day = date.getDate();
+        const monthIndex = date.getMonth();
+        const year = date.getFullYear();
+        return `${day < 10 ? '0' + day : day} ${months[monthIndex]} ${year}`;
+    };
+
+    useEffect(() => {
+        GetFromAPI();
+    }, []);
+    
     useEffect(() => {
         const handleResize = () => {
             setSM(window.innerWidth <= 768);
@@ -21,6 +50,15 @@ const DetailKegiatanDesa = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (data.img && data.img.length > 0) {
+            console.log(Image);
+            setImage(`http://localhost:3556/upload/${encodeURIComponent
+                (data.img[0])}`);
+        }
+    }, [data]);
+    
+    console.log(Image);
 
     return (
         <Fragment>
@@ -35,29 +73,29 @@ const DetailKegiatanDesa = () => {
                         <div className="wrap-img p-4">
                             <div className="py-4 mx-auto" style={{ width: '75%', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '1vw' }}>
                                 <div className="mx-auto" style={{ maxWidth: '622px', maxHeight: '266px' }}>
-                                    <img src={Foto} alt="" style={{ width: '100%', height: '100%' }} />
+                                    <img src={Image} alt="" style={{ width: '100%', maxHeight: '250px' }} onError={(e) => { e.target.src = ImageError; }} />
                                 </div>
                             </div>
                         </div>
-                        <p style={{ fontSize: '48px', fontWeight: 'bold' }}>Nama Kegiatan</p>
+                        <p className="pt-3" style={{ fontSize: '48px', fontWeight: 'bold' }}>{data.title}</p>
                         <div className="row">
                             <div className="col-1 col-md-0"></div>
                             <div className="col-10 col-md-12">
-                                <p style={{ fontSize: '20px', textAlign: 'justify' }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                <p style={{ fontSize: '20px', textAlign: 'justify' }}>{data.content}</p>
                                 <div className="row mt-5">
                                     <div className="col-12 col-md-2">
                                         <p style={{ fontSize: '20px', fontWeight: '500', textAlign: 'left',borderBottom:'5px solid #00917C' }}>Jam</p>
-                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>12:00 WIB</p>
+                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>{new Date(data.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                     </div>
                                     <div className="col-12 col-md-2 "></div>
                                     <div className="col-12 col-md-3">
                                         <p style={{ fontSize: '20px', fontWeight: '500', textAlign: 'left',borderBottom:'5px solid #00917C' }}>Lokasi</p>
-                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>Desa Lorem Kec.,borderBottom:'3px solid #00917C'Ipsum blalbalblabl</p>
+                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>{data.location}</p>
                                     </div>
                                     <div className="col-12 col-md-2"></div>
                                     <div className="col-12 col-md-3">
                                         <p style={{ fontSize: '20px', fontWeight: '500', textAlign: 'left',borderBottom:'5px solid #00917C' }} >Tanggal</p>
-                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>24 September 2023</p>
+                                        <p style={{ fontSize: '16px', textAlign: 'left' }}>{formatDate(new Date(data.date))}</p>
                                     </div>
                                 </div>
                             </div>
