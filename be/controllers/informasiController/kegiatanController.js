@@ -4,6 +4,37 @@ const { uploadProjectImages } = require('../../middleware/imageUpload');
 const response = require('../../res/response');
 
 
+exports.getKegiatanWithSearch = async (req, res) => {
+    try {
+        const { name, date } = req.params;
+        let result;
+        console.log(name);
+        console.log(date);
+
+        let searchQuery = {};
+
+        if (name && name !== '-1') {
+            searchQuery.title = { $regex: name, $options: 'i' };
+        }
+
+        if (date && date !== '-1') {
+            console.log("test");
+            const searchDate = new Date(date);
+            const nextDay = new Date(searchDate);
+            nextDay.setDate(searchDate.getDate() + 1);
+            searchQuery.date = { $gte: searchDate, $lt: nextDay };
+        }
+
+        result = await kegiatanModel.find(searchQuery);
+
+        response(200, res, result, 'Success get kegiatan');
+    } catch (err) {
+        console.error(err);
+        response(500, res, 'error', err.message || 'Some error occurred while get informasi.');
+    }
+}
+
+
 exports.getKegiatan = async (req, res) => {
     try {
         const content = await kegiatanModel.find();
@@ -79,11 +110,10 @@ exports.putKegiatan = async (req, res) => {
                 return res.status(404).send({ message: "Kegiatan not found" });
             }
 
-            response(200, res, savedKegiatan, 'Success put kegiatan');
+            response(200, res, updatedKegiatan, 'Success put kegiatan');
 
         } catch (error) {
-            console.error(error.message);
-            response(500, res, 'error', err.message || 'Some error occurred while put informasi.');
+            response(500, res, 'error', error.message || 'Some error occurred while put informasi.');
         }
     });
 }

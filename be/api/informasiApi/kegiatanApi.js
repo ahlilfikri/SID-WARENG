@@ -1,8 +1,9 @@
-const {getKegiatan,postKegiatan,getKegiatanById,putKegiatan,deleteKegiatan}=
+const {getKegiatanWithSearch,getKegiatan,postKegiatan,getKegiatanById,putKegiatan,deleteKegiatan}=
 require('../../controllers/informasiController/kegiatanController');
 const express = require('express');
 const Router = express.Router();
 
+Router.get('/get-kegiatan/:name/:date',getKegiatanWithSearch);
 Router.get('/get-kegiatan',getKegiatan);
 Router.post('/post-kegiatan',postKegiatan);
 Router.get('/get-kegiatan/:id',getKegiatanById);

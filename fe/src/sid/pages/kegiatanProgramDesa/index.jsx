@@ -2,21 +2,34 @@ import { Fragment, useState, useEffect } from "react";
 import Footer from "../../../shared/layout/footer";
 import Navbar from "../../../shared/layout/navBar";
 import GambarDummy from "./assets/Foto.svg";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import axios from 'axios';
-import ImageError from '../../../assets/ImageErrorHandling.svg'
+import ImageError from '../../../assets/ImageErrorHandling.svg';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const port = import.meta.env.VITE_BASE_API_URL;
 
 const KegiatanProgramDesa = () => {
     const [data, setData] = useState([]);
+    const [searchName, setSearchName] = useState("");
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [status, setStatus] = useState('');
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     const GetFromAPI = async () => {
+        setStatus('loading')
         try {
             const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
             setData(response.data.data);
+            setStatus('success')
         } catch (error) {
             console.log(error.message);
+            setStatus('error')
         }
     };
 
@@ -28,10 +41,37 @@ const KegiatanProgramDesa = () => {
         return `${day < 10 ? '0' + day : day} ${months[monthIndex]} ${year}`;
     };
 
+    const handleReset = async () => {
+        setSelectedDate(null);
+        setSearchName('');
+        GetFromAPI();
+    }
+
+    const handleSearch = async () => {
+        setStatus('loading')
+        try {
+            let response;
+            if (searchName == '' && selectedDate != null ) {
+                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/-1/${selectedDate}`)
+            }else if  (searchName != '' && selectedDate == null){
+                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/-1`)
+            }else{
+                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/${selectedDate}`)
+            }
+            console.log(response.data.data);
+            setData(response.data.data);
+            setStatus('success')
+        } catch (error) {
+            console.log(error.message);
+            setStatus('error')
+        }
+    };
+
     useEffect(() => {
         GetFromAPI();
-    }, []);
-
+        }, []);
+        console.log(searchName);
+        console.log(selectedDate);
     return (
         <Fragment>
             <Navbar type={0}></Navbar>
@@ -58,49 +98,72 @@ const KegiatanProgramDesa = () => {
                             </div>
                         </div>
                         <p className="text-center" style={{ color: '#184D47', fontSize: '36px', fontWeight: 'bold' }}>Agenda Desa</p>
-                        <div className="row my-5 p-3" style={{ boxShadow: '1px 4px 6px rgba(0, 145, 124, 1)', border: '1px solid #00917C', borderRadius: '1vw' }}>
+                        <div className="row my-5 p-3" style={{ boxShadow: '1px 4px 6px rgba(0, 145, 124, 1)', border: '1px solid #00917C', borderRadius: '1vw', background: 'white' }}>
                             <div className="col-12 col-md-4 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
                                 <p >Nama Desa</p>
-                                <input type="text"  />
+                                <input
+                                    className="py-3 px-1"
+                                    type="text"
+                                    placeholder="search by name"
+                                    style={{ border: '1px solid gray', borderRadius: '0.3vw', width: 'max-content' }}
+                                    value={searchName}
+                                    onChange={(e) => setSearchName(e.target.value)}
+                                />
                             </div>
                             <div className="col-12 col-md-4 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
                                 <p>Pilih Tanggal</p>
-                                <p>20 September 2023</p>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                    />
+                                </LocalizationProvider>
                             </div>
                             <div className="col-12 col-md-4 mb-2 mb-md-0">
-                                <p>pencarian</p>
+                                <button className="btn btn-success me-3" onClick={handleSearch}>Pencarian</button>
+                                <button className="btn btn-success" onClick={handleReset}>Reset</button>
                             </div>
                         </div>
-                        <div className="row">
-                            {data.map((item, index) => {
-                                const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
-                                return (
-                                    <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }}>
-                                        <div>
-                                            <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%' }} onError={(e) => { e.target.src = ImageError; }} />
-                                            <Link to={`/detail-kegiatan-desa/${item._id}`}>
-                                                <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
-                                            </Link>
-                                        </div>
-                                        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>{item.title}</p>
-                                        <div className="row">
-                                            <div className="col-12 col-md-6 d-flex">
-                                                <i className="fa-regular fa-clock me-1"></i>
-                                                <p style={{ fontSize: '14px' }}>{new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        {status == 'loading' &&
+                        <p>Loading...</p>
+                        }
+                        {status == 'error' &&
+                        <p>Data Tidak Berhasil Ditampilkan</p>
+                        }
+                        {status == 'success' && data && data.length > 0 ? (
+                            <div className="row">
+                                { data && Array.isArray(data) && data.map((item, index) => {
+                                    const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
+                                    return (
+                                        <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }} key={index}>
+                                            <div>
+                                                <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
+                                                <Link to={`/detail-kegiatan-desa/${item._id}`}>
+                                                    <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
+                                                </Link>
+                                            </div>
+                                            <p className="pt-0 pt-md-4" style={{ fontSize: '20px', fontWeight: 'bold' }}>{item.title}</p>
+                                            <div className="row">
+                                                <div className="col-12 col-md-6 d-flex">
+                                                    <i className="fa-regular fa-clock me-1"></i>
+                                                    <p style={{ fontSize: '14px' }}>{new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                </div>
+                                                <div className="col-12 col-md-6 d-flex">
+                                                    <i className="fa-solid fa-location-dot me-1"></i>
+                                                    <p style={{ fontSize: '14px' }}>{item.location}</p>
+                                                </div>
                                             </div>
                                             <div className="col-12 col-md-6 d-flex">
-                                                <i className="fa-solid fa-location-dot me-1"></i>
-                                                <p style={{ fontSize: '14px' }}>{item.location}</p>
+                                                <i className="fa-regular fa-calendar me-1"></i>
+                                                <p style={{ fontSize: '14px' }}>{formatDate(new Date(item.date))}</p>
                                             </div>
                                         </div>
-                                        <div className="col-12 col-md-6 d-flex">
-                                            <i className="fa-regular fa-calendar me-1"></i>
-                                            <p style={{ fontSize: '14px' }}>{formatDate(new Date(item.date))}</p>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div>No data available</div>
+                        )}
                     </div>
                     <div className="col-0 col-md-1"></div>
                 </div>
