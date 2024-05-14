@@ -7,15 +7,10 @@ import DetailSuratWarga from '../components/detailSuratWarga';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
-    const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
-
-    const id = getToken();
-
+    const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
-    const [showDetail, setShowDetail] = useState(false);
-    
+    const id = getToken();
 
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
@@ -26,24 +21,15 @@ const WargaPage = () => {
             .catch((err) => {
                 console.error(err);
             });
-    }, [id]); 
+    }, [id]);
 
-    useEffect(() => {
-        if (selectedSurat !== null) {
-            setShowDetail(true);
-        }
-    }, [selectedSurat]); 
-
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
-    }
-
-    const handleCloseDetail = () => {
-        setShowDetail(false);
-        setSelectedSurat(null);
-    }
-
-    
+        setShowDetail(true);
+    };
+    const handleCloseDetail = () => setShowDetail(false);
 
     return (
         <>
@@ -53,31 +39,29 @@ const WargaPage = () => {
                     Tampilkan Form Perizinan Surat
                 </Button>
 
-        
-                    <div className="row">
-                        <h3> Surat Acara</h3>
-                        {
-                            DataWarga.suratAcara && DataWarga.suratAcara.length > 0 ? (
-                                DataWarga.suratAcara.map((surat, index) => (
-                                    <div key={index} className="col-2">
-                                        <Button
-                                            variant="none"
-                                            onClick={() => handleShowDetail(surat)}
-                                        >
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{surat.nameAcara}</h5>
-                                                    <p className="card-text">status : {surat.statusAcara}</p>
-                                                    <p className="card-text">status persetujuan : {surat.statusPersetujuan}</p>
-                                                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <h3>Surat Acara</h3>
+                        {DataWarga.suratAcara && DataWarga.suratAcara.length > 0 ? (
+                            DataWarga.suratAcara.map((surat, index) => (
+                                <div key={index} className="col-2">
+                                    <Button
+                                        variant="none"
+                                        onClick={() => handleShowDetail(surat)}
+                                    >
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{surat.jenisSurat}</h5>
+                                                <p className="card-text">Status: {surat.statusAcara}</p>
+                                                <p className="card-text">Status Persetujuan: {surat.statusPersetujuan}</p>
                                             </div>
-                                        </Button>
-                                    </div>
-                                ))
-                            ) : null
-                        }
+                                        </div>
+                                    </Button>
+                                </div>
+                            ))
+                        ) : null}
                     </div>
-                
+                </div>
 
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
@@ -93,7 +77,12 @@ const WargaPage = () => {
                     </Modal.Footer>
                 </Modal>
 
-                {showDetail && <DetailSuratWarga surat={selectedSurat} handleCloseModal={handleCloseDetail} />}
+                {showDetail && (
+                    <DetailSuratWarga
+                        surat={selectedSurat}
+                        handleCloseModal={handleCloseDetail}
+                    />
+                )}
             </div>
         </>
     );
