@@ -34,7 +34,13 @@ exports.getAllRw = async (req,res)=>{
 
 exports.getRwById = async (req,res)=>{
     try{
-        const rw = await RwModel.findById(req.params.id);
+        const rw = await RwModel.findOne({'user': req.params.id}).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
+        if (!rw) {
+            return res.status(404).send({
+                message: "rw not found with id " + req.params.id
+            });
+        }
+        
         res.status(200).send({
             message: "Success get rw by id",
             data: rw
