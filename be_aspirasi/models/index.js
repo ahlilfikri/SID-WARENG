@@ -1,12 +1,11 @@
 const express = require('express');
 
 //import models
-const visiMisi = require('./informasiModels/visiMisiModel')
+const aspirasi = require('./aspirasiModels/aspirasModels')
 
 //db object
 const db = {
-    visiMisi
+    aspirasi
 }
-
 
 module.exports = db;

@@ -1,6 +1,146 @@
 const db = require('../../models');
-const visiMisiModels = require('../../models/informasiModels/visiMisiModel');
+const dbAdministrasi = require('../../../be_sistem_administrasi/models/index');
 const response = require('../../res/response');
+
+
+exports.getAspirasi = async (req, res) => {
+    try {
+        const { page, size } = req.query;
+        const { limit, offset } = db.getPagination(page, size);
+        const data = await db.aspirasi.findAndCountAll({ limit, offset });
+        const response = db.getPagingData(data, page, limit);
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+}
+
+
+exports.getAspirasiById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const data = await db.aspirasi.findById(id);
+        if (!data) {
+            return res.status(404).send({ message: "Not found aspirasi with id " + id });
+        }
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+}
+
+
+exports.postAspirasi = async (req, res) => {
+    try{
+        const {aspirasi,isPublish} = req.body;
+        const{wargaId} = req.params;
+
+        const user = await dbAdministrasi.warga.findById(wargaId).populate({
+            path: 'user',
+            select: 'name'
+        }); 
+        if(!user){
+            return res.status(404).send({message: "Not found user with id " + wargaId});
+        }
+
+        const newAspirasi = {
+            warga: wargaId,
+            author: user.name,
+            aspirasi: aspirasi,
+            validator: null,
+            isPublish: isPublish
+        }   
+        const data = await db.aspirasi.create(newAspirasi);
+        return res.status(200).send(data);
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while post aspirasi."
+        });
+    }
+}
+
+exports.deleteAspirasi = async (req, res) => {// menghapus aspirasi dari model, validator dan ,waraga
+    try{
+        const {aspirasiId} = req.params;
+        const data = await db.aspirasi.findById(aspirasiId);
+        if(!data){
+            return res.status(404).send({message: "Not found aspirasi with id " + aspirasiId});
+        }
+        await db.aspirasi.destroy({
+            where: {id: aspirasiId}
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while delete aspirasi."
+        });
+    }
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.getVisiMisi = async (req, res) => {
     try {
@@ -39,7 +179,6 @@ exports.postVisiMisi = async (req, res) => {
     }
 }
 
-
 exports.putVisiMisi = async (req, res) => {
     const id = req.params.id;
 
@@ -64,4 +203,3 @@ exports.deleteVisiMisi = async (req, res) => {
         response(500, res, 'error', err.message || 'Some error occurred while delete visi misi.');
     }
 }
-
