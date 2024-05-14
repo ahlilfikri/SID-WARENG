@@ -75,11 +75,11 @@ const KegiatanProgramDesa = () => {
     return (
         <Fragment>
             <Navbar type={0}></Navbar>
-            <div className="container-fluid informasi-desa-container" style={{ overflow: 'hidden', background: '#F7FFFB' }}>
+            <div className="container-fluid informasi-desa-container" style={{ overflow: 'hidden ', background: '#F7FFFB' }}>
                 <div className="row">
                     <div className="col-0 col-md-1"></div>
                     <div className="col-12 col-md-10">
-                        <p>KEGIATAN PROGRAM DESA WARENG</p>
+                        <p className="pt-3 pt-md-5" style={{fontSize:'40px', fontWeight:'bold'}}>KEGIATAN PROGRAM DESA WARENG</p>
                         <div className="d-block d-md-flex justify-content-between">
                             <div className="d-flex align-items-center">
                                 <p style={{ fontSize: '64px', fontWeight: '600' }}>16</p>
@@ -135,7 +135,7 @@ const KegiatanProgramDesa = () => {
                                 { data && Array.isArray(data) && data.map((item, index) => {
                                     const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
                                     return (
-                                        <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }} key={index}>
+                                        <div className="col-12 col-md-6 mb-5" style={{ position: 'relative'}} key={index}>
                                             <div>
                                                 <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
                                                 <Link to={`/detail-kegiatan-desa/${item._id}`}>
