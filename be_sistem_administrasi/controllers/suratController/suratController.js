@@ -469,9 +469,7 @@ exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
         });
     }
 };
-
-
-
+// RW
 exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
     try {
         console.log('masuk');
@@ -913,6 +911,7 @@ exports.baypassSuratAcaraKasi_TAVERSION = async (req, res)=> {
 }
 
 
+//passing surat acara kades to wakades
 exports.passingSuratAcara_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -965,6 +964,123 @@ exports.passingSuratAcara_TAVERSION = async (req, res) => {
     }
 };
 
+exports.suratAcaraRevisi_TAVERSION = async (req, res) => {
+    const sesion = await mongoose.startSession();
+    sesion.startTransaction();
+    try{
+        const {suratAcaraId} = req.params;
+        const {newIsiAcara} = req.body;
 
+        const dataSuratAcara = await suratAcaraModel.findById(suratAcaraId).session(sesion);
+        if (!dataSuratAcara){
+            await sesion.abortTransaction();
+            return res.status(404).send({
+                message: "Data surat acara not found"
+            });
+        }
+        if (dataSuratAcara.keterangan.length !== 0){
+            await sesion.abortTransaction();
+            return res.status(400).send({
+                message: "Surat acara tidak bisa di edit "
+            });
+        }
 
+        if(dataSuratAcara.statusPersetujuan === "ditolak rt"){
+            const dataRt = await RtModel.findById(dataSuratAcara.rtId).session(sesion);
+            if (!dataRt){
+                await sesion.abortTransaction();
+                return res.status(404).send({
+                    message: "Data RT not found"
+                });
+            }
+            dataSuratAcara.isiAcara = newIsiAcara;
+            dataSuratAcara.keterangan.push(`Surat sudah di revisi oleh warga`);
+            const indexData = dataRt.suratAcaraRejected.indexOf(dataSuratAcara._id);
+            dataRt.suratAcaraPending.push(dataSuratAcara._id);
+            dataRt.suratAcaraRejected.splice(indexData, 1);
+
+            await dataRt.save();
+            await dataSuratAcara.save();
+            await sesion.commitTransaction();
+            return res.status(200).send({
+                message: "Success edit surat acara",
+                data: dataSuratAcara
+            });
+        }
+
+        if(dataSuratAcara.statusPersetujuan === "ditolak rw"){
+            const dataRw = await RwModel.findById(dataSuratAcara.rwId).session(sesion);
+            if (!dataRw){
+                await sesion.abortTransaction();
+                return res.status(404).send({
+                    message: "Data RW not found"
+                });
+            }
+            dataSuratAcara.isiAcara = newIsiAcara;
+            dataSuratAcara.keterangan.push(`Surat sudah di revisi oleh warga`);
+            const indexData = dataRw.suratAcaraRejected.indexOf(dataSuratAcara._id);
+            dataRw.suratAcaraPending.push(dataSuratAcara._id);
+            dataRw.suratAcaraRejected.splice(indexData, 1);
+            
+            await dataRw.save();
+            await dataSuratAcara.save();
+            await sesion.commitTransaction();
+            return res.status(200).send({
+                message: "Success edit surat acara",
+                data: dataSuratAcara
+            });
+        }
+
+        if(dataSuratAcara.statusPersetujuan === "ditolak perangkat desa"){
+            const dataPd = await PerangkatDesaModel.findById(dataSuratAcara.perangkatDesaId).session(sesion);
+            if (!dataPd){
+                await sesion.abortTransaction();
+                return res.status(404).send({
+                    message: "Data Perangkat Desa not found"
+                });
+            }
+            dataSuratAcara.isiAcara = newIsiAcara;
+            dataSuratAcara.keterangan.push(`Surat sudah di revisi oleh warga`);
+            const indexData = dataPd.suratAcaraRejected.indexOf(dataSuratAcara._id);
+            dataPd.suratAcaraPending.push(dataSuratAcara._id);
+            dataPd.suratAcaraRejected.splice(indexData, 1);
+
+            await dataPd.save();
+            await dataSuratAcara.save();
+            return res.status(200).send({
+                message: "Success edit surat acara",
+                data: dataSuratAcara
+            });
+        }
+
+        if (dataSuratAcara.statusPersetujuan === "ditolak kades"){
+            const dataKades = await PimpinanDesa.findById(dataSuratAcara.pimpinanDesaId).session(sesion);
+            if (!dataKades){
+                await sesion.abortTransaction();
+                return res.status(404).send({
+                    message: "Data Kades not found"
+                });
+            }
+            dataSuratAcara.isiAcara = newIsiAcara;
+            dataSuratAcara.keterangan.push(`Surat sudah di revisi oleh warga`);
+            const indexData = dataKades.suratAcaraRejected.indexOf(dataSuratAcara._id);
+            dataKades.suratAcaraPending.push(dataSuratAcara._id);
+            dataKades.suratAcaraRejected.splice(indexData, 1);
+
+            await dataKades.save();
+            await dataSuratAcara.save();
+            return res.status(200).send({
+                message: "Success edit surat acara",
+                data: dataSuratAcara
+            });
+        }
+        
+    }catch(error){
+        return res.status(500).send({
+            message: error.message || "Some error occurred while update surat acara."
+        });
+    }finally{
+        sesion.endSession();
+    }
+};
 module.exports = exports;

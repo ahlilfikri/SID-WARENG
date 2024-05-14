@@ -7,6 +7,7 @@ const auth = require('../../middleware/userMiddleware/wargaValidation');
 Router.get('/get/surat',auth.wargaValidation,suratController.getAllSuratAcaraLessDetail_TAVERSION);
 Router.post('/create/suratAcara/TAversion/:idWarga',suratController.wargaCreateSurat_TAVERSION);
 
+Router.put('/revisi-surat-warga/:suratAcaraId',suratController.suratAcaraRevisi_TAVERSION); 
 
 Router.delete('/delete/suratAcara/:userId/:suratAcaraId',suratController.deleteSuratAcaraById);
 Router.get('/get/generatePdf/:idSuratAcara',suratController.generateSuratPdf_TAVERSION);//http://localhost:3555/api/v1/surat/get/generatePdf/:idSuratAcara
@@ -40,6 +41,7 @@ module.exports = Router;
 
 // note :
 // create surat acara : http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/:idWarga
+// revise surat acara : http://localhost:3555/api/v1/surat/revisi-surat-warga/:suratAcaraId
 // delete surat acara : http://localhost:3555/api/v1/surat/delete/suratAcara/:userId/:suratAcaraId
 // generate pdf surat acara : http://localhost:3555/api/v1/surat/get/generatePdf/:idSuratAcara
 
