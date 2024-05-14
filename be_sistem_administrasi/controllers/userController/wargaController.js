@@ -310,7 +310,7 @@ exports.getWargaByIdUser = async (req,res) => {
     try{
 
         // mencari warga dengan id dari user 
-        const warga = await WargaModel.findOne({user: id}).populate('user');
+        const warga = await WargaModel.findOne({user: id}).populate('suratAcara');
         if (!warga) {
             return res.status(404).send({
                 message: "warga not found with id " + id
