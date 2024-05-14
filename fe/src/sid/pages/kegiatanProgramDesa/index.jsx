@@ -59,19 +59,15 @@ const KegiatanProgramDesa = () => {
                         </div>
                         <p className="text-center" style={{ color: '#184D47', fontSize: '36px', fontWeight: 'bold' }}>Agenda Desa</p>
                         <div className="row my-5 p-3" style={{ boxShadow: '1px 4px 6px rgba(0, 145, 124, 1)', border: '1px solid #00917C', borderRadius: '1vw' }}>
-                            <div className="col-12 col-md-3 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
-                                <p >Lokasi Desa</p>
-                                <p>Semua Desa</p>
+                            <div className="col-12 col-md-4 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
+                                <p >Nama Desa</p>
+                                <input type="text"  />
                             </div>
-                            <div className="col-12 col-md-3 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
-                                <p>Pukul Berapa</p>
-                                <p>12.00 WIB</p>
-                            </div>
-                            <div className="col-12 col-md-3 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
+                            <div className="col-12 col-md-4 mb-2 mb-md-0" style={{ borderRight: '2px solid #00917C' }}>
                                 <p>Pilih Tanggal</p>
                                 <p>20 September 2023</p>
                             </div>
-                            <div className="col-12 col-md-3 mb-2 mb-md-0">
+                            <div className="col-12 col-md-4 mb-2 mb-md-0">
                                 <p>pencarian</p>
                             </div>
                         </div>
