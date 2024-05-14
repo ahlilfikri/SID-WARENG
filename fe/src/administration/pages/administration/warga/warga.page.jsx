@@ -15,6 +15,7 @@ const WargaPage = () => {
     const [DataWarga, setDataWarga] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [showDetail, setShowDetail] = useState(false);
+    
 
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
@@ -25,13 +26,13 @@ const WargaPage = () => {
             .catch((err) => {
                 console.error(err);
             });
-    }, [id]); // Add id to the dependency array to ensure useEffect is triggered when id changes
+    }, [id]); 
 
     useEffect(() => {
         if (selectedSurat !== null) {
             setShowDetail(true);
         }
-    }, [selectedSurat]); // Monitor changes in selectedSurat
+    }, [selectedSurat]); 
 
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
@@ -41,6 +42,8 @@ const WargaPage = () => {
         setShowDetail(false);
         setSelectedSurat(null);
     }
+
+    
 
     return (
         <>

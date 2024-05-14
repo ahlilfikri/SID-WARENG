@@ -534,7 +534,11 @@ exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
                 }
             } else {
                 surat.statusPersetujuan = "ditolak rw";
+                PakRw.suratAcaraRejected.push(surat._id);
+                const indexData = PakRw.suratAcaraPending.indexOf(surat._id);
+                PakRw.suratAcaraPending.splice(indexData, 1);
                 await surat.save();
+                await PakRw.save();
                 return res.status(200).send({
                     message: "Success update persetujuan surat",
                     info: "Surat ditolak RW",
@@ -553,20 +557,24 @@ exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
 
 //Perangkat Desa
 exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
-    const { suratAcaraId, perangkatDesaId } = req.params;
-    const { statusPersetujuanReq } = req.body;
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try{
+        const { suratAcaraId, perangkatDesaId } = req.params;
+        const { statusPersetujuanReq } = req.body;
         const dataPD = await PerangkatDesaModel.findById(perangkatDesaId);
         const surat = await suratAcaraModel.findById(suratAcaraId);
         
 
         if (!dataPD || !surat) {
+            await session.abortTransaction();
             return res.status(404).send({
                 message: "perangkat desa or surat acara not found with id " + id
             });
         }
 
         if (surat.statusPersetujuan === 'belum ada persetujuan' || surat.statusPersetujuan === 'ditolak rw') {
+            await session.abortTransaction();
             return res.status(404).send({
                 message: "belum ada persetujuan dari rw " + id
             });
@@ -591,12 +599,22 @@ exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
             await DataPimpinanDesa.save();
             surat.perangkatDesaId = dataPD._id
             await surat.save();
-            return res.send({message: "test",result: surat});
+            await session.commitTransaction();
+            return res.send({
+                message: "Success submit surat perangkat desa",
+                result: surat
+            });
         }
         else{
             surat.statusPersetujuan = 'ditolak perangkat desa';
+            dataPD.suratAcaraRejected.push(suratAcaraId);
+            const indexData = dataPD.suratAcaraPending.indexOf(suratAcaraId);
+            dataPD.suratAcaraPending.splice(indexData, 1);
+            await dataPD.save();
             await surat.save();
-            return res.send({message: "test",result: surat});
+            return res.send({
+                message: "Success submit surat perangkat desa",result: surat
+            });
         }
     }catch(error){
         res.status(500).send({
@@ -641,6 +659,18 @@ exports.persetujuanSuratAcaraKades_TAVERSION = async (req, res) => {
             dataKades.suratAcaraPending.splice(indexData, 1);
             await dataKades.save();
             await dataSuratAcara.save();
+            await session.commitTransaction();
+            return res.status(200).send({
+                message: "Success submit surat kades",
+                data: dataSuratAcara
+            });
+        }else{
+            dataSuratAcara.statusPersetujuan = "ditolak pimpinan desa";
+            dataSuratAcara.suratAcaraRejected.push(dataSuratAcara._id);
+            const indexData = dataKades.suratAcaraPending.indexOf(dataSuratAcara._id);
+            dataKades.suratAcaraPending.splice(indexData, 1);
+            await dataSuratAcara.save();
+            await dataKades.save();
             await session.commitTransaction();
             return res.status(200).send({
                 message: "Success submit surat kades",
@@ -1083,4 +1113,6 @@ exports.suratAcaraRevisi_TAVERSION = async (req, res) => {
         sesion.endSession();
     }
 };
+
+
 module.exports = exports;
