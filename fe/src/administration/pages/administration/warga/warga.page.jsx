@@ -10,7 +10,8 @@ const WargaPage = () => {
     const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
-    const id = getToken();
+    const id = getToken(); 
+    console.log(id);
 
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)

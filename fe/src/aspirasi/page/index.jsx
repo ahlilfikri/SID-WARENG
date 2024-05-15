@@ -1,11 +1,13 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../../shared/layout/navBar';
 import Footer from '../../shared/layout/footer';
 import axios from 'axios';
+import getToken from '../../administration/pages/administration/shared/functions';
 import './index.css';
 
 const Aspirasi = () => {
+    const [warga, setWarga] = useState([]);
     const [data, setData] = useState({
         aspirasi: '',
         isPublish: false
@@ -15,10 +17,27 @@ const Aspirasi = () => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
+    const id = getToken();
+
+    useEffect(() => {
+        axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
+            .then((res) => {
+                setWarga(res.data.data);
+                console.log(res.data.data._id);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, [id]);
+
+    
+
+
+
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3557/api/v1/aspirasi', data);
+            const response = await axios.post(`http://localhost:3557/api/v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
         } catch (error) {
             console.error('Error posting aspirasi:', error);
@@ -26,8 +45,8 @@ const Aspirasi = () => {
         }
     };
 
-    const setPublishStatus = (status) => {
-        setData({ ...data, isPublish: status });
+    const onRadioChange = (e) => {
+        setData({ ...data, isPublish: e.target.value === 'true' });
     };
 
     return (
@@ -56,39 +75,40 @@ const Aspirasi = () => {
                                                     onChange={onChange}
                                                 />
                                             </div>
-                                            <div className="btn-warp">
-                                                <div className="row">
-                                                    <div className="col-2">
-                                                        <button
-                                                            type="button"
-                                                            className="btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2"
-                                                            style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}
-                                                            onClick={() => setPublishStatus(false)}
-                                                        >
-                                                            Publish
-                                                        </button>
-                                                    </div>
-                                                    <div className="col-2">
-                                                        <button
-                                                            type="button"
-                                                            className="btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2"
-                                                            style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}
-                                                            onClick={() => setPublishStatus(true)}
-                                                        >
-                                                            Private
-                                                        </button>
-                                                    </div>
+                                            <div className="mb-2">
+                                                <p className="text-light mb-0" style={{ fontSize: '24px' }}>Status</p>
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        id="publish"
+                                                        name="isPublish"
+                                                        value={true}
+                                                        checked={data.isPublish === true}
+                                                        onChange={onRadioChange}
+                                                    />
+                                                    <label className="text-light" htmlFor="publish" style={{ marginLeft: '10px' }}>Publish</label>
                                                 </div>
-                                                <button
-                                                    type="submit"
-                                                    className="btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2"
-                                                    style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}
-                                                >
-                                                    Kirim
-                                                </button>
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        id="private"
+                                                        name="isPublish"
+                                                        value={false}
+                                                        checked={data.isPublish === false}
+                                                        onChange={onRadioChange}
+                                                    />
+                                                    <label className="text-light" htmlFor="private" style={{ marginLeft: '10px' }}>Private</label>
+                                                </div>
                                             </div>
+                                            <button
+                                                type="submit"
+                                                className="btn mt-4 mb-3 mb-sm-5 text-light px-5 py-2"
+                                                style={{ backgroundColor: '#00917C', fontSize: '24px', fontWeight: 'bold' }}
+                                            >
+                                                Kirim
+                                            </button>
                                         </div>
-                                        <div className="col-2"></div>
+                                        <div className="col-1"></div>
                                     </div>
                                 </form>
                             </div>
