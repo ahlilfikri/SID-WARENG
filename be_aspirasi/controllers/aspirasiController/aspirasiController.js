@@ -1,6 +1,4 @@
 const db = require('../../models');
-const dbWarga = require('../../../be_sistem_administrasi/models/userModels/warga/wargaModel');
-const dbKades = require('../../../be_sistem_administrasi/models/userModels/pimpinanDesa/pimpinanDesaModels');
 const axios = require('axios');
 
 require('dotenv').config();
@@ -34,6 +32,27 @@ exports.postAspirasi = async (req, res) => {
     }
 };
 
+exports.putAspirasi = async (req, res) => {
+    try {
+        const { aspirasiId } = req.params;
+        const { update} = req.body;
+
+        const dataAspirasi = await db.aspirasi.findByIdAndUpdate(
+            aspirasiId,update,
+            { new: true }
+        );
+
+        res.send({
+            message: "Aspirasi berhasil diupdate",
+            data: dataAspirasi
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while updating aspirasi."
+        });
+    }
+};
 
 
 exports.deleteAspirasi = async (req, res) => {
