@@ -28,6 +28,23 @@ const Aspirasi = () => {
             .catch((err) => {
                 console.error(err);
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
     }, [id]);
 
     
