@@ -1,15 +1,72 @@
 const db = require('../../models');
-const dbAdministrasi = require('../../../be_sistem_administrasi/models/index');
+const dbWarga = require('../../../be_sistem_administrasi/models/userModels/warga/wargaModel');
+const dbKades = require('../../../be_sistem_administrasi/models/userModels/pimpinanDesa/pimpinanDesaModels');
+const axios = require('axios');
+
+require('dotenv').config();
 const response = require('../../res/response');
+const { env } = require('process');
+
+
+
+exports.postAspirasi = async (req, res) => {
+    try {
+        const { aspirasi, isPublish } = req.body;
+        const { wargaId } = req.params;
+
+        const newAspirasi = await db.aspirasi.create({
+            wargaId: wargaId,
+            aspirasi: aspirasi,
+            validator: process.env.VALIDATOR_ID,
+            isPublish: isPublish ? isPublish : true 
+        });
+
+        console.log('newAspirasi:', newAspirasi);
+
+        res.send({
+            message: "Aspirasi berhasil dibuat",
+            data: newAspirasi
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while posting aspirasi."
+        });
+    }
+};
+
+
+
+exports.deleteAspirasi = async (req, res) => {
+    try {
+        const { aspirasiId } = req.params;
+        const dataAspirasi = await db.aspirasi.findById(aspirasiId);
+        if (!dataAspirasi) {
+            return res.status(404).send({ message: "Not found aspirasi with id " + aspirasiId });
+        }
+
+        // const dataValidator = await db.validator.findByIdAndUpdate(
+        //     process.env.VALIDATOR_ID,
+        //     { $pull: { aspirasi: aspirasiId } },
+        //     { new: true }
+        // );
+
+        await db.aspirasi.findByIdAndDelete(aspirasiId);
+
+        return res.status(200).send({ message: "Aspirasi berhasil dihapus" });
+
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while deleting aspirasi."
+        });
+    }
+};
+
 
 
 exports.getAspirasi = async (req, res) => {
     try {
-        const { page, size } = req.query;
-        const { limit, offset } = db.getPagination(page, size);
-        const data = await db.aspirasi.findAndCountAll({ limit, offset });
-        const response = db.getPagingData(data, page, limit);
-        res.status(200).send(response);
+        const data = await db.aspirasi.find();
+        res.status(200).send(data);
     } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while retrieving aspirasi."
@@ -32,60 +89,6 @@ exports.getAspirasiById = async (req, res) => {
         });
     }
 }
-
-
-exports.postAspirasi = async (req, res) => {
-    try{
-        const {aspirasi,isPublish} = req.body;
-        const{wargaId} = req.params;
-
-        const user = await dbAdministrasi.warga.findById(wargaId).populate({
-            path: 'user',
-            select: 'name'
-        }); 
-        if(!user){
-            return res.status(404).send({message: "Not found user with id " + wargaId});
-        }
-
-        const newAspirasi = {
-            warga: wargaId,
-            author: user.name,
-            aspirasi: aspirasi,
-            validator: null,
-            isPublish: isPublish
-        }   
-        const data = await db.aspirasi.create(newAspirasi);
-        return res.status(200).send(data);
-    }catch(error){
-        res.status(500).send({
-            message: error.message || "Some error occurred while post aspirasi."
-        });
-    }
-}
-
-exports.deleteAspirasi = async (req, res) => {// menghapus aspirasi dari model, validator dan ,waraga
-    try{
-        const {aspirasiId} = req.params;
-        const data = await db.aspirasi.findById(aspirasiId);
-        if(!data){
-            return res.status(404).send({message: "Not found aspirasi with id " + aspirasiId});
-        }
-        await db.aspirasi.destroy({
-            where: {id: aspirasiId}
-        });
-
-    }catch(error){
-        res.status(500).send({
-            message: error.message || "Some error occurred while delete aspirasi."
-        });
-    }
-
-};
-
-
-
-
-
 
 
 

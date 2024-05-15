@@ -7,6 +7,7 @@ Router.get('/get',wargaController.getAllWarga);
 Router.get('/get/less/:id',wargaController.getAllwargaLessDetail);// http://localhost:3555/api/v1/warga/get/less/:id
 
 Router.post('/post-warga/:id',wargaController.postWarga);   // http://localhost:3555/api/v1/warga/post-warga
+Router.put('/update/:id',wargaController.updateWargaById); // http://localhost:3555/api/v1/warga/update/:id
 
 Router.get('/get/:id',wargaController.getWargaByIdUser); // http://localhost:3555/api/v1/warga/get/:id
 Router.post('/create/suratAcara/:id',wargaController.CreateSuratAcara); 

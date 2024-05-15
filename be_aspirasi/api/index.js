@@ -9,8 +9,8 @@ Router.get('/', (req, res) => {
     res.send('API is running.....');
 });
 
-const visiMisiApi = require('./informasiApi/visiMisiApi');
-Router.use('/visi-misi', visiMisiApi);
+const aspirasiApi = require('./aspirasiApi/aspirasi');
+Router.use('/aspirasi', aspirasiApi);
 
 
 module.exports = Router;

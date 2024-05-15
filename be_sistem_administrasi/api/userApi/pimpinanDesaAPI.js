@@ -4,7 +4,7 @@ const Router = express.Router();
 
 
 Router.get('/get', getAllPimpinanDesa); // htt
-Router.get('/get/:role', getKades);
+Router.get('/get/:role', getKades); // http://localhost:3555/api/v1/pimpinanDesa/get/:role
 
 Router.get('/get/kades/:id',getPimpinanDesaById) // http://localhost:3555/api/v1/pimpinanDesa/get/kades/:id
 

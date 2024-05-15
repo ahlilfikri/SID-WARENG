@@ -9,6 +9,8 @@ const kepalaDesa = new mongoose.Schema({
     suratAcaraPending: [{ type: mongoose.Schema.Types.ObjectId, ref: 'suratAcara' }],
     suratAcaraApproved: [{ type: mongoose.Schema.Types.ObjectId, ref: 'suratAcara' }],
     suratAcaraRejected: [{ type: mongoose.Schema.Types.ObjectId, ref: 'suratAcara' }],
+
+    aspirasi: [{ type: mongoose.Schema.Types.ObjectId, ref: 'aspirasi' }],
 },{timestamp: true});
 
 module.exports = mongoose.model('kepalaDesa', kepalaDesa);

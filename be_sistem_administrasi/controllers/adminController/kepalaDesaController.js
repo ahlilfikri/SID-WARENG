@@ -6,9 +6,9 @@ const SuratAcaraModel = db.suratAcara;
 
 exports.getKades = async (req, res) => {
     try{
-        const roleKades = "kades";
-        const roleWakilKades = "wakil kades";
-        const {role} = req.params;
+        const roleKades = 1;
+        const roleWakilKades = 2;
+        const {role} = req.params;// 1 / 2
         if (!role){
             return res.status(400).send({
                 message: "Role not found"
