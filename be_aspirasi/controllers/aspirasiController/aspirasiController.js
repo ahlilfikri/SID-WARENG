@@ -16,7 +16,7 @@ exports.postAspirasi = async (req, res) => {
             wargaId: wargaId,
             aspirasi: aspirasi,
             validator: process.env.VALIDATOR_ID,
-            isPublish: isPublish ? isPublish : true 
+            isPublish: isPublish
         });
 
         console.log('newAspirasi:', newAspirasi);

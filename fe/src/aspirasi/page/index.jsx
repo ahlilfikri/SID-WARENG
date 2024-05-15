@@ -1,4 +1,4 @@
-import { Fragment, useState,useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../../shared/layout/navBar';
 import Footer from '../../shared/layout/footer';
@@ -28,34 +28,17 @@ const Aspirasi = () => {
             .catch((err) => {
                 console.error(err);
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
     }, [id]);
-
-    
-
-
 
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(`http://localhost:3557/api/v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
+            setData({
+                aspirasi: '',
+                isPublish: false
+            });
         } catch (error) {
             console.error('Error posting aspirasi:', error);
             alert('Gagal mengirim aspirasi');
@@ -63,7 +46,7 @@ const Aspirasi = () => {
     };
 
     const onRadioChange = (e) => {
-        setData({ ...data, isPublish: e.target.value === 'true' });
+        setData({ ...data, isPublish: e.target.value === 'true' }); // 
     };
 
     return (
@@ -110,7 +93,7 @@ const Aspirasi = () => {
                                                         type="radio"
                                                         id="private"
                                                         name="isPublish"
-                                                        value={false}
+                                                        value={true}
                                                         checked={data.isPublish === false}
                                                         onChange={onRadioChange}
                                                     />
