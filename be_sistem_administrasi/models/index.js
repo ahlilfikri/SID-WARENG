@@ -2,7 +2,7 @@ const express = require('express');
 
 //import models
 const warga = require('./userModels/warga/wargaModel');
-const user = require('./userModels/warga/userModel');
+const user = require('./userModels/warga/userModel'); // user diimport di sini
 const suratAcara = require('./suratIzinModel/suratAcaraModels');
 const PerangkatDesaModel = require('./userModels/perangkatDesa/PerangkatDesaModel')                                                                                  
 const rt = require('./userModels/rt/rtModels')
@@ -18,13 +18,12 @@ const db = {
     rw,
     rt,
     warga,
-    user,
+    user, // user di letakkan di sini
     konter,
-    // pelayanan,
+
     suratAcara,
     PerangkatDesaModel,
     admin
 }
-
 
 module.exports = db;

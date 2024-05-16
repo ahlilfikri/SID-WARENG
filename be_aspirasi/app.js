@@ -36,19 +36,3 @@ db.once('open', () => {
 app.use('/assets', express.static('assets'));
 
 module.exports = app;
-
-
-// mongoose.connect('mongodb+srv://nugas123man:innovilage2023@innovilage.1w1i92x.mongodb.net/?retryWrites=true&w=majority').then(async () => {
-//     console.log('Database connected successfully');
-//     try {
-//         const getWargaUrl = await axios.get('http://localhost:3555/api/v1/warga/get');
-//         console.log('Data warga:', getWargaUrl.data);
-       
-//     } catch (error) {
-//         console.log('Error finding user:', error);
-//     } finally {
-//         console.log('database connection');
-//     }
-// }).catch((error) => {
-//     console.log('Error connecting to database:', error);
-// });
