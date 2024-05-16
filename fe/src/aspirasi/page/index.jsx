@@ -49,6 +49,7 @@ const Aspirasi = () => {
         setData({ ...data, isPublish: e.target.value === 'true' }); // 
     };
 
+    console.log(data);
     return (
         <Fragment>
             <div className="container-fluid login-container p-0">
@@ -93,7 +94,7 @@ const Aspirasi = () => {
                                                         type="radio"
                                                         id="private"
                                                         name="isPublish"
-                                                        value={true}
+                                                        value={false}
                                                         checked={data.isPublish === false}
                                                         onChange={onRadioChange}
                                                     />
