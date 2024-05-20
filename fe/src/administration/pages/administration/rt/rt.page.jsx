@@ -140,7 +140,7 @@ const RtPage = () => {
                     </div>
                 </div>
             </div>
-            {showModal && <PopUpDetailSurat surat={selectedSurat} handleCloseModal={handleCloseModal} idTokoh={DataRt._id} condition={condition} />}
+            {showModal && <PopUpDetailSurat surat={selectedSurat} handleCloseModal={handleCloseModal} idTokoh={DataRt._id} condition={condition} role="rt" />}
         </>
     );
 };
