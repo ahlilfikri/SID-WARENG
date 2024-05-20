@@ -528,73 +528,88 @@ exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
 exports.persetujuanSuratAcaraKades_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
-    try{
-        const {kadesId, suratAcaraId} = req.params;
+    try {
+        const { kadesId, suratAcaraId } = req.params;
         const { statusPersetujuanReq } = req.body;
-        const dataKades = await PimpinanDesa.findById([kadesId]).session(session);
-        if (!dataKades){
+
+        // Temukan data Kades berdasarkan ID
+        const dataKades = await PimpinanDesa.findById(kadesId).session(session);
+        if (!dataKades) {
             await session.abortTransaction();
             return res.status(404).send({
                 message: "Data kades not found"
             });
         }
-        const dataSuratAcara = await PimpinanDesa.findById([suratAcaraId]).session(session);
-        if (!dataSuratAcara){
+
+        // Temukan data Surat Acara berdasarkan ID
+        const dataSuratAcara = await suratAcaraModel.findById(suratAcaraId).session(session);
+        if (!dataSuratAcara) {
             await session.abortTransaction();
             return res.status(404).send({
                 message: "Data surat acara not found"
             });
         }
-        if (dataSuratAcara.statusPersetujuan === "disetujui"){
+
+        // Periksa apakah Surat Acara sudah disetujui
+        if (dataSuratAcara.statusPersetujuan === "disetujui") {
             await session.abortTransaction();
             return res.status(400).send({
                 message: "Surat acara sudah disetujui"
             });
         }
 
-        if (statusPersetujuanReq === true && dataSuratAcara.statusAcara === "pengajuan kades dan wakades" && dataSuratAcara.statusPersetujuan === "disetujui perangkat desa"){
+        // Inisialisasi array suratAcaraRejected jika belum terdefinisi
+        if (!dataSuratAcara.suratAcaraRejected) {
+            dataSuratAcara.suratAcaraRejected = [];
+        }
+
+        // Proses persetujuan atau penolakan Surat Acara
+        if (statusPersetujuanReq === true && dataSuratAcara.statusAcara === "pengajuan kades dan wakades") {
             dataSuratAcara.statusPersetujuan = "disetujui pimpinan desa";
             dataSuratAcara.statusAcara = "pengajuan selesai";
             dataKades.suratAcaraApproved.push(dataSuratAcara._id);
+
             const indexData = dataKades.suratAcaraPending.indexOf(dataSuratAcara._id);
-            dataKades.suratAcaraPending.splice(indexData, 1);
+            if (indexData > -1) {
+                dataKades.suratAcaraPending.splice(indexData, 1);
+            }
+
             await dataKades.save();
             await dataSuratAcara.save();
             await session.commitTransaction();
+
             return res.status(200).send({
                 message: "Success submit surat kades",
                 data: dataSuratAcara
             });
-        }else{
+        } else {
             dataSuratAcara.statusPersetujuan = "ditolak pimpinan desa";
             dataSuratAcara.suratAcaraRejected.push(dataSuratAcara._id);
+
             const indexData = dataKades.suratAcaraPending.indexOf(dataSuratAcara._id);
-            dataKades.suratAcaraPending.splice(indexData, 1);
+            if (indexData > -1) {
+                dataKades.suratAcaraPending.splice(indexData, 1);
+            }
+
             await dataSuratAcara.save();
             await dataKades.save();
             await session.commitTransaction();
+
             return res.status(200).send({
                 message: "Success submit surat kades",
                 data: dataSuratAcara
             });
         }
-
-        res.send({
-            message: "test",
-            data: dataKades,
-            data2: dataSuratAcara
-        });
-
-
-    }catch(error){
+    } catch (error) {
         await session.abortTransaction();
         res.status(500).send({
             message: error.message || "Some error occurred while submit surat kades."
         });
-    }finally{
+    } finally {
         session.endSession();
     }
 };
+
 
 // RT BAYPASS
 exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{

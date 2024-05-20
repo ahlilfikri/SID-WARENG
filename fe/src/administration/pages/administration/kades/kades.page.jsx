@@ -30,8 +30,7 @@ const KadesPage = () => {
     const getDataAspirasi = async () => {
         axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasiKades`)
         .then((res) => {
-            setDataAspirasi(res.data);
-            console.log(res.data);  
+            setDataAspirasi(res.data);  
         })
         .catch((err) => {
             console.error(err);
@@ -210,7 +209,7 @@ const KadesPage = () => {
                 <PopUpDetailSurat 
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    idTokoh={id}
+                    idTokoh={DataKades._id}
                     condition={condition}
                     role="pp"
                 />
