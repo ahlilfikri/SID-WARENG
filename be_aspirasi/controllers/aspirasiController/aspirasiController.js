@@ -84,7 +84,11 @@ exports.deleteAspirasi = async (req, res) => {
 
 exports.getAspirasi = async (req, res) => {
     try {
-        const data = await db.aspirasi.find();
+        const {id} = req.params;
+        const data = await db.aspirasi.find({wargaId:id});
+        if (!data) {
+            return res.status(404).send({ message: "Not found aspirasi with id " + id });
+        }
         res.status(200).send(data);
     } catch (error) {
         res.status(500).send({
@@ -93,6 +97,51 @@ exports.getAspirasi = async (req, res) => {
     }
 }
 
+exports.getAspirasiAll = async (req, res) => { // whit pagination
+    try {
+        const { page, size } = req.query;
+        const { limit, offset } = getPagination(page, size);
+        const data = await db.aspirasi.find({isPublish:true}).limit(limit).skip(offset);
+        if (!data) {
+            return res.status(404).send({ message: "Not found aspirasi" });
+        }
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+}
+
+exports.getAspirasiKades = async (req, res) => {
+    try{
+        const aspirasiKades = await db.aspirasi.find({isPublish:false});
+        if(!aspirasiKades){
+            return res.status(404).send({message:"Not found aspirasi kades"});
+        }
+        res.status(200).send(aspirasiKades);
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+};
+// whit pagination
+exports.getAspirasiKadesPagination = async (req, res) => {
+    try{
+        const {page, size} = req.query;
+        const {limit, offset} = getPagination(page, size);
+        const aspirasiKades = await db.aspirasi.find({isPublish:false}).limit(limit).skip(offset);
+        if(!aspirasiKades){
+            return res.status(404).send({message:"Not found aspirasi kades"});
+        }
+        res.status(200).send(aspirasiKades);
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+};
 
 exports.getAspirasiById = async (req, res) => {
     const id = req.params.id;

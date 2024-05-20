@@ -1,6 +1,7 @@
 
-const kasiDecider = (jenisSurat) => {
+const kasiDecider = (jenis) => {
     let role;
+    const jenisSurat = jenis.toLowerCase();
     const kasiTypes = ["pelayanan", "pemerintahan", "kersa"];
 
     const pd1 = [

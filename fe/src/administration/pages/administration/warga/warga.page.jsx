@@ -9,20 +9,55 @@ const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState([]);
+    const [DataAspirasi, setDataAspirasi] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const id = getToken(); 
     console.log(id);
 
+    const GetDataWarga = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
+            setDataWarga(response.data.data);
+            // console.log(response.data.data);
+        } catch (error) {
+            console.error('Error getting data warga:', error);
+        }
+    };
+
+    // http://localhost:3557/api/v1/aspirasi/getAspirasi/my/:id
+
+    const GetDataAspirasiWarga = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasi/my/${id}`);
+            setDataAspirasi(response.data);
+            
+        } catch (error) {
+            console.error('Error getting data warga:', error);
+        }
+    };
+
+    const aspirasiDecider = (isPublish) => {
+        // jika aspirasi true
+        if (isPublish === true) {
+            return 'untuk umum'
+        }else{
+            return 'untuk kades'
+        }
+    }
+
+
+
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
-            .then((res) => {
-                setDataWarga(res.data.data);
-                console.log(res.data.data);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+        GetDataWarga();
+        GetDataAspirasiWarga();
     }, [id]);
+
+
+    console.log(DataAspirasi);
+ 
+
+
+
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -40,8 +75,8 @@ const WargaPage = () => {
                     Tampilkan Form Perizinan Surat
                 </Button>
 
-                <div className="row">
-                    <div className="col-12">
+               
+                    <div className="row">
                         <h3>Surat Acara</h3>
                         {DataWarga.suratAcara && DataWarga.suratAcara.length > 0 ? (
                             DataWarga.suratAcara.map((surat, index) => (
@@ -62,7 +97,31 @@ const WargaPage = () => {
                             ))
                         ) : null}
                     </div>
-                </div>
+                    <div className="row">
+                        <h3>asprasi</h3>
+                        {
+                        DataAspirasi && DataAspirasi.length > 0 ? (
+                            DataAspirasi.map((aspirasi, index) => (
+                                
+                                <div key={index} className="col-2">
+                                    <Button
+                                        variant="none"
+                                        onClick={() => handleShowDetail(aspirasi)}
+                                    >
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{aspirasi.aspirasi}</h5>
+                                                <p className="card-text">
+                                                    Status: {aspirasiDecider(aspirasi.isPublish)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Button>
+                                </div>
+                            ))
+                        ) : null}
+                    </div>
+               
 
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>

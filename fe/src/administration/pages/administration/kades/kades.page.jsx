@@ -12,19 +12,45 @@ const KadesPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [condition , setCondition] = useState(false);
+    const [dataAspirasi, setDataAspirasi] = useState([])
 
     const id = getToken();
 
-    useEffect(() => {
+    const getDataKades = async () => {
         axios.get(`http://localhost:3555/api/v1/pimpinanDesa/get/kades/${id}`)
-            .then((res) => {
-                setDataKades(res.data.data);
-                console.log(res.data.data);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }, []);
+        .then((res) => {
+            setDataKades(res.data.data);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }
+
+    // http://localhost:3557/api/v1/aspirasi/getAspirasiKades
+    const getDataAspirasi = async () => {
+        axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasiKades`)
+        .then((res) => {
+            setDataAspirasi(res.data);
+            console.log(res.data);  
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }
+
+    const aspirasiDecider = (isPublish) => {
+        // jika aspirasi true
+        if (isPublish === true) {
+            return 'untuk umum'
+        }else{
+            return 'untuk kades'
+        }
+    }
+
+    useEffect(() => {
+        getDataKades();
+        getDataAspirasi();
+    }, [id]);
 
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
@@ -142,6 +168,34 @@ const KadesPage = () => {
                                                 <div className="card-body">
                                                     <h5 className="card-title">{surat.nameAcara}</h5>
                                                     <p className="card-text">{surat.jenisSurat}</p>
+                                                </div>
+                                            </div>
+                                        </Button>
+                                    </div>
+                                ))
+                            ) : null}
+                        </div>
+                    </div>
+
+                    <div className="col-12">
+                        <div className="row">
+                            <h3>Aspirasi</h3>
+                            {dataAspirasi && dataAspirasi.length > 0 ? (
+                                dataAspirasi.map((aspirasi, index) => (
+                                    <div key={index} className="col-2">
+                                        <Button 
+                                            variant="none"
+                                            onClick={
+                                                () => {
+                                                    handleShowDetail(aspirasi)
+                                                    setCondition(false);
+                                                }
+                                            }
+                                        >
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{aspirasi.aspirasi}</h5>
+                                                    <p className="card-text">Status: {aspirasiDecider(aspirasi.isPublishs)}</p>
                                                 </div>
                                             </div>
                                         </Button>
