@@ -5,6 +5,7 @@ const admin = new mongoose.Schema({
     nik: { type:Number, required: true, default: '',unique: true},
     nohp: { type:Number, required: true, default: ''},
     password: { type:String, required: true, default: ''},
+    token: { type: String, required: false, default: '' },
 },{timestamp: true});
 
 module.exports = mongoose.model('admin', admin);
