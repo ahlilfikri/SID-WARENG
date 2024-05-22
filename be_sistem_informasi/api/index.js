@@ -18,6 +18,10 @@ Router.use('/kegiatan', kegiatanApi);
 const informasiApi = require('./informasiApi/informasiApi');
 Router.use('/informasi', informasiApi);
 
+const adminApi = require('./adminApi/adminApi');
+Router.use('/admin', adminApi);
+
+
 module.exports = Router;
 
 

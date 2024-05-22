@@ -1,4 +1,4 @@
-const {postAspirasi,getAspirasi,getAspirasiById,deleteAspirasi,getAspirasiKades}=require('../../controllers/aspirasiController/aspirasiController');
+const {postAspirasi,getAspirasi,getAspirasiById,deleteAspirasi,getAspirasiKades,getAspirasiAdmin}=require('../../controllers/aspirasiController/aspirasiController');
 const express = require('express');
 const Router = express.Router();
 
@@ -9,6 +9,7 @@ Router.delete('/deleteAspirasi/:aspirasiId', deleteAspirasi);
 
 
 Router.get('/getAspirasiKades', getAspirasiKades);
+Router.get('/getAspirasiAdmin', getAspirasiAdmin);
 module.exports = Router
 
 
@@ -18,3 +19,4 @@ module.exports = Router
 //getAspirasiById : http://localhost:3557/api/v1/aspirasi/getAspirasi/:id
 //deleteAspirasi : http://localhost:3557/api/v1/aspirasi/deleteAspirasi/:aspirasiId
 //getAspirasiKades : http://localhost:3557/api/v1/aspirasi/getAspirasiKades
+//getAspirasiAdmin : http://localhost:3557/api/v1/aspirasi/getAspirasiAdmin

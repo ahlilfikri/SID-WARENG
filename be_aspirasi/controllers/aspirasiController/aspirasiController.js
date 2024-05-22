@@ -126,7 +126,28 @@ exports.getAspirasiKades = async (req, res) => {
         });
     }
 };
-// whit pagination
+
+exports.getAspirasiAdmin = async(req,res) => { // whit pagination
+    try{
+        const aspirasiAdmin = await db.aspirasi.find({isPublish:true});
+        if(!aspirasiAdmin){
+            return res.status(404).send({message:"Not found aspirasi admin"});
+        }
+
+        res.status(200).send(aspirasiAdmin);
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });   
+    }
+}
+
+
+
+
+
+
+
 exports.getAspirasiKadesPagination = async (req, res) => {
     try{
         const {page, size} = req.query;
