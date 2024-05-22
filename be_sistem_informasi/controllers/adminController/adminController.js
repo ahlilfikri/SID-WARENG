@@ -3,6 +3,7 @@ const response = require('../../res/response');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const crypto = require('crypto');
 
 
 exports.getadminByid = async (req, res) => {
@@ -16,6 +17,12 @@ exports.getadminByid = async (req, res) => {
     }
 };
 
+const encrypt = (text, key, iv) => {
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return iv.toString('hex') + ':' + encrypted.toString('hex');
+};
 
 exports.postadmin = async (req, res) => {
     try{
@@ -24,11 +31,16 @@ exports.postadmin = async (req, res) => {
         if(countadmin >= 2){
             return response(400, res, 'error', 'admin already full');
         }
+            // initiate crypto aes encryption
+            const iv = crypto.randomBytes(16);
+            const aesKey = crypto.randomBytes(32); // Ensure the AES key is 32 bytes (256 bits)
+            const encryptedPassword = encrypt(password, aesKey, iv);
+            
         const newadmin = new db.admin({
             name : name.toUpperCase(),
             nik,
             nohp,
-            password
+            password : encryptedPassword,
         });
         await newadmin.save();
         return response(200, res, newadmin, 'Success post admin');

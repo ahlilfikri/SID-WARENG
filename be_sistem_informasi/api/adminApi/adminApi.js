@@ -12,7 +12,7 @@ const Router = express.Router();
 Router.get('/get-admin', getadminByid);
 Router.post('/post-admin', postadmin);
 Router.post('/login-admin', LoginAdmin);
-Router.post('/logout-admin', logOutAdmin);
+Router.post('/logout-admin/:id', logOutAdmin);
 
 
 
@@ -20,5 +20,6 @@ Router.post('/logout-admin', logOutAdmin);
 //get admin = http://localhost:3556//api/v1/admin/get-admin
 //post admin = http://localhost:3556/api/v1/admin/post-admin
 //login admin = http://localhost:3556/api/v1/admin/login-admin
+//logout admin = http://localhost:3556/api/v1/admin/logout-admin
 
 module.exports = Router;
