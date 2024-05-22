@@ -28,7 +28,6 @@ const RwPage = () => {
 
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
-        console.log(selectedSurat);
         setShowModal(true); 
     }
 
@@ -36,6 +35,8 @@ const RwPage = () => {
         setShowModal(false); 
         setSelectedSurat(null);
     }
+
+    console.log(selectedSurat);
     return(
         <>
             <div className="container-fluid">
@@ -77,6 +78,7 @@ const RwPage = () => {
                         <div className="row">
                             {DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? (
                                 DataRw.suratAcaraPending.map((surat, index) => (
+                                    
                                     <div key={index} className="col-2">
                                         <Button 
                                             variant="none"
@@ -106,8 +108,8 @@ const RwPage = () => {
                     <div className="col-12">
                         <h3>Surat Acara Disetujui</h3>
                         <div className="row">
-                            {DataRw.suratAcaraDisetujui && DataRw.suratAcaraDisetujui.length > 0 ? (
-                                DataRw.suratAcaraDisetujui.map((surat, index) => (
+                            {DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? (
+                                DataRw.suratAcaraApproved.map((surat, index) => (
                                     <div key={index} className="col-2">
                                         <Button 
                                             variant="none"
@@ -169,7 +171,9 @@ const RwPage = () => {
 
                 </div>
             </div>
-            {showModal && (
+            {
+            
+            showModal && (
                 <PopUpDetailSurat 
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}

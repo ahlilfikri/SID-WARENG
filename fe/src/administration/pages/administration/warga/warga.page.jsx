@@ -30,7 +30,6 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasi/my/${id}`);
             setDataAspirasi(response.data);
-            
         } catch (error) {
             console.error('Error getting data warga:', error);
         }

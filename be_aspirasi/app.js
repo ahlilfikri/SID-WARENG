@@ -22,7 +22,7 @@ mongoose.set('debug', true);
 // connect to mongodb
 mongoose.connect(process.env.DATABASE);
 
-const db = mongoose.connection;
+const db = mongoose.connection; 
 db.on('error', (err) => {
   console.error('Kesalahan koneksi MongoDB BE ASPIRASI:', err);
 });

@@ -710,7 +710,7 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         }
 
         const dataPd = await PerangkatDesaModel.findById(dataSuratAcara.perangkatDesaId).session(session);
-        console.log("\n\n\n\n",dataPd);
+        console.log("data perangkat desa\n\n\n\n",dataPd);
 
         if(!dataPd){
             await session.abortTransaction();
@@ -730,11 +730,9 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         const indexData = dataRt.suratAcaraPending.indexOf(dataSuratAcara._id);
         dataRt.suratAcaraPending.splice(indexData, 1);
 
-
-
         dataRw.suratAcaraApproved.push(dataSuratAcara._id);
-        const iDC_RW = dataRw.suratAcaraComing.indexOf(dataSuratAcara._id);
-        dataRw.suratAcaraComing.splice(iDC_RW, 1);
+        const iDC_RW = dataRw.suratAcaraPending.indexOf(dataSuratAcara._id);
+        dataRw.suratAcaraPending.splice(iDC_RW, 1);
 
         dataPd.suratAcaraPending.push(dataSuratAcara._id);
         const iDC_PD = dataPd.suratAcaraComing.indexOf(dataSuratAcara._id);
@@ -744,6 +742,9 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         await dataRw.save();
         await dataRt.save();
         await dataSuratAcara.save();
+
+        console.log("data perangkat desa\n\n\n\n",dataPd);
+        console.log("data rw\n\n\n\n",dataRw);
 
         await session.commitTransaction();
         return res.status(200).send({

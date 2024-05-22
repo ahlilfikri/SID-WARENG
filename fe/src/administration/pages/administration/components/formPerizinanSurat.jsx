@@ -27,17 +27,18 @@ const FormPerizinanSurat = () => {
             idWarga = payload.id;
         }
     }
+
+    
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/warga/get/${idWarga}`)
             .then((res) => {
                 setWarga(res.data.data._id);
-                console.log(res.data.data._id);
             }
         )
         .catch((err) => {
         console.error(err);
         });
-    }, []);
+    }, [ idWarga ]);
     // jangan di rubah bagian ini
 
 
