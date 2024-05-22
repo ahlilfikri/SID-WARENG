@@ -1,11 +1,10 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../../shared/layout/navBar'
-import Footer from '../../shared/layout/footer'
+import NavBar from '../../shared/layout/navBar/index'
+import Footer from '../../shared/layout/footer/index'
 import axios from 'axios';
-import './index.css';
 
-const SignUp = () => {
+const LoginAdmin = () => {
     const [formData, setFormData] = useState({
         name: '',
         password: ''
@@ -13,7 +12,6 @@ const SignUp = () => {
     localStorage.removeItem('token');
 
     const { name, password } = formData;
-
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onSubmit = async e => {
@@ -21,7 +19,7 @@ const SignUp = () => {
         
         
         try {
-            const res = await axios.post('http://localhost:3555/api/v1/warga/login', {
+            const res = await axios.post('http://localhost:3556/api/v1/admin/login-admin', {
                 "name" : name.toUpperCase(),
                 "password" : password
             });
@@ -42,7 +40,7 @@ const SignUp = () => {
                         <div className="col-1 col-md-2"></div>
                         <div className="col-10 col-md-8 mb-5">
                             <div className="card card-form-login text-light pt-5 ">
-                                <p className='text-center' style={{ fontSize: '45px', fontWeight: 'bold' }}>LOGIN</p>
+                                <p className='text-center' style={{ fontSize: '45px', fontWeight: 'bold' }}>LOGIN ADMIN</p>
                                 <form onSubmit={e => onSubmit(e)}>
                                     <div className="row">
                                         <div className="col-1"></div>
@@ -103,4 +101,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp;
+export default LoginAdmin;

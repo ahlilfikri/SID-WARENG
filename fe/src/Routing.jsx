@@ -10,6 +10,7 @@ import Login from "./auth/login";
 import ForgotPassword from "./auth/forgotPassword";
 //ASPIRASI
 import Aspirasi from "./aspirasi/page";
+import LoginAdmin from "./auth/loginAdminAspirasi/loginAdmin";
 //ADMINISTRATION
 import WargaPage from "./administration/pages/administration/warga/warga.page";
 import RtPage from "./administration/pages/administration/rt/rt.page";
@@ -80,6 +81,11 @@ const Routing = createBrowserRouter([
         path: "/kades",
         element: <KadesPage />,
       },
+      ////
+      {
+        path: "/admin-aspirasi",
+        element: <LoginAdmin />,
+      }
     ],
   },
 ]);
