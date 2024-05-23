@@ -77,7 +77,7 @@ const KasiPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>Kasi Page</h1>
+                <h1>Administrasi Kasi</h1>
                 <div className="row">
                     <div className="col-12 col-md-6 mb-3">
                         <select

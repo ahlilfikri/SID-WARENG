@@ -77,7 +77,7 @@ const RwPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>RW Page</h1>
+                <h1>Administrasi RW</h1>
                 <div className="row">
                     <div className="col-12 col-md-6 mb-3">
                         <select

@@ -60,7 +60,7 @@ const WargaPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>Warga Page</h1>
+                <h1>Administrasi Warga</h1>
                 <button className="btn btn-primary" onClick={handleShowModal}>
                     Tampilkan Form Perizinan Surat
                 </button>
