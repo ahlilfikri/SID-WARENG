@@ -143,7 +143,7 @@ exports.getAspirasiKades = async (req, res) => {
 
 exports.getAspirasiAdmin = async(req,res) => {
     try{
-        const aspirasiAdmin = await db.aspirasi.find({isPublish:true});
+        const aspirasiAdmin = await db.aspirasi.find({isPublish:true})
         if(!aspirasiAdmin){
             return res.status(404).send({message:"Not found aspirasi admin"});
         }
