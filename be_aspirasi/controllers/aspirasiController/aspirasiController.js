@@ -62,13 +62,6 @@ exports.deleteAspirasi = async (req, res) => {
         if (!dataAspirasi) {
             return res.status(404).send({ message: "Not found aspirasi with id " + aspirasiId });
         }
-
-        // const dataValidator = await db.validator.findByIdAndUpdate(
-        //     process.env.VALIDATOR_ID,
-        //     { $pull: { aspirasi: aspirasiId } },
-        //     { new: true }
-        // );
-
         await db.aspirasi.findByIdAndDelete(aspirasiId);
 
         return res.status(200).send({ message: "Aspirasi berhasil dihapus" });
@@ -82,7 +75,7 @@ exports.deleteAspirasi = async (req, res) => {
 
 
 
-exports.getAspirasi = async (req, res) => {
+exports.getAspirasiByWarga = async (req, res) => {
     try {
         const {id} = req.params;
         const data = await db.aspirasi.find({wargaId:id});
@@ -96,6 +89,27 @@ exports.getAspirasi = async (req, res) => {
         });
     }
 }
+
+
+exports.getAspirasiApproved = async (req, res) => {
+    try{
+        const {page, size} = req.query;
+        const {limit, offset} = getPagination(page, size);
+        const data = await db.aspirasi.find({isPublish:true, siApproved:true}).limit(limit).skip(offset);
+        if(!data){
+            return res.status(404).send({message:"Not found aspirasi approved"});
+        }
+        res.status(200).send(data);
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        })
+    };
+
+}
+        
+
 
 exports.getAspirasiAll = async (req, res) => { // whit pagination
     try {
@@ -127,7 +141,7 @@ exports.getAspirasiKades = async (req, res) => {
     }
 };
 
-exports.getAspirasiAdmin = async(req,res) => { // whit pagination
+exports.getAspirasiAdmin = async(req,res) => {
     try{
         const aspirasiAdmin = await db.aspirasi.find({isPublish:true});
         if(!aspirasiAdmin){

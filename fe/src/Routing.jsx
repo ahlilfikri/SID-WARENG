@@ -11,6 +11,7 @@ import ForgotPassword from "./auth/forgotPassword";
 //ASPIRASI
 import Aspirasi from "./aspirasi/page";
 import LoginAdmin from "./auth/loginAdminAspirasi/loginAdmin";
+import AdminAspirasiPage from "./aspirasi/page/adminAspirasi/AdminAspirasi";
 //ADMINISTRATION
 import WargaPage from "./administration/pages/administration/warga/warga.page";
 import RtPage from "./administration/pages/administration/rt/rt.page";
@@ -60,6 +61,14 @@ const Routing = createBrowserRouter([
         path: "/aspirasi",
         element: <Aspirasi />,
       },
+      {
+        path: "/admin-aspirasi",
+        element: <LoginAdmin />,
+      },
+      {
+        path: "/admin-aspirasi-page",
+        element: <AdminAspirasiPage />,
+      },
       //ADMINISTRATION
       {
         path: "/warga",
@@ -82,10 +91,7 @@ const Routing = createBrowserRouter([
         element: <KadesPage />,
       },
       ////
-      {
-        path: "/admin-aspirasi",
-        element: <LoginAdmin />,
-      }
+      
     ],
   },
 ]);

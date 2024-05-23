@@ -8,7 +8,8 @@ const crypto = require('crypto');
 
 exports.getadminByid = async (req, res) => {
     try{
-        const admin = await db.admin.find();
+        const {id} = req.params;
+        const admin = await db.admin.findById(id);
         if(!admin) return response(404, res, 'error', 'admin not found');
         response(200, res, admin, 'Success get admin');
 
