@@ -1,8 +1,7 @@
-import { Modal, Button } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import FormPerizinanSurat from '../components/formPerizinanSurat';
 import getToken from '../shared/functions';
-import axios from 'axios';
 import DetailSuratWarga from '../components/detailSuratWarga';
 
 const WargaPage = () => {
@@ -11,20 +10,18 @@ const WargaPage = () => {
     const [DataWarga, setDataWarga] = useState([]);
     const [DataAspirasi, setDataAspirasi] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
-    const id = getToken(); 
-    console.log(id);
+    const [searchQuerySurat, setSearchQuerySurat] = useState('');
+    const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
+    const id = getToken();
 
     const GetDataWarga = async () => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
             setDataWarga(response.data.data);
-            // console.log(response.data.data);
         } catch (error) {
             console.error('Error getting data warga:', error);
         }
     };
-
-    // http://localhost:3557/api/v1/aspirasi/getAspirasi/my/:id
 
     const GetDataAspirasiWarga = async () => {
         try {
@@ -36,27 +33,13 @@ const WargaPage = () => {
     };
 
     const aspirasiDecider = (isPublish) => {
-        // jika aspirasi true
-        if (isPublish === true) {
-            return 'untuk umum'
-        }else{
-            return 'untuk kades'
-        }
+        return isPublish ? 'Untuk umum' : 'Untuk kades';
     }
-
-
 
     useEffect(() => {
         GetDataWarga();
         GetDataAspirasiWarga();
     }, [id]);
-
-
-    console.log(DataAspirasi);
- 
-
-
-
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -66,75 +49,124 @@ const WargaPage = () => {
     };
     const handleCloseDetail = () => setShowDetail(false);
 
+    const filteredSuratAcara = DataWarga.suratAcara?.filter(surat =>
+        surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())
+    );
+
+    const filteredAspirasi = DataAspirasi.filter(aspirasi =>
+        aspirasi.aspirasi.toLowerCase().includes(searchQueryAspirasi.toLowerCase())
+    );
+
     return (
         <>
             <div className="container-fluid">
                 <h1>Warga Page</h1>
-                <Button variant="primary" onClick={handleShowModal}>
+                <button className="btn btn-primary" onClick={handleShowModal}>
                     Tampilkan Form Perizinan Surat
-                </Button>
+                </button>
 
-               
-                    <div className="row">
-                        <h3>Surat Acara</h3>
-                        {DataWarga.suratAcara && DataWarga.suratAcara.length > 0 ? (
-                            DataWarga.suratAcara.map((surat, index) => (
-                                <div key={index} className="col-2">
-                                    <Button
-                                        variant="none"
-                                        onClick={() => handleShowDetail(surat)}
-                                    >
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h5 className="card-title">{surat.jenisSurat}</h5>
-                                                <p className="card-text">Status: {surat.statusAcara}</p>
-                                                <p className="card-text">Status Persetujuan: {surat.statusPersetujuan}</p>
-                                            </div>
-                                        </div>
-                                    </Button>
-                                </div>
-                            ))
-                        ) : null}
-                    </div>
-                    <div className="row">
-                        <h3>asprasi</h3>
-                        {
-                        DataAspirasi && DataAspirasi.length > 0 ? (
-                            DataAspirasi.map((aspirasi, index) => (
-                                
-                                <div key={index} className="col-2">
-                                    <Button
-                                        variant="none"
-                                        onClick={() => handleShowDetail(aspirasi)}
-                                    >
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h5 className="card-title">{aspirasi.aspirasi}</h5>
-                                                <p className="card-text">
-                                                    Status: {aspirasiDecider(aspirasi.isPublish)}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </Button>
-                                </div>
-                            ))
-                        ) : null}
-                    </div>
-               
+                <div className="mt-4">
+                    <h3>Surat Acara</h3>
+                    <input
+                        type="text"
+                        placeholder="Search Surat Acara"
+                        value={searchQuerySurat}
+                        onChange={(e) => setSearchQuerySurat(e.target.value)}
+                        className="form-control mb-3"
+                    />
+                    {filteredSuratAcara && filteredSuratAcara.length > 0 ? (
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Jenis Surat</th>
+                                    <th>Status Acara</th>
+                                    <th>Status Persetujuan</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredSuratAcara.map((surat, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{surat.jenisSurat}</td>
+                                        <td>{surat.statusAcara}</td>
+                                        <td>{surat.statusPersetujuan}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleShowDetail(surat)}
+                                            >
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : <p>Belum ada surat acara</p>}
+                </div>
 
-                <Modal show={showModal} onHide={handleCloseModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Form Perizinan Surat</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormPerizinanSurat />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseModal}>
-                            Tutup
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <div className="mt-4">
+                    <h3>Aspirasi</h3>
+                    <input
+                        type="text"
+                        placeholder="Search Aspirasi"
+                        value={searchQueryAspirasi}
+                        onChange={(e) => setSearchQueryAspirasi(e.target.value)}
+                        className="form-control mb-3"
+                    />
+                    {filteredAspirasi && filteredAspirasi.length > 0 ? (
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Aspirasi</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredAspirasi.map((aspirasi, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{aspirasi.aspirasi}</td>
+                                        <td>{aspirasiDecider(aspirasi.isPublish)}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleShowDetail(aspirasi)}
+                                            >
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : <p>Belum ada aspirasi</p>}
+                </div>
+
+                <div className="modal" tabIndex="-1" role="dialog" style={{ display: showModal ? 'block' : 'none' }}>
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Form Perizinan Surat</h5>
+                                <button type="button" className="close" onClick={handleCloseModal}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <FormPerizinanSurat />
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                                    Tutup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 {showDetail && (
                     <DetailSuratWarga

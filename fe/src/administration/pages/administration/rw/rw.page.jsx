@@ -1,17 +1,17 @@
-import {useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
 
 import getToken from '../shared/functions';
-import { Button } from 'react-bootstrap';
-
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
 
 const RwPage = () => {
     const [DataRw, setDataRw] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
-    const [condition , setCondition] = useState(false);
+    const [condition, setCondition] = useState(false);
+    const [activeTab, setActiveTab] = useState('comming');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const id = getToken();
 
@@ -19,173 +19,104 @@ const RwPage = () => {
         axios.get(`http://localhost:3555/api/v1/rw/get/${id}`)
             .then((res) => {
                 setDataRw(res.data.data);
-                console.log(res.data.data);
             })
             .catch((err) => {
                 console.error(err);
             });
-    }, []);
+    }, [id]);
 
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
-        setShowModal(true); 
-    }
+        setShowModal(true);
+    };
 
     const handleCloseModal = () => {
-        setShowModal(false); 
+        setShowModal(false);
         setSelectedSurat(null);
-    }
+    };
 
-    console.log(selectedSurat);
-    return(
+    const renderTable = (data) => {
+        const filteredData = data.filter(surat =>
+            surat.nameAcara.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        return (
+            <table className="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Acara</th>
+                        <th>Jenis Surat</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredData.map((surat, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{surat.nameAcara}</td>
+                            <td>{surat.jenisSurat}</td>
+                            <td>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        handleShowDetail(surat);
+                                        setCondition(activeTab === 'pending');
+                                    }}
+                                >
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        );
+    };
+
+    return (
         <>
             <div className="container-fluid">
                 <h1>RW Page</h1>
                 <div className="row">
-                    <div className="col-12">
-                        <h3>Surat Acara Comming</h3>
-                        <div className="row">
-                            {DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? (
-                                DataRw.suratAcaraComing.map((surat, index) => (
-                                    <div key={index} className="col-2">
-                                        <Button 
-                                            variant="none"
-                                            onClick={
-                                                () => {
-                                                    handleShowDetail(surat)
-                                                    setCondition(false);
-                                                }
-                                            }
-                                        >
-                                         <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{surat.nameAcara}</h5>
-                                                    <p className="card-text">{surat.jenisSurat}</p>
-                                                </div>
-                                            </div>
-                                        </Button>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-12">
-                                    <p>Belum ada surat acara</p>
-                                </div>
-                            )}
-                        </div>
+                    <div className="col-12 col-md-6 mb-3">
+                        <select
+                            className="form-select"
+                            aria-label="Select Category"
+                            onChange={(e) => setActiveTab(e.target.value)}
+                        >
+                            <option value="comming">Surat Acara Comming</option>
+                            <option value="pending">Surat Acara Pending</option>
+                            <option value="approved">Surat Acara Disetujui</option>
+                            <option value="rejected">Surat Acara Ditolak</option>
+                        </select>
                     </div>
-                    <div className="col-12">
-                        <h3>Surat Acara Pending</h3>
-                        <div className="row">
-                            {DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? (
-                                DataRw.suratAcaraPending.map((surat, index) => (
-                                    
-                                    <div key={index} className="col-2">
-                                        <Button 
-                                            variant="none"
-                                            onClick={
-                                                () => {
-                                                    handleShowDetail(surat)
-                                                    setCondition(true);
-                                                }
-                                            }
-                                        >
-                                         <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{surat.nameAcara}</h5>
-                                                    <p className="card-text">{surat.jenisSurat}</p>
-                                                </div>
-                                            </div>
-                                        </Button>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-12">
-                                    <p>Belum ada surat acara</p>
-                                </div>
-                            )}
-                        </div>
+                    <div className="col-12 col-md-6 mb-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
-                    <div className="col-12">
-                        <h3>Surat Acara Disetujui</h3>
-                        <div className="row">
-                            {DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? (
-                                DataRw.suratAcaraApproved.map((surat, index) => (
-                                    <div key={index} className="col-2">
-                                        <Button 
-                                            variant="none"
-                                            onClick={
-                                                () => {
-                                                    handleShowDetail(surat)
-                                                    setCondition(false);
-                                                }
-                                            }
-                                        >
-                                         <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{surat.nameAcara}</h5>
-                                                    <p className="card-text">{surat.jenisSurat}</p>
-                                                </div>
-                                            </div>
-                                        </Button>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-12">
-                                    <p>Belum ada surat acara</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="col-12">
-                        <h3>Surat Acara Ditolak</h3>
-                        <div className="row">
-                            {DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? (
-                                DataRw.suratAcaraDitolak.map((surat, index) => (
-                                    <div key={index} className="col-2">
-                                        <Button 
-                                            variant="none"
-                                            onClick={
-                                                () => {
-                                                    handleShowDetail(surat)
-                                                    setCondition(false);
-                                                }
-                                            }
-                                        >
-                                         <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{surat.nameAcara}</h5>
-                                                    <p className="card-text">{surat.jenisSurat}</p>
-                                                </div>
-                                            </div>
-                                        </Button>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-12">
-                                    <p>Belum ada surat acara</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
                 </div>
+                {activeTab === 'comming' && DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Belum ada surat acara</p>}
+                {activeTab === 'pending' && DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Belum ada surat acara</p>}
+                {activeTab === 'approved' && DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Belum ada surat acara</p>}
+                {activeTab === 'rejected' && DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Belum ada surat acara</p>}
             </div>
-            {
-            
-            showModal && (
-                <PopUpDetailSurat 
+            {showModal && (
+                <PopUpDetailSurat
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
                     idTokoh={id}
                     condition={condition}
-                    role = "rw"
+                    role="rw"
                 />
             )}
-        
         </>
-    )
-}
-
+    );
+};
 
 export default RwPage;
