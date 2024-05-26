@@ -7,7 +7,7 @@ const AdminAspirasiPage = () => {
     const [dataAdmin, setDataAdmin] = useState(null);
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
-    const [isLoading, setIsLoading] = useState(true); // State to handle loading
+    const [isLoading, setIsLoading] = useState(true); 
 
     const id = getToken();
 
@@ -62,7 +62,7 @@ const AdminAspirasiPage = () => {
         const fetchData = async () => {
             await getAspirasi();
             await getAdmin();
-            setIsLoading(false); // Set loading to false after data is fetched
+            setIsLoading(false); 
         };
         fetchData();
     }, [id]);
