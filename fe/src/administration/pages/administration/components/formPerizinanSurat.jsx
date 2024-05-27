@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 
 const FormPerizinanSurat = () => {
     const [warga, setWarga] = useState('');
@@ -16,7 +14,6 @@ const FormPerizinanSurat = () => {
 
     const { nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara } = dataSurat;
 
-    // jangan di rubah bagian ini
     const token = localStorage.getItem('token');
     let idWarga;
 
@@ -28,19 +25,15 @@ const FormPerizinanSurat = () => {
         }
     }
 
-    
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/warga/get/${idWarga}`)
             .then((res) => {
                 setWarga(res.data.data._id);
-            }
-        )
-        .catch((err) => {
-        console.error(err);
-        });
-    }, [ idWarga ]);
-    // jangan di rubah bagian ini
-
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, [idWarga]);
 
     const onChange = e => {
         if (e.target.name === 'isiAcara') {
@@ -55,9 +48,7 @@ const FormPerizinanSurat = () => {
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            // endpoint nya :   http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/:idWarga
-            const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, 
-            {
+            const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, {
                 nameAcara,
                 jenisSurat,
                 tanggalMulai,
@@ -70,41 +61,42 @@ const FormPerizinanSurat = () => {
             console.error(err.response.data);
         }
     };
-    
 
     const addIsiAcaraField = () => {
         setDataSurat({ ...dataSurat, isiAcara: [...isiAcara, ''] });
     };
 
     return (
-        <>
-            <div className="container-fluid create-surat-acara">
-            <h2>Create Surat Acara</h2>
+        <div className="container">
+            <h2 className="mt-4 mb-3">Buat Surat Acara</h2>
             <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Nama Acara</label>
-                    <input type="text" name="nameAcara" value={nameAcara} onChange={onChange} required />
+                <div className="mb-3">
+                    <label className="form-label">Nama Acara</label>
+                    <input type="text" className="form-control" name="nameAcara" value={nameAcara} onChange={onChange} required />
                 </div>
-                <div className="form-group">
-                    <label>Jenis Surat</label>
-                    <input type="text" name="jenisSurat" value={jenisSurat} onChange={onChange} required />
+                <div className="mb-3">
+                    <label className="form-label">Jenis Surat</label>
+                    <input type="text" className="form-control" name="jenisSurat" value={jenisSurat} onChange={onChange} required />
                 </div>
-                <div className="form-group">
-                    <label>Tanggal Mulai</label>
-                    <input type="date" name="tanggalMulai" value={tanggalMulai} onChange={onChange} required />
+                <div className="row mb-3">
+                    <div className="col">
+                        <label className="form-label">Tanggal Mulai</label>
+                        <input type="date" className="form-control" name="tanggalMulai" value={tanggalMulai} onChange={onChange} required />
+                    </div>
+                    <div className="col">
+                        <label className="form-label">Tanggal Selesai</label>
+                        <input type="date" className="form-control" name="tanggalSelesai" value={tanggalSelesai} onChange={onChange} required />
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label>Tanggal Selesai</label>
-                    <input type="date" name="tanggalSelesai" value={tanggalSelesai} onChange={onChange} required />
-                </div>
-                <div className="form-group">
-                    <label>Tempat Acara</label>
-                    <input type="text" name="tempatAcara" value={tempatAcara} onChange={onChange} required />
+                <div className="mb-3">
+                    <label className="form-label">Tempat Acara</label>
+                    <input type="text" className="form-control" name="tempatAcara" value={tempatAcara} onChange={onChange} required />
                 </div>
                 {isiAcara.map((isi, index) => (
-                    <div className="form-group" key={index}>
-                        <label>Isi Acara {index + 1}</label>
+                    <div className="mb-3" key={index}>
+                        <label className="form-label">Isi Acara {index + 1}</label>
                         <textarea
+                            className="form-control"
                             name="isiAcara"
                             data-index={index}
                             value={isi}
@@ -113,11 +105,10 @@ const FormPerizinanSurat = () => {
                         />
                     </div>
                 ))}
-                <button type="button" onClick={addIsiAcaraField}>Tambah Isi Acara</button>
-                <button type="submit">Submit</button>
+                <button type="button" className="btn btn-primary me-2" onClick={addIsiAcaraField}>Tambah Isi Acara</button>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
-        </>
     );
 };
 
