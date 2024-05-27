@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Footer from "../../../../shared/layout/footer";
+import Navbar from "../../../../shared/layout/navBar";
 import './index.css';
 
 import getToken from '../shared/functions';
@@ -54,7 +56,7 @@ const KadesPage = () => {
     };
 
     const renderTable = (data, isAspirasi = false) => {
-        const filteredData = data.filter(item => 
+        const filteredData = data.filter(item =>
             (isAspirasi ? item.aspirasi : item.nameAcara).toLowerCase().includes(searchQuery.toLowerCase())
         );
 
@@ -81,7 +83,7 @@ const KadesPage = () => {
                                         handleShowDetail(item);
                                         setCondition(!isAspirasi && activeTab === 'pending');
                                     }}
-                                    style={{backgroundColor:'#00917C'}}
+                                    style={{ backgroundColor: '#00917C' }}
                                 >
                                     View
                                 </button>
@@ -96,7 +98,8 @@ const KadesPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>Administrasi Kepala Desa</h1>
+                <Navbar className="" type={0}></Navbar>
+                <h1 className='my-2 my-md-5'>Administrasi Kepala Desa</h1>
                 <div className="row">
                     <div className="col-12 col-md-6 mb-3">
                         <select
@@ -126,6 +129,7 @@ const KadesPage = () => {
                 {activeTab === 'approved' && DataKades.suratAcaraApproved && renderTable(DataKades.suratAcaraApproved)}
                 {activeTab === 'rejected' && DataKades.suratAcaraRejected && renderTable(DataKades.suratAcaraRejected)}
                 {activeTab === 'aspirasi' && dataAspirasi && renderTable(dataAspirasi, true)}
+                <Footer type={3}></Footer> 
             </div>
             {showModal && (
                 <PopUpDetailSurat
@@ -134,6 +138,7 @@ const KadesPage = () => {
                     idTokoh={DataKades._id}
                     condition={condition}
                     role="pp"
+                    activeTab={activeTab}
                 />
             )}
         </>

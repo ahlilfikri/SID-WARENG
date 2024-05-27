@@ -12,7 +12,7 @@ const ButtonSignin = ({data}) => {
     }
 
     useEffect(()=>{
-        window.localStorage.removeItem('token');
+        // window.localStorage.removeItem('token');
     }
     ,[]);
 

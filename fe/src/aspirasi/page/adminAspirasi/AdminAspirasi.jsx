@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import getToken from '../../../administration/pages/administration/shared/functions';
-
+import NavBar from '../../../shared/layout/navBar';
+import Footer from '../../../shared/layout/footer';
 const AdminAspirasiPage = () => {
     const [dataAdmin, setDataAdmin] = useState(null);
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
-    const [isLoading, setIsLoading] = useState(true); // State to handle loading
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedAspirasi, setSelectedAspirasi] = useState(null); // State for selected aspirasi
 
     const id = getToken();
 
@@ -62,7 +63,7 @@ const AdminAspirasiPage = () => {
         const fetchData = async () => {
             await getAspirasi();
             await getAdmin();
-            setIsLoading(false); // Set loading to false after data is fetched
+            setIsLoading(false);
         };
         fetchData();
     }, [id]);
@@ -75,30 +76,63 @@ const AdminAspirasiPage = () => {
         }
     }, [dataAspirasi]);
 
+    // Function to handle click on row and set selected aspirasi
+    const handleRowClick = (aspirasi) => {
+        setSelectedAspirasi(aspirasi);
+    };
+
+    // Function to close modal
+    const handleCloseModal = () => {
+        setSelectedAspirasi(null);
+    };
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className="container">
-            <h1>Aspirasi Page</h1>
-            <div className="row">
-                {
-                    dataAspirasi.map((data, index) => (
-                        <div key={index} className="col-12">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">{cutString(data.aspirasi)}</h5>
-                                    <p className="card-text">
-                                        author: {wargaNames[data.wargaId] || 'Loading...'}
-                                    </p>
-                                    <p className="card-text">{tanggalFormat(data.createdAt)}</p>
-                                </div>
+        <div className="container-fluid">
+            <NavBar type={0} />
+            <h1 className='my-2 my-md-5'>Aspirasi Page</h1>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Aspirasi</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {dataAspirasi.map((data, index) => (
+                        <tr key={index} onClick={() => handleRowClick(data)}>
+                            <td>{cutString(data.aspirasi)}</td>
+                            <td>{wargaNames[data.wargaId] || 'Loading...'}</td>
+                            <td>{tanggalFormat(data.createdAt)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {selectedAspirasi && (
+                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Detail Aspirasi</h5>
+                                <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
+                            </div>
+                            <div className="modal-body">
+                                <p>{selectedAspirasi.aspirasi}</p>
+                                <p>Author: {wargaNames[selectedAspirasi.wargaId]}</p>
+                                <p>Tanggal: {tanggalFormat(selectedAspirasi.createdAt)}</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
                             </div>
                         </div>
-                    ))
-                }
-            </div>
+                    </div>
+                </div>
+            )}
+            <Footer type="3" />
         </div>
     );
 }

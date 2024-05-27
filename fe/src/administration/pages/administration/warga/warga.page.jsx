@@ -3,6 +3,8 @@ import axios from 'axios';
 import FormPerizinanSurat from '../components/formPerizinanSurat';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
+import Footer from "../../../../shared/layout/footer";
+import Navbar from "../../../../shared/layout/navBar";
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -60,7 +62,8 @@ const WargaPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>Administrasi Warga</h1>
+                <Navbar className="" type={0}></Navbar>
+                <h1 className='my-2 my-md-5'>Administrasi Warga</h1>
                 <button className="btn btn-primary" onClick={handleShowModal}>
                     Tampilkan Form Perizinan Surat
                 </button>
@@ -174,6 +177,7 @@ const WargaPage = () => {
                         handleCloseModal={handleCloseDetail}
                     />
                 )}
+                <Footer type={3}></Footer>
             </div>
         </>
     );

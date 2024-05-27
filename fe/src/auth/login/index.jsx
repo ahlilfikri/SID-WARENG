@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
-import NavBar from '../../shared/layout/navBar'
-import Footer from '../../shared/layout/footer'
+import { Link, useNavigate } from 'react-router-dom'; // Updated import
+import NavBar from '../../shared/layout/navBar';
+import Footer from '../../shared/layout/footer';
 import axios from 'axios';
 import './index.css';
 
@@ -10,6 +10,10 @@ const SignUp = () => {
         name: '',
         password: ''
     });
+    const [response, setResponse] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); 
+
     localStorage.removeItem('token');
 
     const { name, password } = formData;
@@ -18,18 +22,32 @@ const SignUp = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        
-        
+
         try {
             const res = await axios.post('http://localhost:3555/api/v1/warga/login', {
-                "name" : name.toUpperCase(),
-                "password" : password
+                name: name.toUpperCase(),
+                password: password
             });
-            localStorage.setItem('token', res.data.data.token);
-            window.location.href = '/informasi-desa';
+            setResponse(res);
+
+            if (res.data && res.data.data && res.data.data.token) {
+                localStorage.setItem('token', res.data.data.token);
+                console.log('Token saved:', res.data.data.token);
+
+                navigate('/informasi-desa');
+            } else {
+                console.error('Token not found in the response');
+                setErrorMessage('Login successful, but token not found. Please try again.');
+            }
 
         } catch (err) {
-            console.error(err.response.data);
+            if (err.response && err.response.status === 500) {
+                setErrorMessage('Nama atau password tidak ditemukan');
+            } else {
+                setErrorMessage('An error occurred. Please try again.');
+            }
+            setResponse(err.response ? err.response.status : 'Unknown error');
+            console.error(err);
         }
     };
 
@@ -43,7 +61,12 @@ const SignUp = () => {
                         <div className="col-10 col-md-8 mb-5">
                             <div className="card card-form-login text-light pt-5 ">
                                 <p className='text-center' style={{ fontSize: '45px', fontWeight: 'bold' }}>LOGIN</p>
-                                <form onSubmit={e => onSubmit(e)}>
+                                {errorMessage && (
+                                    <div className="alert alert-danger text-center" role="alert">
+                                        {errorMessage}
+                                    </div>
+                                )}
+                                <form onSubmit={onSubmit}>
                                     <div className="row">
                                         <div className="col-1"></div>
                                         <div className="col-10">
@@ -56,7 +79,7 @@ const SignUp = () => {
                                                     placeholder="Masukkan Nama"
                                                     name="name"
                                                     value={name}
-                                                    onChange={e => onChange(e)}
+                                                    onChange={onChange}
                                                 />
                                             </div>
                                             <div className="Password mb-2">
@@ -68,7 +91,7 @@ const SignUp = () => {
                                                     placeholder="Masukkan Password"
                                                     name="password"
                                                     value={password}
-                                                    onChange={e => onChange(e)}
+                                                    onChange={onChange}
                                                 />
                                             </div>
                                             <div className="btn-warp d-block d-sm-flex justify-content-between align-items-center">
@@ -99,8 +122,8 @@ const SignUp = () => {
                     <Footer type="2"/>
                 </div>
             </div>
-        </Fragment >
-    )
-}
+        </Fragment>
+    );
+};
 
 export default SignUp;

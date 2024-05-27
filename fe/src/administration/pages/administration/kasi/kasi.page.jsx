@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
+import Footer from "../../../../shared/layout/footer";
+import Navbar from "../../../../shared/layout/navBar";
 
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
@@ -77,7 +79,8 @@ const KasiPage = () => {
     return (
         <>
             <div className="container-fluid">
-                <h1>Administrasi Kasi</h1>
+                <Navbar className="" type={0}></Navbar>
+                <h1 className='my-2 my-md-5'>Administrasi Kasi</h1>
                 <div className="row">
                     <div className="col-12 col-md-6 mb-3">
                         <select
@@ -105,6 +108,7 @@ const KasiPage = () => {
                 {activeTab === 'pending' && DataKasi.suratAcaraPending && DataKasi.suratAcaraPending.length > 0 ? renderTable(DataKasi.suratAcaraPending) : <p>Belum ada surat yang tersedia</p>}
                 {activeTab === 'approved' && DataKasi.suratAcaraApproved && DataKasi.suratAcaraApproved.length > 0 ? renderTable(DataKasi.suratAcaraApproved) : <p>Belum ada surat yang tersedia</p>}
                 {activeTab === 'rejected' && DataKasi.suratAcaraRejected && DataKasi.suratAcaraRejected.length > 0 ? renderTable(DataKasi.suratAcaraRejected) : <p>Belum ada surat yang tersedia</p>}
+                <Footer type={3}></Footer>
             </div>
             {showModal && (
                 <PopUpDetailSurat

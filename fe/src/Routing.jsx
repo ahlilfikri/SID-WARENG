@@ -9,7 +9,7 @@ import SignUp from './auth/signUp';
 import Login from "./auth/login";
 import ForgotPassword from "./auth/forgotPassword";
 //ASPIRASI
-import Aspirasi from "./aspirasi/page";
+import Aspirasi from "./aspirasi/page/dashboardAspirasi";
 import LoginAdmin from "./auth/loginAdminAspirasi/loginAdmin";
 import AdminAspirasiPage from "./aspirasi/page/adminAspirasi/AdminAspirasi";
 //ADMINISTRATION
@@ -90,7 +90,6 @@ const Routing = createBrowserRouter([
         path: "/kades",
         element: <KadesPage />,
       },
-      ////
       
     ],
   },

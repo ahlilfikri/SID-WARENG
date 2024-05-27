@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BypassSurat from './bypassSurat';
 import axios from 'axios';
 
-const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role }) => {
+const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role , activeTab}) => {
 
     
     const handlePersetujuanSurat = async (statusPersetujuan) => {
@@ -57,7 +57,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role })
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Tutup
                     </Button>
-                    {condition ? (
+                    {condition == 'pending' ? (
                         <div>
                             <Button variant="success" onClick={handleSetuju}>
                                 Setujui
@@ -67,7 +67,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role })
                             </Button>
                         </div>
                     ) : null}
-                    <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />
+                    {activeTab != 'approved' && activeTab != 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
                 </Modal.Footer>
             </Modal>
         </>

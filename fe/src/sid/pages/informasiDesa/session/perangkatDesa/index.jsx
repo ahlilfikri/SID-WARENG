@@ -29,12 +29,26 @@ const PerangkatDesa = () => {
         }
     };
 
+    const roleToString = (role) => {
+        switch (role) {
+            case 1:
+                return 'Warga';
+            case 2:
+                return 'RW';
+            case 3:
+                return 'RT';
+            case 4:
+                return 'Perangkat Desa';
+            case 5:
+                return 'Kades';
+            default:
+                return 'Unknown';
+        }
+    };
+
     useEffect(() => {
         GetFromAPI();
-        // FilteredData();
     }, []);
-
-    console.log(data);
 
     return (
         <Fragment>
@@ -54,7 +68,7 @@ const PerangkatDesa = () => {
                                             <div className="col-6 p-0">
                                                 <div className="content ">
                                                     <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>{item.user.name}</p>
-                                                    <p style={{ fontFamily: 'poppins', fontSize: '14px' }}>{item.jabatan}</p>
+                                                    <p style={{ fontFamily: 'poppins', fontSize: '14px' }}>{roleToString(item.user.role)}</p>
                                                     <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.status}</p>
                                                 </div>
                                             </div>
