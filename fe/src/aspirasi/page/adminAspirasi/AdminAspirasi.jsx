@@ -63,7 +63,7 @@ const AdminAspirasiPage = () => {
         const fetchData = async () => {
             await getAspirasi();
             await getAdmin();
-            setIsLoading(false);
+            setIsLoading(false); // Set loading to false after data is fetched
         };
         fetchData();
     }, [id]);
