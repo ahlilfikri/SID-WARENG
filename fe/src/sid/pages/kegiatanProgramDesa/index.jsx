@@ -58,7 +58,6 @@ const KegiatanProgramDesa = () => {
             }else{
                 response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/${selectedDate}`)
             }
-            console.log(response.data.data);
             setData(response.data.data);
             setStatus('success')
         } catch (error) {
@@ -70,8 +69,6 @@ const KegiatanProgramDesa = () => {
     useEffect(() => {
         GetFromAPI();
         }, []);
-        console.log(searchName);
-        console.log(selectedDate);
     return (
         <Fragment>
             <Navbar type={0}></Navbar>

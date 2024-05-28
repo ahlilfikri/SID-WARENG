@@ -94,7 +94,7 @@ const KadesPage = () => {
             </table>
         );
     };
-
+    console.log(DataKades);
     return (
         <>
             <div className="container-fluid">

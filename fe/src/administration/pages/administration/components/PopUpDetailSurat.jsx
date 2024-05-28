@@ -2,16 +2,17 @@ import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import BypassSurat from './bypassSurat';
 import axios from 'axios';
+import { format } from 'date-fns';
+import idLocale from 'date-fns/locale/id';
 
-const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role , activeTab}) => {
+const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, activeTab }) => {
 
-    
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try {
             const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
-                statusPersetujuanReq: statusPersetujuan // ini adalah status persetujuan yang dikirim ke backend (true/false)
+                statusPersetujuanReq: statusPersetujuan
             });
-            
+
             console.log(request);
         } catch (err) {
             console.error("Error: ", err);
@@ -31,12 +32,16 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role , 
     const BypassController = (role) => {
         if (role === 'rt') {
             return 'rt';
-        }else if(role === 'rw'){
-            return 'rw'
-        }else if(role === 'pd' || role === 'pp'){
+        } else if (role === 'rw') {
+            return 'rw';
+        } else if (role === 'pd' || role === 'pp') {
             return 'pd';
         }
+    }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return format(date, 'dd-MMMM-yyyy', { locale: idLocale });
     }
 
     return (
@@ -48,16 +53,21 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role , 
                 <Modal.Body>
                     <p>Nama Acara: {surat.nameAcara}</p>
                     <p>Jenis Surat: {surat.jenisSurat}</p>
-                    <p>Tanggal Mulai: {surat.tanggalMulai}</p>
-                    <p>Tanggal Selesai: {surat.tanggalSelesai}</p>
+                    <p>Tanggal Mulai: {formatDate(surat.tanggalMulai)}</p>
+                    <p>Tanggal Selesai: {formatDate(surat.tanggalSelesai)}</p>
                     <p>Tempat Acara: {surat.tempatAcara}</p>
-                    <p>Isi Acara: {surat.isiAcara.join(' <br/> ')}</p>
+                    <p>Isi Acara:</p>
+                    <ul>
+                        {surat.isiAcara.map((item, index) => (
+                            <li key={index}>{item}</li>
+                        ))}
+                    </ul>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Tutup
                     </Button>
-                    {condition == 'pending' ? (
+                    {condition === 'pending' ? (
                         <div>
                             <Button variant="success" onClick={handleSetuju}>
                                 Setujui
@@ -67,7 +77,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role , 
                             </Button>
                         </div>
                     ) : null}
-                    {activeTab != 'approved' && activeTab != 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
+                    {activeTab !== 'approved' && activeTab !== 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
                 </Modal.Footer>
             </Modal>
         </>
@@ -86,8 +96,12 @@ PopUpDetailSurat.propTypes = {
     }).isRequired,
     handleCloseModal: PropTypes.func.isRequired,
     idTokoh: PropTypes.string.isRequired,
-    condition: PropTypes.bool.isRequired,
-    role: PropTypes.string.isRequired
+    condition: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ]).isRequired,
+    role: PropTypes.string.isRequired,
+    activeTab: PropTypes.string
 };
 
 export default PopUpDetailSurat;

@@ -32,7 +32,6 @@ const SignUp = () => {
 
             if (res.data && res.data.data && res.data.data.token) {
                 localStorage.setItem('token', res.data.data.token);
-                console.log('Token saved:', res.data.data.token);
 
                 navigate('/informasi-desa');
             } else {
