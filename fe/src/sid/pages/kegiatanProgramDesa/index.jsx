@@ -119,7 +119,7 @@ const KegiatanProgramDesa = () => {
                                     />
                                 </LocalizationProvider>
                             </div>
-                            <div className="col-12 col-md-4 mb-2 mb-md-0">
+                            <div className="col-12 col-md-4" style={{ margin: 'auto' }}>
                                 <button className="btn btn-success me-3" onClick={handleSearch}>Pencarian</button>
                                 <button className="btn btn-success" onClick={handleReset}>Reset</button>
                             </div>

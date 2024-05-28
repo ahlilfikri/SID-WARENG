@@ -1,4 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
+import { useEffect, useState } from 'react'; // Import useEffect dan useState
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios'; // Import axios
 //SID
 import Landing from './sid/pages/landingPage';
 import InformasiDesa from "./sid/pages/informasiDesa";
@@ -18,8 +22,48 @@ import RtPage from "./administration/pages/administration/rt/rt.page";
 import RwPage from "./administration/pages/administration/rw/rw.page";
 import KasiPage from "./administration/pages/administration/kasi/kasi.page";
 import KadesPage from "./administration/pages/administration/kades/kades.page";
+import getToken from "./shared/functions/functions";
 
 import App from "./App";
+
+const ProtectedRoute = ({ element, authorizedRoles }) => {
+  const [userData, setUserData] = useState(null); // State untuk data pengguna
+  const id = getToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+
+      try {
+        const res = await axios.get(`http://localhost:3555/api/v1/user/get/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setUserData(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
+
+  const currentUserRole = userData?.data?.role;
+
+  const isAuthorized = () => {
+    return authorizedRoles.includes(currentUserRole);
+  };
+
+  useEffect(() => {
+    if (!isAuthorized()) {
+      navigate('/login');
+    }
+  }, [currentUserRole]);
+
+  return element;
+};
 
 const Routing = createBrowserRouter([
   {
@@ -59,7 +103,10 @@ const Routing = createBrowserRouter([
       //ASPIRATION
       {
         path: "/aspirasi",
-        element: <Aspirasi />,
+        element: <ProtectedRoute
+          element={<Aspirasi />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />,
       },
       {
         path: "/admin-aspirasi",
@@ -67,30 +114,48 @@ const Routing = createBrowserRouter([
       },
       {
         path: "/admin-aspirasi-page",
-        element: <AdminAspirasiPage />,
+        element: <ProtectedRoute
+          element={<AdminAspirasiPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
       //ADMINISTRATION
       {
         path: "/warga",
-        element: <WargaPage />,
+        element: <ProtectedRoute
+          element={<WargaPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
       {
         path: "/rt",
-        element: <RtPage />,
+        element: <ProtectedRoute
+          element={<RtPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
       {
         path: "/rw",
-        element: <RwPage />,
+        element: <ProtectedRoute
+          element={<RwPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
       {
         path: "/kasi",
-        element: <KasiPage />,
+        element: <ProtectedRoute
+          element={<KasiPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
       {
         path: "/kades",
-        element: <KadesPage />,
+        element: <ProtectedRoute
+          element={<KadesPage />}
+          authorizedRoles={[1, 2, 3, 4, 5]}
+        />
       },
-      
+
     ],
   },
 ]);

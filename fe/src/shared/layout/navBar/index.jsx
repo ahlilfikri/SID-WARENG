@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate  } from 'react-router-dom';
 import Logo from './assets/LogoWareng.svg';
 import Hamburger from './assets/hamburger.svg';
 import HamburgerWhite from './assets/hamburger-white.svg';
@@ -8,13 +8,10 @@ import axios from 'axios';
 import './index.css';
 import getToken from '../../functions/functions.jsx';
 
-
 const Navbar = ({ type }) => {
     const location = useLocation();
     const [userData, setUserData] = useState(null);
-
     const isHome = location.pathname === '/';
-
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     const toggleNav = () => {
@@ -22,6 +19,12 @@ const Navbar = ({ type }) => {
     };
 
     const id = getToken();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login', { replace: true });
+        window.location.reload();
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -44,7 +47,6 @@ const Navbar = ({ type }) => {
 
         fetchUserData();
     }, []);
-
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top pt-1 pt-md-5" style={{ backgroundColor: type ? 'rgba(255, 255, 255, 0)' : 'white', boxShadow: type ? 'none' : '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
@@ -70,12 +72,6 @@ const Navbar = ({ type }) => {
                         <li className="nav-item dropdown px-1">
                             <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kegiatan-program-desa' ? 'active underline' : ''}`} to="/kegiatan-program-desa">Kegiatan Desa</Link>
                         </li>
-                        {/* <li className="nav-item px-1">
-                            <Link style={{color: type ? 'white' : 'black'  }} className={`nav-link ${location.pathname === '/#' ? 'active underline' : ''}`} to="/#">Tentang</Link>
-                        </li>
-                        <li className="nav-item px-1" >
-                            <Link style={{color: type ? 'white' : 'black'  }} className={`nav-link ${location.pathname === '/#' ? 'active underline' : ''}`} to="/#">Aspirasi</Link>
-                        </li> */}
                         {userData == null && <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
                             <Link className='nav-link' to="/login" >
                                 <div className="text-light wrap p-1 px-2" style={{ background: '#00917C', borderRadius: '0.5vw' }}>
@@ -87,19 +83,7 @@ const Navbar = ({ type }) => {
                         {userData != null &&
                             <>
                                 <li className="nav-item dropdown px-1">
-                                    {userData.data.role == 5 && 
-                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
-                                    }
-                                    {userData.data.role == 4 && 
-                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
-                                    }
-                                    {userData.data.role == 3 && 
-                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
-                                    }
-                                    {userData.data.role == 2 && 
-                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
-                                    }
-                                    {userData.data.role == 1 && 
+                                    {userData.data.role >= 1 && userData.data.role <= 5 &&
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
                                     }
                                 </li>
@@ -110,6 +94,9 @@ const Navbar = ({ type }) => {
                                             {userData.data.name}
                                         </div>
                                     </Link>
+                                </li>
+                                <li className="nav-item dropdown px-1" onClick={handleLogout}>
+                                    <Link style={{ color: type ? 'white' : 'black' }} className="nav-link" to="/login"><button className='btn btn-danger'>Logout</button></Link>
                                 </li>
                             </>
                         }
