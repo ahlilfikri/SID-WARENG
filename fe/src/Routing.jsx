@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { useEffect, useState } from 'react'; // Import useEffect dan useState
+import { useEffect, useState } from 'react'; // Import useEffect and useState
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import axios from 'axios'; // Import axios
 //SID
 import Landing from './sid/pages/landingPage';
@@ -28,6 +27,7 @@ import App from "./App";
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
   const [userData, setUserData] = useState(null); // State untuk data pengguna
+  const [loading, setLoading] = useState(true); // State untuk loading
   const id = getToken();
   const navigate = useNavigate();
 
@@ -44,25 +44,30 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
         setUserData(res.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false); // Set loading to false after fetching data
       }
     };
 
     fetchUserData();
   }, [id]);
 
-  const currentUserRole = userData?.data?.role;
-
   const isAuthorized = () => {
+    const currentUserRole = userData?.data?.role;
     return authorizedRoles.includes(currentUserRole);
   };
 
   useEffect(() => {
-    if (!isAuthorized()) {
+    if (!loading && !isAuthorized()) {
       navigate('/login');
     }
-  }, [currentUserRole]);
+  }, [loading, userData, navigate]);
 
-  return element;
+  if (loading) {
+    return <div>Loading...</div>; // Show loading indicator while fetching data
+  }
+
+  return isAuthorized() ? element : null;
 };
 
 const Routing = createBrowserRouter([
@@ -116,7 +121,7 @@ const Routing = createBrowserRouter([
         path: "/admin-aspirasi-page",
         element: <ProtectedRoute
           element={<AdminAspirasiPage />}
-          authorizedRoles={[1, 2, 3, 4, 5]}
+          authorizedRoles={[5]}
         />
       },
       //ADMINISTRATION
@@ -124,28 +129,28 @@ const Routing = createBrowserRouter([
         path: "/warga",
         element: <ProtectedRoute
           element={<WargaPage />}
-          authorizedRoles={[1, 2, 3, 4, 5]}
+          authorizedRoles={[1]}
         />
       },
       {
         path: "/rt",
         element: <ProtectedRoute
           element={<RtPage />}
-          authorizedRoles={[1, 2, 3, 4, 5]}
+          authorizedRoles={[2]}
         />
       },
       {
         path: "/rw",
         element: <ProtectedRoute
           element={<RwPage />}
-          authorizedRoles={[1, 2, 3, 4, 5]}
+          authorizedRoles={[3]}
         />
       },
       {
         path: "/kasi",
         element: <ProtectedRoute
           element={<KasiPage />}
-          authorizedRoles={[1, 2, 3, 4, 5]}
+          authorizedRoles={[4]}
         />
       },
       {
