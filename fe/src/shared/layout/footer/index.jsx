@@ -26,7 +26,7 @@ const Footer = ({ type }) => {
             }
             {(type == "2" || type == "3") &&
                 <footer className="mt-auto mx-auto" >
-                    <div className="container-fluid py-4  " style={{  background: type == 2 ? '#052F2A' : '#ffff', minWidth: '100vw'}}>
+                    <div className="container-fluid py-4  " style={{ background: type == 2 ? '#052F2A' : '#ffff', minWidth: '100vw' }}>
                         <div className="row">
                             <div className="col-md-1"></div>
                             <div className="col-md-10 d-flex justify-content-between">
@@ -35,9 +35,9 @@ const Footer = ({ type }) => {
                                     <p></p>
                                 </div>
                                 <div className="social-wrap d-flex">
-                                    <img className="mx-1 mx-md-2" src={Instagram} alt="" />
-                                    <img className="mx-1 mx-md-2" src={Google} alt="" />
-                                    <img className="mx-1 mx-md-2" src={Facebook} alt="" />
+                                    <a href="https://www.instagram.com/desawareng/"><img className="mx-1 mx-md-2" src={Instagram} alt="" /></a>
+                                    <a href="https://maps.app.goo.gl/a7hadzg6Qsodr9RA9"><img className="mx-1 mx-md-2" src={Google} alt="" /></a>
+                                    <a href="https://www.facebook.com/masyarakatdesawareng/"><img className="mx-1 mx-md-2" src={Facebook} alt="" /></a>
                                 </div>
                             </div>
                             <div className="col-md-1"></div>
