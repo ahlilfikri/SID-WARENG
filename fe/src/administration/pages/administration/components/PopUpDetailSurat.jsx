@@ -38,11 +38,12 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, a
             return 'pd';
         }
     }
+    
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return format(date, 'dd-MMMM-yyyy', { locale: idLocale });
-    }
+    } 
 
     return (
         <>
