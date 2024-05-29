@@ -85,8 +85,28 @@ const Navbar = ({ type }) => {
                         {userData != null && (
                             <>
                                 <li className="nav-item dropdown px-1">
-                                    {userData.data?.role >= 1 && userData.data?.role <= 5 && (
+                                    {userData.data?.role == 5 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
+                                    )}
+                                </li>
+                                <li className="nav-item dropdown px-1">
+                                    {userData.data?.role == 4 && (
+                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kasi' ? 'active underline' : ''}`} to="/kasi">Administrasi</Link>
+                                    )}
+                                </li>
+                                <li className="nav-item dropdown px-1">
+                                    {userData.data?.role == 3 && (
+                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/rw' ? 'active underline' : ''}`} to="/rw">Administrasi</Link>
+                                    )}
+                                </li>
+                                <li className="nav-item dropdown px-1">
+                                    {userData.data?.role == 2 && (
+                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/rt' ? 'active underline' : ''}`} to="/rt">Administrasi</Link>
+                                    )}
+                                </li>
+                                <li className="nav-item dropdown px-1">
+                                    {userData.data?.role == 1 && (
+                                        <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/warga' ? 'active underline' : ''}`} to="/warga">Administrasi</Link>
                                     )}
                                 </li>
                                 <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
