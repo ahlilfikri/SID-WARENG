@@ -15,9 +15,9 @@ const Footer = ({ type }) => {
                             <div className="col-12 text-center d-block d-md-flex">
                                 <Link style={{ color: 'white', textDecoration: 'none' }}>Hubungi Petugas Desa</Link>
                                 <div className="social-wrap">
-                                    <img className="mx-1 mx-md-2" src={Instagram} alt="" />
-                                    <img className="mx-1 mx-md-2" src={Google} alt="" />
-                                    <img className="mx-1 mx-md-2" src={Facebook} alt="" />
+                                    <a href="https://www.instagram.com/desawareng/"><img className="mx-1 mx-md-2" src={Instagram} alt="" /></a>
+                                    <a href="https://maps.app.goo.gl/a7hadzg6Qsodr9RA9"><img className="mx-1 mx-md-2" src={Google} alt="" /></a>
+                                    <a href="https://www.facebook.com/masyarakatdesawareng/"><img className="mx-1 mx-md-2" src={Facebook} alt="" /></a>
                                 </div>
                             </div>
                         </div>
