@@ -21,6 +21,7 @@ const KasiPage = () => {
         axios.get(`http://localhost:3555/api/v1/perangkatDesa/get/${id}`)
             .then((res) => {
                 setDataKasi(res.data.data);
+                console.log(DataKasi._id)
             })
             .catch((err) => {
                 console.error(err);
@@ -114,7 +115,7 @@ const KasiPage = () => {
                 <PopUpDetailSurat
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    idTokoh={id}
+                    idTokoh={DataKasi._id}
                     condition={condition}
                     role="pd"
                 />

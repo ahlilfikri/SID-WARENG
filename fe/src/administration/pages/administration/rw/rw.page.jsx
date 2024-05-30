@@ -20,10 +20,12 @@ const RwPage = () => {
         axios.get(`http://localhost:3555/api/v1/rw/get/${id}`)
             .then((res) => {
                 setDataRw(res.data.data);
+                console.log(DataRw._id)
             })
             .catch((err) => {
                 console.error(err);
             });
+
     }, [id]);
 
     const handleShowDetail = (surat) => {
@@ -113,7 +115,7 @@ const RwPage = () => {
                 <PopUpDetailSurat
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    idTokoh={id}
+                    idTokoh={DataRw._id}
                     condition={condition}
                     role="rw"
                 />

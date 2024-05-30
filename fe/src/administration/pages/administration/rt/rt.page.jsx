@@ -16,6 +16,11 @@ const RtPage = () => {
 
     const id = getToken();
 
+
+    
+
+    
+
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/rt/getRt/${id}`)
             .then((res) => {
@@ -112,7 +117,7 @@ const RtPage = () => {
                 <PopUpDetailSurat
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    idTokoh={id}
+                    idTokoh={DataRt.id}
                     condition={condition}
                     role="rt"
                 />

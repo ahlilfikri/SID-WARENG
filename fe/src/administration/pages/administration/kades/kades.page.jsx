@@ -22,6 +22,7 @@ const KadesPage = () => {
         try {
             const res = await axios.get(`http://localhost:3555/api/v1/pimpinanDesa/get/kades/${id}`);
             setDataKades(res.data.data);
+            console.log(DataKades._id);
         } catch (err) {
             console.error(err);
         }

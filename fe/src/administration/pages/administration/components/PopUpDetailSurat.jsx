@@ -68,7 +68,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, a
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Tutup
                     </Button>
-                    {condition === 'pending' ? (
+                    
                         <div>
                             <Button variant="success" onClick={handleSetuju}>
                                 Setujui
@@ -77,7 +77,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, a
                                 Tolak
                             </Button>
                         </div>
-                    ) : null}
+                    
                     {activeTab !== 'approved' && activeTab !== 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
                 </Modal.Footer>
             </Modal>
