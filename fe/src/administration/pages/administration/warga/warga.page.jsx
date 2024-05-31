@@ -20,6 +20,7 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
             setDataWarga(response.data.data);
+            // console.log(DataWarga._id);
         } catch (error) {
             console.error('Error getting data warga:', error);
         }

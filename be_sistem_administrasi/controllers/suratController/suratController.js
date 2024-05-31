@@ -291,12 +291,13 @@ exports.deleteSuratAcaraById = async (req,res) =>{
 
 //Rt
 exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
-    const idSurat = req.params.suratAcaraId; 
-    const idRt = req.params.rtId; 
-    const statusPersetujuanReq = req.body.statusPersetujuan;
-
     try {
+        const idSurat = req.params.suratAcaraId; 
+        const idRt = req.params.rtId; 
+        const {statusPersetujuanReq} = req.body;
         const PakRt = await RtModel.findById(idRt);
+
+        console.log(statusPersetujuanReq);
         if (!PakRt) {
             console.error("RT not found with id", idRt);
             return res.status(404).send({

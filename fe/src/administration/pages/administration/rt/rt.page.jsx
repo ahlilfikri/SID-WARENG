@@ -26,6 +26,7 @@ const RtPage = () => {
             .then((res) => {
                 setDataRt(res.data.data);
                 console.log(res.data.data);
+                
             })
             .catch((err) => {
                 console.error(err);
@@ -58,7 +59,8 @@ const RtPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((surat, index) => (
+                    {
+                    filteredData.map((surat, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{surat.nameAcara}</td>
@@ -117,11 +119,15 @@ const RtPage = () => {
                 <PopUpDetailSurat
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    idTokoh={DataRt.id}
+                    idTokoh={DataRt._id}
                     condition={condition}
                     role="rt"
                 />
             )}
+
+            {
+                console.log(DataRt._id)
+            }
         </>
     );
 };
