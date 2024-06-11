@@ -455,8 +455,6 @@ exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
     }
 };
 
-
-
 //Perangkat Desa
 exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
     const session = await mongoose.startSession();

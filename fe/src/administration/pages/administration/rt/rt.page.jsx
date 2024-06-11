@@ -15,12 +15,6 @@ const RtPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const id = getToken();
-
-
-    
-
-    
-
     useEffect(() => {
         axios.get(`http://localhost:3555/api/v1/rt/getRt/${id}`)
             .then((res) => {
