@@ -18,6 +18,7 @@ const {generatePDF} = require('../../middleware/fileUpload');
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
 const { log } = require('console');
+const path = require('path');
 
 
 exports.getAllSuratAcaraLessDetail_TAVERSION = async (req, res) => {
@@ -162,8 +163,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
     }
 }
-
-
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
@@ -174,45 +173,42 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
         const Rt = await RtModel.findById(suratAcara.rtId);
         const RtName = await userModel.findById(Rt.user);
 
-        console.log('Rt name:',RtName.name);
-
+        console.log('Rt name:', RtName.name);
 
         const Rw = await RwModel.findById(suratAcara.rwId);
         const RwName = await userModel.findById(Rw.user);
 
-        console.log('Rw name:',RwName.name);
-
-
-
+        console.log('Rw name:', RwName.name);
 
         const data = {
             nameAcara: suratAcara.nameAcara,
-            jenisSurat : suratAcara.jenisSurat,
-            isiAcara : suratAcara.isiAcara,
-            tanggalMulai : suratAcara.tanggalMulai,
-            tanggalSelesai : suratAcara.tanggalSelesai,
-            tempatAcara : suratAcara.tempatAcara,
-            Rt : suratAcara.rtId,
-            Rw : suratAcara.rwId,
-            RtName : RtName.name,
-            RwName : RwName.name,
-            Warga : suratAcara.wargaId
+            jenisSurat: suratAcara.jenisSurat,
+            isiAcara: suratAcara.isiAcara,
+            tanggalMulai: suratAcara.tanggalMulai,
+            tanggalSelesai: suratAcara.tanggalSelesai,
+            tempatAcara: suratAcara.tempatAcara,
+            Rt: suratAcara.rtId,
+            Rw: suratAcara.rwId,
+            RtName: RtName.name,
+            RwName: RwName.name,
+            Warga: suratAcara.wargaId
         };
 
+        const pdfBuffer = await generatePDF(data);
 
-
-        const SuratResultPdf = await generatePDF(data);
-        res.status(200).send({
-            message: "Success generate surat acara",
-            data: SuratResultPdf
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename=Surat_${data.nameAcara}.pdf`,
+            'Content-Length': pdfBuffer.length
         });
+
+        res.send(pdfBuffer);
     } catch (error) {
         return res.status(500).send({
             message: error.message || "Some error occurred while generating Surat Acara."
         });
     }
 };
-
 exports.updateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;

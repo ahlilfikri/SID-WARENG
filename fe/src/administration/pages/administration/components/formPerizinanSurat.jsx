@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const FormPerizinanSurat = () => {
+const FormPerizinanSurat = ({handleCloseModal}) => {
     const [warga, setWarga] = useState('');
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',
@@ -135,9 +136,15 @@ const FormPerizinanSurat = () => {
                     </div>
                 ))}
                 <button type="button" className="btn btn-primary me-2" onClick={addIsiAcaraField}>Tambah Isi Acara</button>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary" onClick={handleCloseModal}>Submit</button>
             </form>
         </div>
     );
 };
+
+FormPerizinanSurat.propTypes = {
+    handleCloseModal: PropTypes.func.isRequired,
+};
+
+
 export default FormPerizinanSurat;
