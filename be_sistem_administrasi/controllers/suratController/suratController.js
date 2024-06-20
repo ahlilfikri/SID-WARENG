@@ -62,7 +62,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
 
         const dataWarga = await WargaModel.findById(idWarga).populate('user');
 
-        // Periksa apakah dataWarga null atau tidak memiliki properti user
         if (!dataWarga || !dataWarga.user) {
             return res.status(404).send({
                 message: "Warga not found or user property is missing"
@@ -92,7 +91,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
                 message: "Kades not found"
             });
         }
-        console.log('kades:', kades);
     
         //pengondisian jika kasi tidak ditemukan
         if(rolePerangkatDesa === "rolePd not found"){
