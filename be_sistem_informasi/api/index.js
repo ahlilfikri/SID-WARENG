@@ -18,6 +18,9 @@ Router.use('/kegiatan', kegiatanApi);
 const informasiApi = require('./informasiApi/informasiApi');
 Router.use('/informasi', informasiApi);
 
+const portalApi = require('./informasiApi/portalApi');
+Router.use('/portal', portalApi);
+
 const adminApi = require('./adminApi/adminApi');
 Router.use('/admin', adminApi);
 
