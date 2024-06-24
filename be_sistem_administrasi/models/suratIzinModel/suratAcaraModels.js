@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const suratAcara = new mongoose.Schema({
+    nomorSurat: { type: String, required: false },
     nameAcara: { type: String, required: true },
     jenisSurat : { type: String, required: true },
     isiAcara : { type:[String], required: true }, 

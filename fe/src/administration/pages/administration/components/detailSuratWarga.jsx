@@ -55,6 +55,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                             <button type="button" className="btn-close" onClick={handleCloseModal}></button>
                         </div>
                         <div className="modal-body">
+                            <p>Nomor Surat: {surat.nomorSurat? surat.nomorSurat: "Belum ada nomor surat"}</p>
                             <p>Nama Acara: {surat.nameAcara}</p>
                             <p>Jenis Surat: {surat.jenisSurat}</p>
                             <p>Status: {surat.statusAcara}</p>

@@ -17,6 +17,7 @@ require('dotenv').config();
 const {generatePDF} = require('../../middleware/fileUpload');
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
+const {setNomorSurat} = require('../../middleware/setNomorSurat');
 const { log } = require('console');
 const path = require('path');
 
@@ -107,6 +108,7 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
             throw new Error(`Surat Acara with name ${nameAcara} already exists`);
         }
 
+    
         // Buat surat acara baru
         const suratAcara = await suratAcaraModel.create({
             nameAcara,
@@ -117,6 +119,14 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
             tempatAcara,
             wargaId: dataWarga._id
         });
+
+        
+
+
+
+        // Tambahkan nomor surat ke surat acara
+        suratAcara.nomorSurat = await setNomorSurat()
+   
 
         // Tambahkan ID surat acara ke array suratAcara di warga
         dataWarga.suratAcara.push(suratAcara._id);
@@ -163,6 +173,8 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
     }
 }
+
+
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
@@ -244,7 +256,6 @@ exports.updateSuratPdf_TAVERSION = async (req, res) => {
     }
 }
 
-
 exports.deleteSuratAcaraById = async (req,res) =>{
     const UserId = req.params.userId;
     const SuratAcaraId = req.params.suratAcaraId;
@@ -282,6 +293,10 @@ exports.deleteSuratAcaraById = async (req,res) =>{
         });
     }
 }
+
+
+
+
 
 //Rt
 exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
@@ -603,7 +618,6 @@ exports.persetujuanSuratAcaraKades_TAVERSION = async (req, res) => {
     }
 };
 
-
 // RT BAYPASS
 exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{
     const session = await mongoose.startSession();
@@ -668,7 +682,6 @@ exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{
         console.log('session end');
     }
 }
-
 // RW BAYPASS
 exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
@@ -850,7 +863,6 @@ exports.baypassSuratAcaraKasi_TAVERSION = async (req, res)=> {
     }
 }
 
-
 //passing surat acara kades to wakades
 exports.passingSuratAcara_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
@@ -1023,6 +1035,5 @@ exports.suratAcaraRevisi_TAVERSION = async (req, res) => {
         sesion.endSession();
     }
 };
-
 
 module.exports = exports;

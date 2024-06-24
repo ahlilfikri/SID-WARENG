@@ -22,6 +22,7 @@ const kasiDecider = (jenis) => {
         "pbb-p2",
         "mutasi pbb",
         "pencatatan kependudukan",
+        "keterangan tidak mampu",
     ];
 
     const pd3 = [
@@ -55,9 +56,6 @@ const kasiDecider = (jenis) => {
     }else{
         return "rolePd not found";
     }
-
-    
-   
 
 }
 
