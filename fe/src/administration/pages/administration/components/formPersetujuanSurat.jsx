@@ -4,4 +4,6 @@ import PropTypes from 'prop-types';
 
 
 
-const FormPersetujuanSurat = ({ surat, handleCloseModal }) => {};
+const FormPersetujuanSurat = ({ surat, handleCloseModal }) => {
+    
+};

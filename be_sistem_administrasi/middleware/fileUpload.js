@@ -1,6 +1,4 @@
-const fs = require('fs');
 const puppeteer = require('puppeteer');
-
 
 const generateHTML = ({ nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName }) => {
     const formattedTanggalMulai = formatTime(tanggalMulai);
@@ -64,9 +62,9 @@ const generateHTML = ({ nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSe
                 </tr>       
             </table>        
         </body>
-        `;
+        </html>
+    `;
 };
-
 
 const formatTime = (timeString) => {
     const date = new Date(timeString);
@@ -83,27 +81,17 @@ const formatTime = (timeString) => {
     return `${day} ${dateNum} ${month} ${year} ${hours}:${minutes}`;
 };
 
-
-const savePDF = async (pdfhtml, nameAcara) => {
+const generatePDF = async (data) => {
+    const html = generateHTML(data);
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage(); 
 
-    await page.setContent(pdfhtml);
+    await page.setContent(html);
     await page.emulateMediaType('screen');
     const pdfBuffer = await page.pdf({ format: 'A4' });
-    const pdfPath = `${__dirname}/../assets/document`;
-    const pdfName = `Surat-${nameAcara}.pdf`;
-    const pdfFullPath = `${pdfPath}/${pdfName}`;
-    fs.writeFileSync(pdfFullPath, pdfBuffer);
 
     await browser.close();
-    return pdfName;
+    return pdfBuffer;
 };
-
-const generatePDF = async (data) => {
-    const html = generateHTML(data);
-    const pdfName = await savePDF(html, data.nameAcara);
-    return pdfName;
-}
 
 module.exports = { generatePDF };

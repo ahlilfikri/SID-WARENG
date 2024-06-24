@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const FormPerizinanSurat = () => {
+const FormPerizinanSurat = ({handleCloseModal}) => {
     const [warga, setWarga] = useState('');
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',
@@ -66,6 +67,30 @@ const FormPerizinanSurat = () => {
         setDataSurat({ ...dataSurat, isiAcara: [...isiAcara, ''] });
     };
 
+    const jenisSuratOptions = [
+        "surat keterangan domisili",
+        "surat keterangan usaha",
+        "surat kenal lahir",
+        "surat pindah",
+        "surat pengantar skck",
+        "surat izin keramaian",
+        "surat izin bepergian",
+        "pembuatan kk baru",
+        "pembuatan ktp baru",
+        "pembuatan ktp lama",
+        "pemecahan kk lama",
+        "pbb-p2",
+        "mutasi pbb",
+        "pencatatan kependudukan",
+        "surat kematian",
+        "surat kelahiran",
+        "santunan kematian",
+        "pengajuan jkn-kis",
+        "koordinator rtlh",
+        "pendataan masalah sosial",
+        "bantuan sosial"
+    ];
+
     return (
         <div className="container">
             <h2 className="mt-4 mb-3">Buat Surat Acara</h2>
@@ -76,7 +101,12 @@ const FormPerizinanSurat = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Jenis Surat</label>
-                    <input type="text" className="form-control" name="jenisSurat" value={jenisSurat} onChange={onChange} required />
+                    <select className="form-select" name="jenisSurat" value={jenisSurat} onChange={onChange} required>
+                        <option value="" disabled>Pilih Jenis Surat</option>
+                        {jenisSuratOptions.map((option, index) => (
+                            <option key={index} value={option}>{option}</option>
+                        ))}
+                    </select>
                 </div>
                 <div className="row mb-3">
                     <div className="col">
@@ -106,10 +136,15 @@ const FormPerizinanSurat = () => {
                     </div>
                 ))}
                 <button type="button" className="btn btn-primary me-2" onClick={addIsiAcaraField}>Tambah Isi Acara</button>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary" onClick={handleCloseModal}>Submit</button>
             </form>
         </div>
     );
 };
+
+FormPerizinanSurat.propTypes = {
+    handleCloseModal: PropTypes.func.isRequired,
+};
+
 
 export default FormPerizinanSurat;

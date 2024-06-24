@@ -7,6 +7,7 @@ import Landing from './sid/pages/landingPage';
 import InformasiDesa from "./sid/pages/informasiDesa";
 import DetailKegiatanDesa from "./sid/pages/detailKegiatanDesa";
 import KegiatanProgramDesa from "./sid/pages/kegiatanProgramDesa";
+import Portal from "./sid/pages/portal";
 //AUTHENTICATION
 import SignUp from './auth/signUp';
 import Login from "./auth/login";
@@ -104,6 +105,10 @@ const Routing = createBrowserRouter([
       {
         path: "/detail-kegiatan-desa/:id",
         element: <DetailKegiatanDesa />,
+      },
+      {
+        path: "/portal-terintegrasi",
+        element: <Portal />,
       },
       //ASPIRATION
       {

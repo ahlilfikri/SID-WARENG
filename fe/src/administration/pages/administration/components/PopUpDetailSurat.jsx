@@ -5,29 +5,30 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
-const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, activeTab }) => {
+const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab }) => {
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
+        console.log(statusPersetujuan);
         try {
+            // request body
             const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
-
             console.log(request);
         } catch (err) {
             console.error("Error: ", err);
         }
     }
 
-    const handleSetuju = () => {
-        handlePersetujuanSurat(true);
-        handleCloseModal();
-    }
+    // const handleSetuju = () => {
+    //     handlePersetujuanSurat(true);
+    //     handleCloseModal();
+    // }
 
-    const handleTolak = () => {
-        handlePersetujuanSurat(false);
-        handleCloseModal();
-    }
+    // const handleTolak = () => {
+    //     handlePersetujuanSurat(false);
+    //     handleCloseModal();
+    // }
 
     const BypassController = (role) => {
         if (role === 'rt') {
@@ -70,10 +71,16 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, condition, role, a
                     </Button>
                     
                         <div>
-                            <Button variant="success" onClick={handleSetuju}>
+                            <Button variant="success" onClick={()=>{
+                                handlePersetujuanSurat(true)
+                                handleCloseModal()
+                            }}>
                                 Setujui
                             </Button>
-                            <Button variant="danger" onClick={handleTolak}>
+                            <Button variant="danger" onClick={()=>{
+                                handlePersetujuanSurat(false)
+                                handleCloseModal()
+                            }}>
                                 Tolak
                             </Button>
                         </div>

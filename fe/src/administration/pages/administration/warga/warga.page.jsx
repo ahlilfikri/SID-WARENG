@@ -20,6 +20,7 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
             setDataWarga(response.data.data);
+            // console.log(DataWarga._id);
         } catch (error) {
             console.error('Error getting data warga:', error);
         }
@@ -50,6 +51,28 @@ const WargaPage = () => {
         setShowDetail(true);
     };
     const handleCloseDetail = () => setShowDetail(false);
+
+    const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
+        try {
+            const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
+                responseType: 'blob',
+            });
+
+            console.log('Response headers:', response.headers);
+            console.log('Response data:', response.data);
+
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Surat_${nameAcara}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            console.log(response.data, 'Download pdf success');
+        } catch (err) {
+            console.error('Error downloading pdf:', err);
+        }
+    };
 
     const filteredSuratAcara = DataWarga.suratAcara?.filter(surat =>
         surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())
@@ -102,6 +125,13 @@ const WargaPage = () => {
                                             >
                                                 View
                                             </button>
+                                            <button
+                                                className="btn btn-secondary ms-2"
+                                                onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
+                                            >
+                                                Download PDF
+                                            </button>
+
                                         </td>
                                     </tr>
                                 ))}
@@ -142,6 +172,8 @@ const WargaPage = () => {
                                             >
                                                 View
                                             </button>
+
+
                                         </td>
                                     </tr>
                                 ))}
@@ -160,7 +192,7 @@ const WargaPage = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <FormPerizinanSurat />
+                                <FormPerizinanSurat handleCloseModal={handleCloseModal} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>

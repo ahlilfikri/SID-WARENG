@@ -18,6 +18,7 @@ const {generatePDF} = require('../../middleware/fileUpload');
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
 const { log } = require('console');
+const path = require('path');
 
 
 exports.getAllSuratAcaraLessDetail_TAVERSION = async (req, res) => {
@@ -62,7 +63,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
 
         const dataWarga = await WargaModel.findById(idWarga).populate('user');
 
-        // Periksa apakah dataWarga null atau tidak memiliki properti user
         if (!dataWarga || !dataWarga.user) {
             return res.status(404).send({
                 message: "Warga not found or user property is missing"
@@ -92,7 +92,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
                 message: "Kades not found"
             });
         }
-        console.log('kades:', kades);
     
         //pengondisian jika kasi tidak ditemukan
         if(rolePerangkatDesa === "rolePd not found"){
@@ -164,8 +163,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
     }
 }
-
-
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
@@ -176,45 +173,42 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
         const Rt = await RtModel.findById(suratAcara.rtId);
         const RtName = await userModel.findById(Rt.user);
 
-        console.log('Rt name:',RtName.name);
-
+        console.log('Rt name:', RtName.name);
 
         const Rw = await RwModel.findById(suratAcara.rwId);
         const RwName = await userModel.findById(Rw.user);
 
-        console.log('Rw name:',RwName.name);
-
-
-
+        console.log('Rw name:', RwName.name);
 
         const data = {
             nameAcara: suratAcara.nameAcara,
-            jenisSurat : suratAcara.jenisSurat,
-            isiAcara : suratAcara.isiAcara,
-            tanggalMulai : suratAcara.tanggalMulai,
-            tanggalSelesai : suratAcara.tanggalSelesai,
-            tempatAcara : suratAcara.tempatAcara,
-            Rt : suratAcara.rtId,
-            Rw : suratAcara.rwId,
-            RtName : RtName.name,
-            RwName : RwName.name,
-            Warga : suratAcara.wargaId
+            jenisSurat: suratAcara.jenisSurat,
+            isiAcara: suratAcara.isiAcara,
+            tanggalMulai: suratAcara.tanggalMulai,
+            tanggalSelesai: suratAcara.tanggalSelesai,
+            tempatAcara: suratAcara.tempatAcara,
+            Rt: suratAcara.rtId,
+            Rw: suratAcara.rwId,
+            RtName: RtName.name,
+            RwName: RwName.name,
+            Warga: suratAcara.wargaId
         };
 
+        const pdfBuffer = await generatePDF(data);
 
-
-        const SuratResultPdf = await generatePDF(data);
-        res.status(200).send({
-            message: "Success generate surat acara",
-            data: SuratResultPdf
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename=Surat_${data.nameAcara}.pdf`,
+            'Content-Length': pdfBuffer.length
         });
+
+        res.send(pdfBuffer);
     } catch (error) {
         return res.status(500).send({
             message: error.message || "Some error occurred while generating Surat Acara."
         });
     }
 };
-
 exports.updateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
@@ -291,12 +285,13 @@ exports.deleteSuratAcaraById = async (req,res) =>{
 
 //Rt
 exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
-    const idSurat = req.params.suratAcaraId; 
-    const idRt = req.params.rtId; 
-    const statusPersetujuanReq = req.body.statusPersetujuan;
-
     try {
+        const idSurat = req.params.suratAcaraId; 
+        const idRt = req.params.rtId; 
+        const {statusPersetujuanReq} = req.body;
         const PakRt = await RtModel.findById(idRt);
+
+        console.log(statusPersetujuanReq);
         if (!PakRt) {
             console.error("RT not found with id", idRt);
             return res.status(404).send({
@@ -453,8 +448,6 @@ exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
         });
     }
 };
-
-
 
 //Perangkat Desa
 exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {

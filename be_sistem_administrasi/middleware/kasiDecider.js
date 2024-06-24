@@ -11,7 +11,7 @@ const kasiDecider = (jenis) => {
         "surat pindah",
         "surat pengantar skck",
         "surat izin keramaian",
-        "surat izin pepergian",
+        "surat izin bepergian",
     ];
 
     const pd2 = [
