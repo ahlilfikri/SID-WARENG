@@ -15,6 +15,9 @@ require('dotenv').config();
 
 
 const {generatePDF} = require('../../middleware/fileUpload');
+const {generateSuratPDF} = require('../../middleware/FormatSurat');
+
+
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
 const {setNomorSurat} = require('../../middleware/setNomorSurat');
@@ -213,7 +216,8 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             user: dataUser
         };
 
-        const pdfBuffer = await generatePDF(data);
+        // const pdfBuffer = await generatePDF(data);
+        const pdfBuffer = await generateSuratPDF(data); 
 
         res.set({
             'Content-Type': 'application/pdf',

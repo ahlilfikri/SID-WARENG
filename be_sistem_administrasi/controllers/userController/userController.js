@@ -2,8 +2,7 @@ const db = require("../../models/index");
 const userModel = db.user;
 const crypto = require('crypto');//import crypto
 require('dotenv').config();
-const encrypt = require('../../middleware/encryptDecrypt')
-const bcrypt = require('bcrypt');
+const encrypt = require('../../middleware/encryptDecrypt');
 
 
 exports.getPaginateUser = async (req,res) => {
@@ -59,42 +58,55 @@ exports.getAllUser = async (req, res) => {
 }
 
 
-exports.getUserById = async (req, res) => {
+exports.getUserById = async (req,res) => {
+    try{
+        const { id } = req.params;
+        const dataUser = await userModel.findById(id);
+        res.status(200).send({
+            message: "Success get user by id",
+            data: dataUser
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while get user by id."
+        });
+    }
+}
+
+exports.getUserByIdDecrypt = async (req, res) => {
     try {
         const { id } = req.params;
-
-        const aesKey = crypto.scryptSync(
-            process.env.encrypt_key_one, 
-            process.env.encrypt_key_two,
-            32
-        );
-
+        const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
         const user = await userModel.findById(id);
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
 
-        const decryptedNik = encrypt.dekripsi(user.nik, aesKey, user.iv);
-        const decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, user.iv);
-        const decryptedNohp = encrypt.dekripsi(user.nohp, aesKey, user.iv);
-
-        res.status(200).send({
-            message: "Success get user",
-            data: {
-                name: user.name,
-                nik: decryptedNik,
-                alamat: decryptedAlamat,
-                nohp: decryptedNohp,
-                statusPerkawinan: user.statusPerkawinan,
-                domisili: user.domisili
-            }
-        });
+        try {
+            const decryptedNik = encrypt.dekripsi(user.nik, aesKey, user.iv);
+            const decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, user.iv);
+            const decryptedNohp = encrypt.dekripsi(user.nohp, aesKey, user.iv);
+            res.status(200).send({
+                message: "Success get user",
+                data: {
+                    name: user.name,
+                    nik: decryptedNik,
+                    alamat: decryptedAlamat,
+                    nohp: decryptedNohp,
+                    statusPerkawinan: user.statusPerkawinan,
+                    domisili: user.domisili
+                }
+            });
+        } catch (decryptionError) {
+            res.status(500).send({ message: decryptionError.message });
+        }
     } catch (error) {
-        res.status(500).send({
-            message: error.message || "Some error occurred while getting user."
-        });
+        res.status(500).send({ message: error.message || "Some error occurred while getting user." });
     }
 };
+
+
 
 exports.postUser = async (req, res) => {
     try {

@@ -1,6 +1,15 @@
 const puppeteer = require('puppeteer');
+const encrypt = require('../middleware/encryptDecrypt');
 
 const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName ,user}) => {
+
+
+    const aesKey = crypto.scryptSync(
+        process.env.encrypt_key_one, 
+        process.env.encrypt_key_two,
+        32
+    ); 
+
 
     retrun `
     <!DOCTYPE html>
@@ -125,7 +134,9 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
                 <strong>
                     
                     <u>
-                        <p>Surat Keterangan Tidak Mampu</p>
+                        <p>
+                            ${jenisSurat}
+                        </p>
                     </u>
                 </strong>
                 <p>Nomor : ${nomoSurat}</p>
@@ -152,42 +163,44 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
                     <tr>
                         <td>NIK</td>
                         <td>:</td>
-                        <td>
-                            ${
-                                // harus di decode dulu
-                            }
-                        </td>
+                        <td>${encrypt.decrypt(user.nik, aesKey, user.iv)}</td>
                     </tr>
                     <tr>
                         <td>Jenis Kelamin</td>
                         <td>:</td>
-                        <td>laki laki / perempuan</td>
+                        <td>${user.jenisKelamin}</td>
                     </tr>
                     <tr>
                         <td>Agama</td>
                         <td>:</td>
-                        <td>Islam</td>
+                        <td>${user.agama}</td>
                     </tr>
                     <tr>
                         <td>Pekerjaan</td>
                         <td>:</td>
-                        <td>Wiraswasta</td>
+                        <td>${user.pekerjaan}</td>
                     </tr>
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td>Wonosari</td>
+                        <td>${encrypt.decrypt(user.alamat, aesKey, user.iv)}</td>
                     </tr>
                     <tr>
                         <td>Keperluan</td>
                         <td>:</td>
-                        <td>keperluasa gini loh mas</td>
+                        <td>
+                            ${nameAcara} yang akan dilaksanakan pada tanggal ${formatTime(tanggalMulai)} sampai dengan ${formatTime(tanggalSelesai)} di ${tempatAcara}
+                        </td>
                     </tr>
                     <tr>
                         <td>keterangan lain lain</td>
                         <td>:</td>
                         <!-- list filed isiAcara -->
-                        <td>keperluasa gini loh mas</td>
+                        <td>
+                            <ul>
+                                ${isiAcara.map((isi, index) => `<li>${index + 1}. ${isi}</li>`).join('')}
+                            </ul>
+                        </td>
                     </tr>
 
                     
@@ -213,7 +226,6 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
         </div>
     </body>
     </html>
-
     `
 };
 
