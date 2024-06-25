@@ -19,6 +19,7 @@ const user = new mongoose.Schema({
     token: { type: String, required: false, default: '' },
     // domisili array of string[rt,rw,desa,kecamatan,kabupaten,provinsi]
     role: { type: Number, required: false }, // 1 = warga, 2 = rt , 3 = rw, 4 = perangkat desa, 5 = pimpinan desa
+    iv: { type: String, required: true },
 }, { timestamps: true });
 
 module.exports = mongoose.model('user', user);

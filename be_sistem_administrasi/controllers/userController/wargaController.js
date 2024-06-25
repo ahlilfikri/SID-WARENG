@@ -24,7 +24,7 @@ exports.LoginWarga = async (req,res) => {
         if (!dataUser) {
             throw new Error('user not found with name :  ' + name);
         }
-        const comparePassword = bcrypt.compare(password, dataUser.password);
+        const comparePassword = bcrypt.compare(password, dataUser.password); //jika bcrypt.compare adalah fungsi untuk membandingkan password yang diinputkan dengan password yang sudah dihash maka apa yang kita gunakan untuk mendecript password yang sudah dihash?
         if (!comparePassword) {
             return res.status(400).send({
                 message: "Invalid Password!"

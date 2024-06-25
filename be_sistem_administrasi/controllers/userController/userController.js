@@ -2,6 +2,8 @@ const db = require("../../models/index");
 const userModel = db.user;
 const crypto = require('crypto');//import crypto
 require('dotenv').config();
+const encrypt = require('../../middleware/encryptDecrypt')
+const bcrypt = require('bcrypt');
 
 
 exports.getPaginateUser = async (req,res) => {
@@ -57,49 +59,71 @@ exports.getAllUser = async (req, res) => {
 }
 
 
-exports.getUserById = async (req,res) => {
-    try{
-        const { id } = req.params;
-        const dataUser = await userModel.findById(id);
-        res.status(200).send({
-            message: "Success get user by id",
-            data: dataUser
-        });
-
-    }catch(error){
-        res.status(500).send({
-            message: error.message || "Some error occurred while get user by id."
-        });
-    }
-}
-
-
-exports.postUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
     try {
-        const { name, nik, password, alamat, nohp, statusPerkawinan, domisili } = req.body;
-        const aesKey = crypto.scryptSync(
+        const { id } = req.params;
 
+        const aesKey = crypto.scryptSync(
             process.env.encrypt_key_one, 
             process.env.encrypt_key_two,
             32
+        );
+
+        const user = await userModel.findById(id);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        const decryptedNik = encrypt.dekripsi(user.nik, aesKey, user.iv);
+        const decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, user.iv);
+        const decryptedNohp = encrypt.dekripsi(user.nohp, aesKey, user.iv);
+
+        res.status(200).send({
+            message: "Success get user",
+            data: {
+                name: user.name,
+                nik: decryptedNik,
+                alamat: decryptedAlamat,
+                nohp: decryptedNohp,
+                statusPerkawinan: user.statusPerkawinan,
+                domisili: user.domisili
+            }
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while getting user."
+        });
+    }
+};
+
+exports.postUser = async (req, res) => {
+    try {
+        const { name, nik, alamat, nohp, statusPerkawinan, domisili } = req.body;
         
+        const aesKey = crypto.scryptSync(
+            process.env.encrypt_key_one, 
+            process.env.encrypt_key_two,
+            32
         );  
         const iv = crypto.randomBytes(16);
-        const encryptedNik = encrypt(nik, aesKey, iv).encryptedData;
-        const encryptedAlamat = encrypt(alamat, aesKey, iv).encryptedData;
-        const encryptedNohp = encrypt(nohp, aesKey, iv).encryptedData;
+
+        const encryptedNik = encrypt.enkripsi(nik, aesKey, iv).encryptedData;
+        const encryptedAlamat = encrypt.enkripsi(alamat, aesKey, iv).encryptedData;
+        const encryptedNohp = encrypt.enkripsi(nohp, aesKey, iv).encryptedData;
+
 
         console.log("Encrypted NIK:", encryptedNik);
         console.log("Encrypted NoHP:", encryptedNohp);
         console.log("Encrypted Alamat:", encryptedAlamat);
+
         const newUser = await userModel.create({
             name: name.toUpperCase(),
             nik: encryptedNik,
-            password,
             alamat: encryptedAlamat,
             nohp: encryptedNohp,
             statusPerkawinan: statusPerkawinan.toUpperCase(),
-            domisili: domisili.map((dom) => dom.toUpperCase())
+            domisili: domisili.map((dom) => dom.toUpperCase()),
+            iv: iv.toString('hex')
         });
 
         res.status(200).send({
@@ -111,16 +135,8 @@ exports.postUser = async (req, res) => {
             message: error.message || "Some error occurred while creating user."
         });
     }
-}
-function encrypt(text, key, iv) {
-    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return {
-        encryptedData: encrypted,
-        initializationVector: iv.toString('hex')
-    };
-}
+};
+
 
 exports.postManyUser = async (req,res) => {
     try{

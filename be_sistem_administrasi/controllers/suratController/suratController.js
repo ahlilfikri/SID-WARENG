@@ -179,6 +179,12 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
         const suratAcara = await suratAcaraModel.findById(idSuratAcara).populate('wargaId');
+        const dataWarga = await WargaModel.findById(suratAcara.wargaId).populate('user');
+
+        const dataUser = await userModel.findById(dataWarga.user);
+        console.log('Data user:', dataUser);
+
+
         if (!suratAcara) {
             throw new Error(`Surat Acara with id ${idSuratAcara} not found`);
         }
@@ -190,7 +196,7 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
         const Rw = await RwModel.findById(suratAcara.rwId);
         const RwName = await userModel.findById(Rw.user);
 
-        console.log('Rw name:', RwName.name);
+        console.log();
 
         const data = {
             nameAcara: suratAcara.nameAcara,
@@ -203,7 +209,8 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             Rw: suratAcara.rwId,
             RtName: RtName.name,
             RwName: RwName.name,
-            Warga: suratAcara.wargaId
+            Warga: suratAcara.wargaId,
+            user: dataUser
         };
 
         const pdfBuffer = await generatePDF(data);
@@ -293,10 +300,6 @@ exports.deleteSuratAcaraById = async (req,res) =>{
         });
     }
 }
-
-
-
-
 
 //Rt
 exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
