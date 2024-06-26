@@ -4,6 +4,13 @@ const suratController = require('../../controllers/suratController/suratControll
 const auth = require('../../middleware/userMiddleware/wargaValidation');
 
 
+// coba 
+const suratCreator = require('../../controllers/suratController/functions/suratCreatetor');
+Router.get('/getAllSuratUsaha',suratCreator.getAllSuratUsaha);
+// http://localhost:3555/api/v1/surat/getAllSuratUsaha
+
+
+// vix bet
 Router.get('/get/surat',auth.wargaValidation,suratController.getAllSuratAcaraLessDetail_TAVERSION);
 Router.post('/create/suratAcara/TAversion/:idWarga',suratController.wargaCreateSurat_TAVERSION);
 Router.put('/revisi-surat-warga/:suratAcaraId',suratController.suratAcaraRevisi_TAVERSION);

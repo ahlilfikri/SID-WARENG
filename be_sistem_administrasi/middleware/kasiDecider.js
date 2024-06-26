@@ -23,6 +23,7 @@ const kasiDecider = (jenis) => {
         "mutasi pbb",
         "pencatatan kependudukan",
         "keterangan tidak mampu",
+        "keterangan nikah",
     ];
 
     const pd3 = [

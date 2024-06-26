@@ -17,6 +17,8 @@ const suratAcara = new mongoose.Schema({
     wargaId: { type: mongoose.Schema.Types.ObjectId, ref: 'warga', required: false },
     keterangan: { type: [String], required: false},
     
+
+    subSuratId: { type: mongoose.Schema.Types.ObjectId, required: false },
 },{timestamps: true});
 
 module.exports = mongoose.model('suratAcara', suratAcara);
