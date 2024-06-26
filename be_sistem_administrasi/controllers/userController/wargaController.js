@@ -12,7 +12,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const encrypt = require('../../middleware/encryptDecrypt');
+const encrypt = require('../../utils/encryptDecrypt');
 const {generatePDF} = require('../../middleware/fileUpload');
 const wargaModel = require('../../models/userModels/warga/wargaModel');
 

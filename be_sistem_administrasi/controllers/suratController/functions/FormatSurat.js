@@ -1,12 +1,9 @@
 const puppeteer = require('puppeteer');
-const encrypt = require('../middleware/encryptDecrypt');
+const encrypt = require('../../../utils/encryptDecrypt');
 const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 
-
-
-// Fungsi untuk mengonversi gambar ke Base64
 const getBase64Image = (filePath) => {
     const imageBuffer = fs.readFileSync(filePath);
     const base64 = imageBuffer.toString('base64');
@@ -14,8 +11,8 @@ const getBase64Image = (filePath) => {
     return `data:${mimeType};base64,${base64}`;
 };
 
-const aksara_jawa = getBase64Image(path.resolve(__dirname, '../assets/surat_utils/aksara_jawa.png'));
-const logo = getBase64Image(path.resolve(__dirname, '../assets/surat_utils/logo_wareng.png'));
+const aksara_jawa = getBase64Image(path.resolve(__dirname, '../../../assets/surat_utils/aksara_jawa.png'));
+const logo = getBase64Image(path.resolve(__dirname, '../../../assets/surat_utils/logo_wareng.png'));
 
 const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user}) => {
     const aesKey = crypto.scryptSync(
@@ -23,8 +20,6 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
         process.env.encrypt_key_two,
         32
     ); 
-
-    // Potong waktu hingga menit
     const formattedDate = formatTime(new Date()).slice(0, -5);
 
     return `

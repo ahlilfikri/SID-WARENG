@@ -14,13 +14,11 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
-const {generatePDF} = require('../../middleware/fileUpload');
-const {generateSuratPDF} = require('../../middleware/FormatSurat');
 
-
+const {generateSuratPDF} = require('./functions/FormatSurat');
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
-const {setNomorSurat} = require('../../middleware/setNomorSurat');
+const {setNomorSurat} = require('./functions/setNomorSurat');
 const { log } = require('console');
 const path = require('path');
 

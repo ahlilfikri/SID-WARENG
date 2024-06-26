@@ -2,7 +2,7 @@ const db = require("../../models/index");
 const userModel = db.user;
 const crypto = require('crypto');//import crypto
 require('dotenv').config();
-const encrypt = require('../../middleware/encryptDecrypt');
+const encrypt = require('../../utils/encryptDecrypt');
 
 
 exports.getPaginateUser = async (req,res) => {
