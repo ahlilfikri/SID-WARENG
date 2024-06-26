@@ -52,15 +52,38 @@ const WargaPage = () => {
     };
     const handleCloseDetail = () => setShowDetail(false);
 
+    // const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
+    //     try {
+    //         const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
+    //             responseType: 'blob',
+    //         });
+
+    //         console.log('Response headers:', response.headers);
+    //         console.log('Response data:', response.data);
+
+    //         const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         link.setAttribute('download', `Surat_${nameAcara}.pdf`);
+    //         document.body.appendChild(link);
+    //         link.click();
+    //         document.body.removeChild(link);
+    //         console.log(response.data, 'Download pdf success');
+    //     } catch (err) {
+    //         console.error('Error downloading pdf:', err);
+    //     }
+    // };
+
     const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
-
-            console.log('Response headers:', response.headers);
-            console.log('Response data:', response.data);
-
+    
+            if (response.status !== 200) {
+                throw new Error(`Failed to download PDF. Status code: ${response.status}`);
+            }
+    
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
@@ -68,11 +91,12 @@ const WargaPage = () => {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            console.log(response.data, 'Download pdf success');
+            console.log('Download pdf success');
         } catch (err) {
             console.error('Error downloading pdf:', err);
         }
     };
+    
 
     const filteredSuratAcara = DataWarga.suratAcara?.filter(surat =>
         surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())

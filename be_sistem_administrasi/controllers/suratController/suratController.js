@@ -111,7 +111,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
             throw new Error(`Surat Acara with name ${nameAcara} already exists`);
         }
 
-    
         // Buat surat acara baru
         const suratAcara = await suratAcaraModel.create({
             nameAcara,
@@ -122,10 +121,6 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
             tempatAcara,
             wargaId: dataWarga._id
         });
-
-        
-
-
 
         // Tambahkan nomor surat ke surat acara
         suratAcara.nomorSurat = await setNomorSurat()
@@ -177,29 +172,25 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
     }
 }
 
-
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
-        const {idSuratAcara} = req.params;
+        const { idSuratAcara } = req.params;
         const suratAcara = await suratAcaraModel.findById(idSuratAcara).populate('wargaId');
-        const dataWarga = await WargaModel.findById(suratAcara.wargaId).populate('user');
-
-        const dataUser = await userModel.findById(dataWarga.user);
-        console.log('Data user:', dataUser);
-
 
         if (!suratAcara) {
-            throw new Error(`Surat Acara with id ${idSuratAcara} not found`);
+            return res.status(404).send({ message: `Surat Acara with id ${idSuratAcara} not found` });
         }
+
+        const dataWarga = await WargaModel.findById(suratAcara.wargaId).populate('user');
+        const dataUser = await userModel.findById(dataWarga.user);
         const Rt = await RtModel.findById(suratAcara.rtId);
         const RtName = await userModel.findById(Rt.user);
-
-        console.log('Rt name:', RtName.name);
-
         const Rw = await RwModel.findById(suratAcara.rwId);
         const RwName = await userModel.findById(Rw.user);
 
-        console.log();
+        if (!Rt || !Rw || !dataUser || !RtName || !RwName) {
+            return res.status(400).send({ message: 'Some required data is missing' });
+        }
 
         const data = {
             nameAcara: suratAcara.nameAcara,
@@ -213,11 +204,11 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             RtName: RtName.name,
             RwName: RwName.name,
             Warga: suratAcara.wargaId,
+            nomoSurat: suratAcara.nomorSurat,
             user: dataUser
         };
 
-        // const pdfBuffer = await generatePDF(data);
-        const pdfBuffer = await generateSuratPDF(data); 
+        const pdfBuffer = await generateSuratPDF(data);
 
         res.set({
             'Content-Type': 'application/pdf',
@@ -227,11 +218,13 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
 
         res.send(pdfBuffer);
     } catch (error) {
-        return res.status(500).send({
-            message: error.message || "Some error occurred while generating Surat Acara."
-        });
+        console.error('Error generating PDF:', error);
+        res.status(500).send({ message: error.message || "Some error occurred while generating Surat Acara." });
     }
 };
+
+
+
 exports.updateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;

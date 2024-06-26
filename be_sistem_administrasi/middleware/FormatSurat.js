@@ -1,17 +1,33 @@
 const puppeteer = require('puppeteer');
 const encrypt = require('../middleware/encryptDecrypt');
+const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
 
-const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName ,user}) => {
 
 
+// Fungsi untuk mengonversi gambar ke Base64
+const getBase64Image = (filePath) => {
+    const imageBuffer = fs.readFileSync(filePath);
+    const base64 = imageBuffer.toString('base64');
+    const mimeType = path.extname(filePath) === '.png' ? 'image/png' : 'image/jpeg';
+    return `data:${mimeType};base64,${base64}`;
+};
+
+const aksara_jawa = getBase64Image(path.resolve(__dirname, '../assets/surat_utils/aksara_jawa.png'));
+const logo = getBase64Image(path.resolve(__dirname, '../assets/surat_utils/logo_wareng.png'));
+
+const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user}) => {
     const aesKey = crypto.scryptSync(
         process.env.encrypt_key_one, 
         process.env.encrypt_key_two,
         32
     ); 
 
+    // Potong waktu hingga menit
+    const formattedDate = formatTime(new Date()).slice(0, -5);
 
-    retrun `
+    return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -114,12 +130,13 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
     <body>
         <div class="surat">
             <div class="cop-header">
-                <img src="./logo_wareng.png" alt="">
+                <img src="${logo}" alt="">
                 <div class="text-header">
                     <p>KABUPATEN GUNUNGKIDUL</p>
                     <p>KAPANEWON WONOSARI</p>
                     <p>PEMERINTAH KALURAHAN WARENG</p>
-                    <img src="./aksara_jawa.png" alt="">
+                    <img src="${aksara_jawa}" alt="">
+                    <br>
                     <br>
                     <br>
                     <br>
@@ -129,7 +146,6 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
             </div>
             <div class="garis-header"></div>
             
-
             <div class="surat-title">
                 <strong>
                     
@@ -163,7 +179,7 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
                     <tr>
                         <td>NIK</td>
                         <td>:</td>
-                        <td>${encrypt.decrypt(user.nik, aesKey, user.iv)}</td>
+                        <td>${encrypt.dekripsi(user.nik, aesKey, user.iv)}</td>
                     </tr>
                     <tr>
                         <td>Jenis Kelamin</td>
@@ -183,7 +199,7 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td>${encrypt.decrypt(user.alamat, aesKey, user.iv)}</td>
+                        <td>${encrypt.dekripsi(user.alamat, aesKey, user.iv)}</td>
                     </tr>
                     <tr>
                         <td>Keperluan</td>
@@ -214,7 +230,7 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
             <div class="surat-tandatangan">
                 <div class="ttd">
                     <!-- tanda tangan persetujuan surat oleh kades -->
-                    <p>Wonosari, 12 Januari 2021</p>
+                    <p>Wareng, ${formattedDate}</p>
                     <p>Lurah Wareng</p>
                     <br>
                     <br>
@@ -226,9 +242,8 @@ const generateHTML = ({nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai,
         </div>
     </body>
     </html>
-    `
+    `;
 };
-
 
 const formatTime = (timeString) => {
     const date = new Date(timeString);
@@ -257,6 +272,5 @@ const generateSuratPDF = async (data) => {
     await browser.close();
     return pdfBuffer;
 };
-
 
 module.exports = { generateSuratPDF };
