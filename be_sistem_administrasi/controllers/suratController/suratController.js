@@ -324,8 +324,11 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             RwName: RwName.name,
             Warga: suratAcara.wargaId,
             nomoSurat: suratAcara.nomorSurat,
-            user: dataUser
+            user: dataUser,
+            subSuratId: suratAcara.subSuratId
         };
+
+        console.log('Data:', data)
 
         const pdfBuffer = await generateSuratPDF(data);
 

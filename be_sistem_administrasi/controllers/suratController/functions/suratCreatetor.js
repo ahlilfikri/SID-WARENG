@@ -1,4 +1,3 @@
-const e = require('express');
 const jenisSuratModel = require('../../../models/suratIzinModel/jenisSurat/index_jenis_surat');
 const mongoose = require('mongoose');
 
