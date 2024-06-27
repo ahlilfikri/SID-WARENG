@@ -10,7 +10,7 @@ const kasiDecider = (jenis) => {
         "surat kenal lahir",
         "surat pindah",
         "surat pengantar skck", // udah
-        "surat izin keramaian",
+        "surat izin keramaian", // udah
         "surat izin bepergian",
     ];
 
