@@ -72,6 +72,7 @@ const FormPerizinanSurat = ({handleCloseModal}) => {
         "surat keterangan usaha",
         "surat kenal lahir",
         "surat pindah",
+        "keterangan tidak mampu",
         "surat pengantar skck",
         "surat izin keramaian",
         "surat izin bepergian",

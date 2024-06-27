@@ -12,6 +12,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const encrypt = require('../../utils/encryptDecrypt');
 const {generatePDF} = require('../../middleware/fileUpload');
 const wargaModel = require('../../models/userModels/warga/wargaModel');
 
@@ -24,7 +25,7 @@ exports.LoginWarga = async (req,res) => {
         if (!dataUser) {
             throw new Error('user not found with name :  ' + name);
         }
-        const comparePassword = bcrypt.compare(password, dataUser.password);
+        const comparePassword = bcrypt.compare(password, dataUser.password); // bcrypt.compare adalah fungsi untuk membandingkan password yang diinputkan dengan password yang sudah dihash
         if (!comparePassword) {
             return res.status(400).send({
                 message: "Invalid Password!"
@@ -71,118 +72,56 @@ exports.LogOutWarga = async (req,res) => {
     }
 }
 
-// exports.RegisterWarga = async (req,res) => {
-//     try{
-//         const {username,password,nohp} = req.body;
-        
-//         if (!username || !password || !nohp) {
-//             return res.status(400).send({
-//                 message: "you must insert username, password, and nohp"
-//             });
-//         }
-        
-//         // cek apakah username belum terdaftar
-//         const checkUsername = await userModel.findOne({
-//             name: username.toUpperCase()
-//         });
-//         if (checkUsername) {
-//             const cekWarga = await wargaModel.findOne({user: checkUsername._id});
-//             if (cekWarga) {
-//                 throw new Error('user already registered as warga');
-//             }
-
-//             // initiate crypto aes encryption
-//             const iv = crypto.randomBytes(16);
-//             const aesKey = "th1s0W1ll0B30War3ng03ncrypted0K3y";
-//             const encryptedPassword = encrypt(password, aesKey, iv)
-
-//             // const Hashpassword = await bcrypt.hash(password, 10);
-//             const newWarga = await WargaModel.create({
-//                 user: checkUsername._id,
-//             });
-//             checkUsername.password = encryptedPassword;
-//             checkUsername.nohp = nohp;
-//             checkUsername.role = 1;
-//             checkUsername.save();
-            
-//             return res.status(200).send({
-//                 message: "Success register warga",
-//                 user: checkUsername,
-//                 warga: newWarga,
-//                 status: 'success'
-//             });
-//         }else{
-//             // lempar kesalahan kebagian catch
-//             throw new Error('user not found with name :  ' + username);    
-//         }
-//     }catch(error){
-//         res.status(500).send({
-//             message: error.message || "Some error occurred while register warga."
-//         });
-//     }
-// };
-
-// //function encrypt aes
-// function encrypt(text, key, iv) {
-//     const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
-//     const encrypted = cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
-//     return {
-//       encryptedData: encrypted,
-//       initializationVector: iv.toString('hex'), // Base64 atau hex encoding umum digunakan
-//     };
-// }
-
-const encrypt = (text, key, iv) => {
-    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
-};
-
 exports.RegisterWarga = async (req, res) => {
     try {
         const { username, password, nohp } = req.body;
 
+        const aesKey = crypto.scryptSync(
+            process.env.encrypt_key_one, 
+            process.env.encrypt_key_two,
+            32
+        );
+
         if (!username || !password || !nohp) {
             return res.status(400).send({
-                message: "you must insert username, password, and nohp"
+                message: "You must insert username, password, and nohp"
             });
         }
-
-        // cek apakah username belum terdaftar
         const checkUsername = await userModel.findOne({
             name: username.toUpperCase()
         });
+
         if (checkUsername) {
+            const iv = Buffer.from(checkUsername.iv, 'hex');
+            if (iv.length !== 16) throw new Error("IV must be 16 bytes long.");
+
             const cekWarga = await wargaModel.findOne({ user: checkUsername._id });
             if (cekWarga) {
-                throw new Error('user already registered as warga');
+                throw new Error('User already registered as warga');
             }
 
-            // initiate crypto aes encryption
-            const iv = crypto.randomBytes(16);
-            const aesKey = crypto.randomBytes(32); // Ensure the AES key is 32 bytes (256 bits)
-            const encryptedPassword = encrypt(password, aesKey, iv);
-
-            // Create new Warga
+            const encryptedPassword = encrypt.enkripsi(password, aesKey, iv).encryptedData;
             const newWarga = await wargaModel.create({
-                user: checkUsername._id,
+                user: checkUsername._id
             });
 
-            // Update user details
             checkUsername.password = encryptedPassword;
-            checkUsername.nohp = nohp;
+            checkUsername.nohp = encrypt.enkripsi(nohp, aesKey, iv).encryptedData; 
             checkUsername.role = 1;
             await checkUsername.save();
 
             return res.status(200).send({
                 message: "Success register warga",
-                user: checkUsername,
+                user: {
+                    name: checkUsername.name,
+                    username: checkUsername.username,
+                    role: checkUsername.role
+                },
                 warga: newWarga,
                 status: 'success'
             });
         } else {
-            throw new Error('user not found with name: ' + username);
+            throw new Error('User not found with name: ' + username);
         }
     } catch (error) {
         res.status(500).send({
@@ -190,6 +129,7 @@ exports.RegisterWarga = async (req, res) => {
         });
     }
 };
+
 
 // forgot password warga
 exports.ForgotPassword = async (req, res) => {

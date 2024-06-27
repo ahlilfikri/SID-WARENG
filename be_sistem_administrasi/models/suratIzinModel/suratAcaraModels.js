@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const suratAcara = new mongoose.Schema({
+    nomorSurat: { type: String, required: false },
     nameAcara: { type: String, required: true },
     jenisSurat : { type: String, required: true },
     isiAcara : { type:[String], required: true }, 
@@ -16,6 +17,8 @@ const suratAcara = new mongoose.Schema({
     wargaId: { type: mongoose.Schema.Types.ObjectId, ref: 'warga', required: false },
     keterangan: { type: [String], required: false},
     
+
+    subSuratId: { type: mongoose.Schema.Types.ObjectId, required: false },
 },{timestamps: true});
 
 module.exports = mongoose.model('suratAcara', suratAcara);

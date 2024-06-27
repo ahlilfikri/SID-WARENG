@@ -14,9 +14,11 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
-const {generatePDF} = require('../../middleware/fileUpload');
+const {createSubSurat} = require('./functions/suratCreatetor');
+const {generateSuratPDF} = require('./functions/FormatSurat');
 const {kasiDecider} = require('../../middleware/kasiDecider') 
 const {getKasiType} = require('../../middleware/kasiDecider');
+const {setNomorSurat} = require('./functions/setNomorSurat');
 const { log } = require('console');
 const path = require('path');
 
@@ -56,10 +58,125 @@ exports.getAllSuratAcaraLessDetail_TAVERSION = async (req, res) => {
     }
 }
 
+//BACKUP
+// exports.wargaCreateSurat_TAVERSION = async (req, res) => {
+//     try {
+//         const {idWarga} = req.params;
+//         const { nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, dataSubSurat } = req.body;
+
+//         const dataWarga = await WargaModel.findById(idWarga).populate('user');
+
+//         if (!dataWarga || !dataWarga.user) {
+//             return res.status(404).send({
+//                 message: "Warga not found or user property is missing"
+//             });
+//         }
+
+//         const Rt = await RtModel.findOne({ ketuaRt: dataWarga.user.domisili[0] }).populate('user');
+//         if (!Rt || Rt.length === 0) {
+//             return res.status(404).send({
+//                 message: "RT not found with domisili rt " + dataWarga.user.domisili[0]
+//             });
+//         }
+
+//         const Rw = await RwModel.findOne({ ketuaRw: dataWarga.user.domisili[1] }).populate('user');
+//         if (!Rw || Rw.length === 0) {
+//             return res.status(404).send({
+//                 message: "RW not found with domisili rw " + dataWarga.user.domisili[1]
+//             });
+//         }
+
+//         const rolePerangkatDesa = kasiDecider(jenisSurat);
+//         const Kasi = await PerangkatDesaModel.findOne({ rolePD: rolePerangkatDesa.role });
+
+//         const kades = await PimpinanDesa.findOne({rolePemimpinDesa: 1});
+//         if (!kades) {
+//             return res.status(404).send({
+//                 message: "Kades not found"
+//             });
+//         }
+    
+//         //pengondisian jika kasi tidak ditemukan
+//         if(rolePerangkatDesa === "rolePd not found"){
+//             throw new Error(`Kasi administasi ${jenisSurat} not found`);
+//         }
+
+//         // Periksa apakah si surat acara dengan nama yang sama sudah ada
+//         const existingSuratAcara = await suratAcaraModel.findOne({
+//             nameAcara,
+//             wargaId: dataWarga._id
+//         });
+//         if (existingSuratAcara) {
+//             throw new Error(`Surat Acara with name ${nameAcara} already exists`);
+//         }
+
+//         // Buat surat acara baru
+//         const suratAcara = await suratAcaraModel.create({
+//             nameAcara,
+//             jenisSurat: jenisSurat.toLowerCase(),
+//             isiAcara,
+//             tanggalMulai,
+//             tanggalSelesai,
+//             tempatAcara,
+//             wargaId: dataWarga._id
+//         });
+
+//         // Tambahkan nomor surat ke surat acara
+//         suratAcara.nomorSurat = await setNomorSurat()
+   
+
+//         // Tambahkan ID surat acara ke array suratAcara di warga
+//         dataWarga.suratAcara.push(suratAcara._id);
+//         await dataWarga.save();
+
+//         // Tambahkan ID surat acara ke array suratAcaraPending di Rt
+//         suratAcara.rtId = Rt._id;
+//         Rt.suratAcaraPending.push(suratAcara._id);
+//         await Rt.save();
+
+//         // Tambahkan ID surat acara ke array suratAcaraPending di Rw
+//         suratAcara.rwId = Rw._id;
+//         Rw.suratAcaraComing.push(suratAcara._id);
+//         await Rw.save();
+
+//         // Tambahkan ID surat acara ke array suratAcaraPending di Kasi
+//         suratAcara.perangkatDesaId = Kasi._id;
+//         Kasi.suratAcaraComing.push(suratAcara._id);
+//         await Kasi.save();
+
+//         // Tambahkan ID surat acara ke array suratAcaraComing di Kades
+//         suratAcara.pimpinanDesaId = kades._id;
+//         kades.suratAcaraComing.push(suratAcara._id);
+//         await kades.save();
+        
+//         if (suratAcara.wargaId.toString() !== dataWarga._id.toString()) {
+//             return res.status(403).send({
+//                 message: "Forbidden. Surat Acara does not belong to the specified user."
+//             });
+//         }
+
+//         // Simpan surat acara
+//         await suratAcara.save();
+
+//         res.status(200).send({
+//             message: "Success create surat acara",
+//             data: suratAcara
+//         });
+        
+//     } catch (error) {
+//         console.error('Error:', error);
+//         res.status(500).send({
+//             message: error.message || "Some error occurred while creating Surat Acara."
+//         });
+//     }
+// }
+
+
+
 exports.wargaCreateSurat_TAVERSION = async (req, res) => {
     try {
         const {idWarga} = req.params;
-        const { nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara } = req.body;
+        const { nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, dataSubSurat } = req.body;
 
         const dataWarga = await WargaModel.findById(idWarga).populate('user');
 
@@ -118,6 +235,10 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
             wargaId: dataWarga._id
         });
 
+        // Tambahkan nomor surat ke surat acara
+        suratAcara.nomorSurat = await setNomorSurat()
+   
+
         // Tambahkan ID surat acara ke array suratAcara di warga
         dataWarga.suratAcara.push(suratAcara._id);
         await dataWarga.save();
@@ -151,6 +272,12 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         // Simpan surat acara
         await suratAcara.save();
 
+        const subSurat = await createSubSurat(req, res, dataSubSurat, jenisSurat);
+
+        suratAcara.subSuratId = subSurat._id;
+
+        await suratAcara.save();
+
         res.status(200).send({
             message: "Success create surat acara",
             data: suratAcara
@@ -163,22 +290,26 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
     }
 }
+
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
-        const {idSuratAcara} = req.params;
+        const { idSuratAcara } = req.params;
         const suratAcara = await suratAcaraModel.findById(idSuratAcara).populate('wargaId');
+
         if (!suratAcara) {
-            throw new Error(`Surat Acara with id ${idSuratAcara} not found`);
+            return res.status(404).send({ message: `Surat Acara with id ${idSuratAcara} not found` });
         }
+
+        const dataWarga = await WargaModel.findById(suratAcara.wargaId).populate('user');
+        const dataUser = await userModel.findById(dataWarga.user);
         const Rt = await RtModel.findById(suratAcara.rtId);
         const RtName = await userModel.findById(Rt.user);
-
-        console.log('Rt name:', RtName.name);
-
         const Rw = await RwModel.findById(suratAcara.rwId);
         const RwName = await userModel.findById(Rw.user);
 
-        console.log('Rw name:', RwName.name);
+        if (!Rt || !Rw || !dataUser || !RtName || !RwName) {
+            return res.status(400).send({ message: 'Some required data is missing' });
+        }
 
         const data = {
             nameAcara: suratAcara.nameAcara,
@@ -191,10 +322,15 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             Rw: suratAcara.rwId,
             RtName: RtName.name,
             RwName: RwName.name,
-            Warga: suratAcara.wargaId
+            Warga: suratAcara.wargaId,
+            nomoSurat: suratAcara.nomorSurat,
+            user: dataUser,
+            subSuratId: suratAcara.subSuratId
         };
 
-        const pdfBuffer = await generatePDF(data);
+        console.log('Data:', data)
+
+        const pdfBuffer = await generateSuratPDF(data);
 
         res.set({
             'Content-Type': 'application/pdf',
@@ -204,11 +340,11 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
 
         res.send(pdfBuffer);
     } catch (error) {
-        return res.status(500).send({
-            message: error.message || "Some error occurred while generating Surat Acara."
-        });
+        console.error('Error generating PDF:', error);
+        res.status(500).send({ message: error.message || "Some error occurred while generating Surat Acara." });
     }
 };
+
 exports.updateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const {idSuratAcara} = req.params;
@@ -243,7 +379,6 @@ exports.updateSuratPdf_TAVERSION = async (req, res) => {
         });   
     }
 }
-
 
 exports.deleteSuratAcaraById = async (req,res) =>{
     const UserId = req.params.userId;
@@ -603,7 +738,6 @@ exports.persetujuanSuratAcaraKades_TAVERSION = async (req, res) => {
     }
 };
 
-
 // RT BAYPASS
 exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{
     const session = await mongoose.startSession();
@@ -668,7 +802,6 @@ exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{
         console.log('session end');
     }
 }
-
 // RW BAYPASS
 exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
@@ -850,7 +983,6 @@ exports.baypassSuratAcaraKasi_TAVERSION = async (req, res)=> {
     }
 }
 
-
 //passing surat acara kades to wakades
 exports.passingSuratAcara_TAVERSION = async (req, res) => {
     const session = await mongoose.startSession();
@@ -1023,6 +1155,5 @@ exports.suratAcaraRevisi_TAVERSION = async (req, res) => {
         sesion.endSession();
     }
 };
-
 
 module.exports = exports;

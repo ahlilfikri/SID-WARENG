@@ -66,6 +66,12 @@ const generateHTML = ({ nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSe
     `;
 };
 
+
+
+
+
+
+
 const formatTime = (timeString) => {
     const date = new Date(timeString);
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
