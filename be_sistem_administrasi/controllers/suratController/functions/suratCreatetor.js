@@ -81,6 +81,16 @@ exports.createSubSurat = async (req, res, dataSubSurat, jenisSurat) => {
         }
 
 
+        if (jenisSurat === 'pencatatan kependudukan'){
+            const newSubSurat = new jenisSuratModel.suratPencatatanKependudukan(dataSubSurat);
+            await newSubSurat.save({session: session});
+            await session.commitTransaction();
+            console.log('surat pencatatan kependudukan',newSubSurat);
+            return newSubSurat;
+
+        }
+
+
         // if (jenisSurat === ''){
 
         // }

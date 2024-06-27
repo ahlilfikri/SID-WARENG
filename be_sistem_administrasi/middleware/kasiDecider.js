@@ -21,13 +21,13 @@ const kasiDecider = (jenis) => {
         "pemecahan kk lama",
         "pbb-p2",
         "mutasi pbb",
-        "pencatatan kependudukan",
+        "pencatatan kependudukan",// udah
         "keterangan tidak mampu",// udah
         "keterangan nikah", // udah
     ];
 
     const pd3 = [
-        "surat kematian",
+        "surat kematian",// udah
         "surat kelahiran",// udah
         "santunan kematian",
         "pengajuan jkn-kis",
