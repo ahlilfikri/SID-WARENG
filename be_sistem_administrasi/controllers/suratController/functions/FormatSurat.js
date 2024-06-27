@@ -9,6 +9,7 @@ const formatSurat_izinUsaha = require('../format/format_suratIzinUsaha');
 const formatSurat_bantuanSosial = require('../format/format_suratBantuanSosial');
 const formatSurat_keteranganNikah = require('../format/format_suratKeteranganNikah');
 const formatSurat_skck = require('../format/fomat_skck');
+const format_suratKeteranganKelahiran = require('../format/format_suratKeteranganKelahiran');
 
 const getBase64Image = (filePath) => {
     const imageBuffer = fs.readFileSync(filePath);
@@ -31,6 +32,8 @@ const suratDecider = async (jenisSurat, subSuratId) => {
             result = await formatSurat_keteranganNikah.format_suratKeteranganNikah(subSuratId);
         }else if (jenisSurat === 'surat pengantar skck') {
             result = await formatSurat_skck.format_suratSkck(subSuratId);
+        }else if(jenisSurat === 'surat kelahiran'){
+            result = await format_suratKeteranganKelahiran.format_suratKeteranganKelahiran(subSuratId);
         }
 
 

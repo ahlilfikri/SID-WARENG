@@ -6,10 +6,10 @@ const kasiDecider = (jenis) => {
 
     const pd1 = [
         "surat keterangan domisili",
-        "surat keterangan usaha",
+        "surat keterangan usaha", // udah
         "surat kenal lahir",
         "surat pindah",
-        "surat pengantar skck",
+        "surat pengantar skck", // udah
         "surat izin keramaian",
         "surat izin bepergian",
     ];
@@ -23,17 +23,17 @@ const kasiDecider = (jenis) => {
         "mutasi pbb",
         "pencatatan kependudukan",
         "keterangan tidak mampu",
-        "keterangan nikah",
+        "keterangan nikah", // udah
     ];
 
     const pd3 = [
         "surat kematian",
-        "surat kelahiran",
+        "surat kelahiran",// udah
         "santunan kematian",
         "pengajuan jkn-kis",
         "koordinator rtlh",
         "pendataan masalah sosial",
-        "bantuan sosial",
+        "bantuan sosial", // udah
     ];
     if (pd1.includes(jenisSurat)){
         role = 1;  
