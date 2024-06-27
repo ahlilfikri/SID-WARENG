@@ -30,7 +30,29 @@ exports.createSubSurat = async (req, res, dataSubSurat, jenisSurat) => {
             console.log('surat bantuan sosial',newSubSurat);
             return newSubSurat;
         }
-        // nanti nambahin pengondisian setiap jenis surat yang ada
+        
+        if(jenisSurat === 'surat pengantar skck'){
+            const newSubSurat = new jenisSuratModel.suratSkck(dataSubSurat);
+            await newSubSurat.save({session: session});
+            await session.commitTransaction();
+            console.log('surat skck',newSubSurat);
+            return newSubSurat;
+        }
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }catch(err){
         console.log(err);
         const error = {

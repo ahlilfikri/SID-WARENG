@@ -21,8 +21,6 @@ Router.put('/forgot-password',wargaController.ForgotPassword); // http://localho
 
 
 
-
-
 module.exports = Router;
 
 // note :
