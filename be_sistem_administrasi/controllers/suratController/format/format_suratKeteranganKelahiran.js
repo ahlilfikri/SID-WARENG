@@ -81,3 +81,6 @@ exports.format_suratKeteranganKelahiran = async (subSuratId) => {
         throw err; 
     }
 }
+
+
+module.exports = exports;

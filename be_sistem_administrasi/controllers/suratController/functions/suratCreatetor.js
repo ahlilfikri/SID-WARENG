@@ -46,6 +46,15 @@ exports.createSubSurat = async (req, res, dataSubSurat, jenisSurat) => {
             console.log('surat keterangan kelahiran',newSubSurat);
             return newSubSurat;
         }
+
+        //surat izin keramaian
+        if(jenisSurat === 'surat izin keramaian'){
+            const newSubSurat = new jenisSuratModel.suratIzinKeramaian(dataSubSurat);
+            await newSubSurat.save({session: session});
+            await session.commitTransaction();
+            console.log('surat izin keramaian',newSubSurat);
+            return newSubSurat;
+        }
         
 
 
