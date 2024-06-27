@@ -5,6 +5,7 @@ const suratSkck = require('./suratSkck');
 const suratKeteranganKelahiran = require('./suratKeteranganKelahiran');
 const suratIzinKeramaian = require('./suratIzinKeramaian');
 const suratIzinBepergian = require('./suratIzinBepergian');
+const suratKeteranganTidakMampu = require('./suratKeteranganTidakMampu');
 
 
 
@@ -16,7 +17,8 @@ const jenisSurat = {
     suratSkck,
     suratKeteranganKelahiran,
     suratIzinKeramaian,
-    suratIzinBepergian
+    suratIzinBepergian,
+    suratKeteranganTidakMampu
 }
 
 

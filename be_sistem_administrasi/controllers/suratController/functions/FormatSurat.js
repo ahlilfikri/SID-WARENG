@@ -12,6 +12,7 @@ const formatSurat_skck = require('../format/fomat_skck');
 const format_suratKeteranganKelahiran = require('../format/format_suratKeteranganKelahiran');
 const format_suratIzinKeramaian = require('../format/format_suratIzinKeramaian');
 const format_suratIzinBepergian = require('../format/format_suratIzinBepergian');
+const format_suratKeteranganTidakMampu = require('../format/format_uratKeteranganTidakMampu');
 
 const getBase64Image = (filePath) => {
     const imageBuffer = fs.readFileSync(filePath);
@@ -40,6 +41,8 @@ const suratDecider = async (jenisSurat, subSuratId) => {
             result = await format_suratIzinKeramaian.format_suratIzinKeramaian(subSuratId);
         }else if(jenisSurat === 'surat izin bepergian'){
             result = await format_suratIzinBepergian.format_suratIzinBepergian(subSuratId);
+        }else if(jenisSurat === 'keterangan tidak mampu'){
+            result = await format_suratKeteranganTidakMampu.format_suratKeteranganTidakMampu(subSuratId);
         }
 
 

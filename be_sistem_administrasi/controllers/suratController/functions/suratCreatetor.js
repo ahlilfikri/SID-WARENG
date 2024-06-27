@@ -63,6 +63,15 @@ exports.createSubSurat = async (req, res, dataSubSurat, jenisSurat) => {
             console.log('surat izin bepergian',newSubSurat);
             return newSubSurat;
         }
+        
+        if (jenisSurat === 'keterangan tidak mampu'){
+            const newSubSurat = new jenisSuratModel.suratKeteranganTidakMampu(dataSubSurat);
+            await newSubSurat.save({session: session});
+            await session.commitTransaction();
+            console.log('surat keterangan tidak mampu',newSubSurat);
+            return newSubSurat;
+        }
+
         // if (jenisSurat === ''){
 
         // }
