@@ -130,7 +130,9 @@ const KegiatanProgramDesa = () => {
                         {status == 'success' && data && data.length > 0 ? (
                             <div className="row">
                                 { data && Array.isArray(data) && data.map((item, index) => {
-                                    const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
+                                    const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`
+                                    ;
+                                    console.log(imageSrc)
                                     return (
                                         <div className="col-12 col-md-6 mb-5" style={{ position: 'relative'}} key={index}>
                                             <div>
