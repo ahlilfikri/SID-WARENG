@@ -22,7 +22,7 @@ const kasiDecider = (jenis) => {
         "pbb-p2",
         "mutasi pbb",
         "pencatatan kependudukan",
-        "keterangan tidak mampu",
+        "keterangan tidak mampu",// udah
         "keterangan nikah", // udah
     ];
 

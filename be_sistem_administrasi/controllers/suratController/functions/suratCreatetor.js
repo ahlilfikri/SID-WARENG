@@ -72,6 +72,15 @@ exports.createSubSurat = async (req, res, dataSubSurat, jenisSurat) => {
             return newSubSurat;
         }
 
+        if (jenisSurat === 'surat kematian'){
+            const newSubSurat = new jenisSuratModel.suratKuasaAktaKematian(dataSubSurat);
+            await newSubSurat.save({session: session});
+            await session.commitTransaction();
+            console.log('surat kuasa akta kematian',newSubSurat);
+            return newSubSurat;
+        }
+
+
         // if (jenisSurat === ''){
 
         // }

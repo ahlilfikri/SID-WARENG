@@ -13,6 +13,7 @@ const format_suratKeteranganKelahiran = require('../format/format_suratKeteranga
 const format_suratIzinKeramaian = require('../format/format_suratIzinKeramaian');
 const format_suratIzinBepergian = require('../format/format_suratIzinBepergian');
 const format_suratKeteranganTidakMampu = require('../format/format_uratKeteranganTidakMampu');
+const format_suratKuasaAktaKematian = require('../format/format_suratKuasaAktaKematian');
 
 const getBase64Image = (filePath) => {
     const imageBuffer = fs.readFileSync(filePath);
@@ -43,6 +44,8 @@ const suratDecider = async (jenisSurat, subSuratId) => {
             result = await format_suratIzinBepergian.format_suratIzinBepergian(subSuratId);
         }else if(jenisSurat === 'keterangan tidak mampu'){
             result = await format_suratKeteranganTidakMampu.format_suratKeteranganTidakMampu(subSuratId);
+        } else if(jenisSurat === 'surat kematian'){
+            result = await format_suratKuasaAktaKematian.format_suratKuasaAktaKematian(subSuratId);
         }
 
 
