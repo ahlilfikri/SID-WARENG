@@ -25,7 +25,7 @@ exports.LoginWarga = async (req,res) => {
         if (!dataUser) {
             throw new Error('user not found with name :  ' + name);
         }
-        const comparePassword = await bcrypt.compare(password, dataUser.password); // bcrypt.compare adalah fungsi untuk membandingkan password yang diinputkan dengan password yang sudah dihash
+        const comparePassword = bcrypt.compare(password, dataUser.password);
         console.log('comparePassword:', comparePassword);
         if (!comparePassword) {
             return res.status(400).send({
