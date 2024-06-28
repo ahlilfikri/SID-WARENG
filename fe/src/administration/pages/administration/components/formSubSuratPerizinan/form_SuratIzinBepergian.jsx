@@ -2,23 +2,23 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const FormPencatatanKependudukan = ({ handleCloseModal }) => {
+const FormSuratIzinBepergian = ({ handleCloseModal }) => {
     const [warga, setWarga] = useState('');
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',
-        jenisSurat: 'pencatatan kependudukan',
+        jenisSurat: 'surat izin bepergian',
         isiAcara: [''],
         tanggalMulai: '',
         tanggalSelesai: '',
-        tempatAcara: '',
         dataSubSurat: {
-            saksiSatu: '',
-            saksiDua: '',
-            keretangan: ['']
+            alamatSekarang: '',
+            alamatTujuan: '',
+            berlakuDari: '',
+            berlakuSampai: ''
         }
     });
 
-    const { nameAcara, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, dataSubSurat } = dataSurat;
+    const { nameAcara, isiAcara, tanggalMulai, tanggalSelesai, dataSubSurat } = dataSurat;
 
     const token = localStorage.getItem('token');
     let idWarga;
@@ -49,13 +49,7 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
             setDataSurat({ ...dataSurat, isiAcara: updatedIsiAcara });
         } else if (name.startsWith('dataSubSurat.')) {
             const subName = name.split('.')[1];
-            if (subName === 'keretangan') {
-                const updatedKeretangan = [...dataSubSurat.keretangan];
-                updatedKeretangan[dataset.index] = value;
-                setDataSurat({ ...dataSurat, dataSubSurat: { ...dataSubSurat, keretangan: updatedKeretangan } });
-            } else {
-                setDataSurat({ ...dataSurat, dataSubSurat: { ...dataSubSurat, [subName]: value } });
-            }
+            setDataSurat({ ...dataSurat, dataSubSurat: { ...dataSubSurat, [subName]: value } });
         } else {
             setDataSurat({ ...dataSurat, [name]: value });
         }
@@ -73,18 +67,13 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
         }
     };
 
-
     const addIsiAcaraField = () => {
         setDataSurat({ ...dataSurat, isiAcara: [...isiAcara, ''] });
     };
 
-    const addKeretanganField = () => {
-        setDataSurat({ ...dataSurat, dataSubSurat: { ...dataSubSurat, keretangan: [...dataSubSurat.keretangan, ''] } });
-    };
-
     return (
         <div className="container">
-            <h2 className="mt-4 mb-3">Surat keterangan kependudukan</h2>
+            <h2 className="mt-4 mb-3">Buat Surat Izin Bepergian</h2>
             <form onSubmit={onSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Nama Acara</label>
@@ -99,10 +88,6 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
                         <label className="form-label">Tanggal Selesai</label>
                         <input type="date" className="form-control" name="tanggalSelesai" value={tanggalSelesai} onChange={onChange} required />
                     </div>
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Tempat Acara</label>
-                    <input type="text" className="form-control" name="tempatAcara" value={tempatAcara} onChange={onChange} required />
                 </div>
                 {isiAcara.map((isi, index) => (
                     <div className="mb-3" key={index}>
@@ -120,27 +105,23 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
                 <button type="button" className="btn btn-primary me-2" onClick={addIsiAcaraField}>Tambah Isi Acara</button>
 
                 <div className="mb-3">
-                    <label className="form-label">Saksi Satu</label>
-                    <input type="text" className="form-control" name="dataSubSurat.saksiSatu" value={dataSubSurat.saksiSatu} onChange={onChange} required />
+                    <label className="form-label">Alamat Sekarang</label>
+                    <input type="text" className="form-control" name="dataSubSurat.alamatSekarang" value={dataSubSurat.alamatSekarang} onChange={onChange} required />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Saksi Dua</label>
-                    <input type="text" className="form-control" name="dataSubSurat.saksiDua" value={dataSubSurat.saksiDua} onChange={onChange} required />
+                    <label className="form-label">Alamat Tujuan</label>
+                    <input type="text" className="form-control" name="dataSubSurat.alamatTujuan" value={dataSubSurat.alamatTujuan} onChange={onChange} required />
                 </div>
-                {dataSubSurat.keretangan.map((keterangan, index) => (
-                    <div className="mb-3" key={index}>
-                        <label className="form-label">Keterangan {index + 1}</label>
-                        <textarea
-                            className="form-control"
-                            name="dataSubSurat.keretangan"
-                            data-index={index}
-                            value={keterangan}
-                            onChange={onChange}
-                            required
-                        />
+                <div className="row mb-3">
+                    <div className="col">
+                        <label className="form-label">Berlaku Dari</label>
+                        <input type="date" className="form-control" name="dataSubSurat.berlakuDari" value={dataSubSurat.berlakuDari} onChange={onChange} required />
                     </div>
-                ))}
-                <button type="button" className="btn btn-primary me-2" onClick={addKeretanganField}>Tambah Keterangan</button>
+                    <div className="col">
+                        <label className="form-label">Berlaku Sampai</label>
+                        <input type="date" className="form-control" name="dataSubSurat.berlakuSampai" value={dataSubSurat.berlakuSampai} onChange={onChange} required />
+                    </div>
+                </div>
 
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -148,8 +129,8 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
     );
 };
 
-FormPencatatanKependudukan.propTypes = {
+FormSuratIzinBepergian.propTypes = {
     handleCloseModal: PropTypes.func.isRequired,
 };
 
-export default FormPencatatanKependudukan;
+export default FormSuratIzinBepergian;

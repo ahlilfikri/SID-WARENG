@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import FormPerizinanSurat from '../components/formPerizinanSurat';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 
-// nanti impoer semua jenis form surat
 import FormPencatatanKependudukan from '../components/formSubSuratPerizinan/form_pencatatanKependudukan';
+import FormSuratKuasaAktaKematian from '../components/formSubSuratPerizinan/form_suratKuasaAktaKematian';
+import FormSuratIzinBepergian from '../components/formSubSuratPerizinan/form_SuratIzinBepergian';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -15,6 +15,7 @@ const WargaPage = () => {
     const [DataWarga, setDataWarga] = useState([]);
     const [DataAspirasi, setDataAspirasi] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
+    const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
     const id = getToken();
@@ -23,7 +24,6 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
             setDataWarga(response.data.data);
-            // console.log(DataWarga._id);
         } catch (error) {
             console.error('Error getting data warga:', error);
         }
@@ -48,7 +48,10 @@ const WargaPage = () => {
     }, [id]);
 
     const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedForm(null);
+    };
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
         setShowDetail(true);
@@ -77,7 +80,6 @@ const WargaPage = () => {
             console.error('Error downloading pdf:', err);
         }
     };
-    
 
     const filteredSuratAcara = DataWarga.suratAcara?.filter(surat =>
         surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())
@@ -177,8 +179,6 @@ const WargaPage = () => {
                                             >
                                                 View
                                             </button>
-
-
                                         </td>
                                     </tr>
                                 ))}
@@ -197,7 +197,25 @@ const WargaPage = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                            <FormPencatatanKependudukan handleCloseModal={handleCloseModal} />
+                                {selectedForm === null && (
+                                    <div>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormPencatatanKependudukan')}>Form Pencatatan Kependudukan</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKuasaAktaKematian')}>Form Surat Kuasa Akta Kematian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinBepergian')}>Form Surat Izin Bepergian</button>
+                                    </div>
+                                )}
+
+
+                                {selectedForm === 'FormPencatatanKependudukan' && (
+                                    <FormPencatatanKependudukan handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKuasaAktaKematian' && (
+                                    <FormSuratKuasaAktaKematian handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratIzinBepergian' && (
+                                    <FormSuratIzinBepergian handleCloseModal={handleCloseModal} />
+                                )}
+                                {/*  */}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
