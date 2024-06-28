@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import FormPerizinanSurat from '../components/formPerizinanSurat';
+// import FormPerizinanSurat from '../components/formPerizinanSurat';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
+
+// nanti impoer semua jenis form surat
+import FormPencatatanKependudukan from '../components/formSubSuratPerizinan/form_pencatatanKependudukan';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -194,7 +197,7 @@ const WargaPage = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <FormPerizinanSurat handleCloseModal={handleCloseModal} />
+                            <FormPencatatanKependudukan handleCloseModal={handleCloseModal} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
