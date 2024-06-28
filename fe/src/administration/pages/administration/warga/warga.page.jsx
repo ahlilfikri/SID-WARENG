@@ -8,6 +8,10 @@ import Navbar from "../../../../shared/layout/navBar";
 import FormPencatatanKependudukan from '../components/formSubSuratPerizinan/form_pencatatanKependudukan';
 import FormSuratKuasaAktaKematian from '../components/formSubSuratPerizinan/form_suratKuasaAktaKematian';
 import FormSuratIzinBepergian from '../components/formSubSuratPerizinan/form_SuratIzinBepergian';
+import FormSuratIzinKeramaian from '../components/formSubSuratPerizinan/form_SuratIzinKeramaian';
+import FormSuratKeteranganKelahiran from '../components/formSubSuratPerizinan/form_SuratKeteranganKelahiran';
+import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
+import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -198,10 +202,17 @@ const WargaPage = () => {
                             </div>
                             <div className="modal-body">
                                 {selectedForm === null && (
-                                    <div>
+                                    <div 
+                                        className="d-flex flex-column justify-content-center align-items-center"
+                                        style={{ height: '50vh' }}
+                                    >
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormPencatatanKependudukan')}>Form Pencatatan Kependudukan</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKuasaAktaKematian')}>Form Surat Kuasa Akta Kematian</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinBepergian')}>Form Surat Izin Bepergian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>  
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button> 
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
                                     </div>
                                 )}
 
@@ -215,6 +226,20 @@ const WargaPage = () => {
                                 {selectedForm === 'FormSuratIzinBepergian' && (
                                     <FormSuratIzinBepergian handleCloseModal={handleCloseModal} />
                                 )}
+                                {selectedForm === 'FormSuratIzinKeramaian' && (
+                                    <FormSuratIzinKeramaian handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKeteranganKelahiran' && (
+                                    <FormSuratKeteranganKelahiran handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratSKCK' && (
+                                    <FormSuratSKCK handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratBantuanSosial' && (
+                                    <FormSuratBantuanSosial handleCloseModal={handleCloseModal} />
+                                )}
+
+
                                 {/*  */}
                             </div>
                             <div className="modal-footer">
