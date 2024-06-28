@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import FormPerizinanSurat from '../components/formPerizinanSurat';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
+
+import FormPencatatanKependudukan from '../components/formSubSuratPerizinan/form_pencatatanKependudukan';
+import FormSuratKuasaAktaKematian from '../components/formSubSuratPerizinan/form_suratKuasaAktaKematian';
+import FormSuratIzinBepergian from '../components/formSubSuratPerizinan/form_SuratIzinBepergian';
+import FormSuratIzinKeramaian from '../components/formSubSuratPerizinan/form_SuratIzinKeramaian';
+import FormSuratKeteranganKelahiran from '../components/formSubSuratPerizinan/form_SuratKeteranganKelahiran';
+import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
+import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
+import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -12,6 +20,7 @@ const WargaPage = () => {
     const [DataWarga, setDataWarga] = useState([]);
     const [DataAspirasi, setDataAspirasi] = useState([]);
     const [selectedSurat, setSelectedSurat] = useState(null);
+    const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
     const id = getToken();
@@ -48,9 +57,12 @@ const WargaPage = () => {
     }, [id]);
 
     const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
-    const handleShowDetail = (surat, jenisSurat) => {
-        setSelectedSurat({ ...surat, jenisSurat });
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedForm(null);
+    };
+    const handleShowDetail = (surat) => {
+        setSelectedSurat(surat);
         setShowDetail(true);
     };
     const handleCloseDetail = () => setShowDetail(false);
@@ -195,7 +207,50 @@ const WargaPage = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <FormPerizinanSurat handleCloseModal={handleCloseModal} />
+                                {selectedForm === null && (
+                                    <div 
+                                        className="d-flex flex-column justify-content-center align-items-center"
+                                        style={{ height: '50vh' }}
+                                    >
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormPencatatanKependudukan')}>Form Pencatatan Kependudukan</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKuasaAktaKematian')}>Form Surat Kuasa Akta Kematian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinBepergian')}>Form Surat Izin Bepergian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>  
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button> 
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
+                                    </div>
+                                )}
+
+
+                                {selectedForm === 'FormPencatatanKependudukan' && (
+                                    <FormPencatatanKependudukan handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKuasaAktaKematian' && (
+                                    <FormSuratKuasaAktaKematian handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratIzinBepergian' && (
+                                    <FormSuratIzinBepergian handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratIzinKeramaian' && (
+                                    <FormSuratIzinKeramaian handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKeteranganKelahiran' && (
+                                    <FormSuratKeteranganKelahiran handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratSKCK' && (
+                                    <FormSuratSKCK handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratBantuanSosial' && (
+                                    <FormSuratBantuanSosial handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKeteranganNikah' && (
+                                    <FormSuratKeteranganNikah handleCloseModal={handleCloseModal} />
+                                )}
+
+
+                                {/*  */}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>

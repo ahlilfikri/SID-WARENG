@@ -6,8 +6,8 @@ const auth = require('../../middleware/userMiddleware/wargaValidation');
 
 // coba 
 const suratCreator = require('../../controllers/suratController/functions/suratCreatetor');
-Router.get('/getAllSuratUsaha',suratCreator.getAllSuratUsaha);
-// http://localhost:3555/api/v1/surat/getAllSuratUsaha
+Router.get('/get/detail-surat/:id/:jenisSurat',suratCreator.getSubSuratById);
+// http://localhost:3555/api/v1/surat/get/detail-surat/:id/:jenisSurat
 
 
 // vix bet

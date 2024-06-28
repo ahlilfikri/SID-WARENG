@@ -10,6 +10,8 @@ import Image from './assets/fotoportal.png'
 import axios from 'axios';
 const port = import.meta.env.VITE_BASE_API_URL;
 
+
+
 const Portal = () => {
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('');

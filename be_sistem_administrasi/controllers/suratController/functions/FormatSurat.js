@@ -10,7 +10,11 @@ const formatSurat_bantuanSosial = require('../format/format_suratBantuanSosial')
 const formatSurat_keteranganNikah = require('../format/format_suratKeteranganNikah');
 const formatSurat_skck = require('../format/fomat_skck');
 const format_suratKeteranganKelahiran = require('../format/format_suratKeteranganKelahiran');
-
+const format_suratIzinKeramaian = require('../format/format_suratIzinKeramaian');
+const format_suratIzinBepergian = require('../format/format_suratIzinBepergian');
+const format_suratKeteranganTidakMampu = require('../format/format_uratKeteranganTidakMampu');
+const format_suratKuasaAktaKematian = require('../format/format_suratKuasaAktaKematian');
+const format_suratPencatatanKependudukan = require('../format/format_suratPencatatanKependudukan');
 const getBase64Image = (filePath) => {
     const imageBuffer = fs.readFileSync(filePath);
     const base64 = imageBuffer.toString('base64');
@@ -34,6 +38,16 @@ const suratDecider = async (jenisSurat, subSuratId) => {
             result = await formatSurat_skck.format_suratSkck(subSuratId);
         }else if(jenisSurat === 'surat kelahiran'){
             result = await format_suratKeteranganKelahiran.format_suratKeteranganKelahiran(subSuratId);
+        }else if(jenisSurat === 'surat izin keramaian'){
+            result = await format_suratIzinKeramaian.format_suratIzinKeramaian(subSuratId);
+        }else if(jenisSurat === 'surat izin bepergian'){
+            result = await format_suratIzinBepergian.format_suratIzinBepergian(subSuratId);
+        }else if(jenisSurat === 'keterangan tidak mampu'){
+            result = await format_suratKeteranganTidakMampu.format_suratKeteranganTidakMampu(subSuratId);
+        } else if(jenisSurat === 'surat kematian'){
+            result = await format_suratKuasaAktaKematian.format_suratKuasaAktaKematian(subSuratId);
+        } else if(jenisSurat === 'pencatatan kependudukan'){
+            result = await format_suratPencatatanKependudukan.format_suratPencatatanKependudukan(subSuratId);
         }
 
 

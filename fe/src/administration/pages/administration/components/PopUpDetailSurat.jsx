@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import BypassSurat from './bypassSurat';
@@ -5,7 +6,23 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
-const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, activeTab, refreshData }) => {
+const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab }) => {
+    const [detailSurat, setDetailSurat] = useState(null);
+
+    useEffect(() => {
+        const fetchDetailSurat = async () => {
+            try {
+                const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
+                const subSuratId = surat.subSuratId;
+                const request = await axios.get(`http://localhost:3555/api/v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+                setDetailSurat(request.data.data);
+            } catch (err) {
+                console.error("Error fetching detail surat: ", err);
+            }
+        };
+
+        fetchDetailSurat();
+    }, [surat.jenisSurat, surat.subSuratId]);
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try {
@@ -44,12 +61,12 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
         } else if (role === 'pd' || role === 'pp') {
             return 'pd';
         }
-    }
+    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return format(date, 'dd-MMMM-yyyy', { locale: idLocale });
-    }
+    };
 
     return (
         <>
@@ -117,7 +134,7 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
             </Modal>
         </>
     );
-}
+};
 
 PopUpDetailSurat.propTypes = {
     surat: PropTypes.shape({
@@ -128,15 +145,12 @@ PopUpDetailSurat.propTypes = {
         tanggalSelesai: PropTypes.string,
         tempatAcara: PropTypes.string,
         isiAcara: PropTypes.arrayOf(PropTypes.string),
-        aspirasi: PropTypes.string
+        aspirasi: PropTypes.string,
+        subSuratId: PropTypes.string.isRequired,
     }).isRequired,
     jenisSurat: PropTypes.string.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
     idTokoh: PropTypes.string.isRequired,
-    condition: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool
-    ]).isRequired,
     role: PropTypes.string.isRequired,
     activeTab: PropTypes.string,
     refreshData: PropTypes.func.isRequired

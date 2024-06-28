@@ -10,8 +10,8 @@ const kasiDecider = (jenis) => {
         "surat kenal lahir",
         "surat pindah",
         "surat pengantar skck", // udah
-        "surat izin keramaian",
-        "surat izin bepergian",
+        "surat izin keramaian", // udah
+        "surat izin bepergian",// udah
     ];
 
     const pd2 = [
@@ -21,13 +21,13 @@ const kasiDecider = (jenis) => {
         "pemecahan kk lama",
         "pbb-p2",
         "mutasi pbb",
-        "pencatatan kependudukan",
-        "keterangan tidak mampu",
+        "pencatatan kependudukan",// udah
+        "keterangan tidak mampu",// udah
         "keterangan nikah", // udah
     ];
 
     const pd3 = [
-        "surat kematian",
+        "surat kematian",// udah
         "surat kelahiran",// udah
         "santunan kematian",
         "pengajuan jkn-kis",
