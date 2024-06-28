@@ -35,12 +35,22 @@ exports.postAspirasi = async (req, res) => {
 exports.putAspirasi = async (req, res) => {
     try {
         const { aspirasiId } = req.params;
-        const { update} = req.body;
+        const update = req.body;
+
+        // Logging the received data
+        console.log(`Aspirasi ID: ${aspirasiId}, Update: ${JSON.stringify(update)}`);
 
         const dataAspirasi = await db.aspirasi.findByIdAndUpdate(
-            aspirasiId,update,
+            aspirasiId,
+            update,
             { new: true }
         );
+
+        if (!dataAspirasi) {
+            return res.status(404).send({
+                message: "Aspirasi not found"
+            });
+        }
 
         res.send({
             message: "Aspirasi berhasil diupdate",
@@ -53,6 +63,7 @@ exports.putAspirasi = async (req, res) => {
         });
     }
 };
+
 
 
 exports.deleteAspirasi = async (req, res) => {

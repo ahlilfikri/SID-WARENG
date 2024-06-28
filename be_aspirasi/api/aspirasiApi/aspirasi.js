@@ -1,4 +1,4 @@
-const {postAspirasi,getAspirasiByWarga,getAspirasiById,deleteAspirasi,getAspirasiKades,getAspirasiAdmin,getAspirasiApproved}=require('../../controllers/aspirasiController/aspirasiController');
+const {postAspirasi,getAspirasiByWarga,getAspirasiById,deleteAspirasi,getAspirasiKades,getAspirasiAdmin,getAspirasiApproved,putAspirasi}=require('../../controllers/aspirasiController/aspirasiController');
 const express = require('express');
 const Router = express.Router();
 
@@ -6,6 +6,7 @@ Router.post('/postAspirasi/:wargaId', postAspirasi);
 Router.get('/getAspirasi/my/:id', getAspirasiByWarga); //http://localhost:3557/api/v1/aspirasi/getAspirasi/my/:id
 Router.get('/getAspirasi/:id', getAspirasiById);
 Router.delete('/deleteAspirasi/:aspirasiId', deleteAspirasi);
+Router.put('/updateAspirasi/:aspirasiId', putAspirasi);
 
 
 Router.get('/getAspirasiKades', getAspirasiKades);

@@ -11,6 +11,7 @@ const Navbar = ({ type }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
+    const [adminData, setAdminData] = useState(null);
     const isHome = location.pathname === '/';
     const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -45,9 +46,29 @@ const Navbar = ({ type }) => {
             }
         };
 
-        fetchUserData();
-    }, [id]);
+        const fetchAdminData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return;
+            }
 
+            try {
+                const res = await axios.get(`http://localhost:3555/api/v1/admin/get-admin/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setAdminData(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchUserData();
+        if (userData == null) {
+            fetchAdminData();
+        }
+    }, [id]);
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top pt-1 pt-md-5" style={{ backgroundColor: type ? 'rgba(255, 255, 255, 0)' : 'white', boxShadow: type ? 'none' : '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <div className="container d-flex justify-content-between align-items-center">
@@ -109,11 +130,18 @@ const Navbar = ({ type }) => {
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/warga' ? 'active underline' : ''}`} to="/warga">Administrasi</Link>
                                     )}
                                 </li>
+                                {adminData?.admin &&
+                                    (
+                                        <li className="nav-item dropdown px-1">
+                                            <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/admin' ? 'active underline' : ''}`} to="/admin">Administrasi</Link>
+                                        </li>
+                                    )
+                                }
                                 <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
-                                    <Link className='nav-link' to="/" >
+                                    <Link className='nav-link' to="/">
                                         <div className="text-light wrap p-1 px-2" style={{ background: '#00917C', borderRadius: '0.5vw' }}>
                                             <i className="fa-regular fa-user text-light me-2"></i>
-                                            {userData.data?.name}
+                                            {userData?.data?.name ? userData.data.name : adminData?.admin?.name}
                                         </div>
                                     </Link>
                                 </li>

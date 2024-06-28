@@ -20,7 +20,6 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
             setDataWarga(response.data.data);
-            // console.log(DataWarga._id);
         } catch (error) {
             console.error('Error getting data warga:', error);
         }
@@ -39,6 +38,10 @@ const WargaPage = () => {
         return isPublish ? 'Untuk umum' : 'Untuk kades';
     }
 
+    const pengajuanStatusDecider = (isPending) => {
+        return isPending ? 'Pending' : 'Selesai';
+    }
+
     useEffect(() => {
         GetDataWarga();
         GetDataAspirasiWarga();
@@ -46,8 +49,8 @@ const WargaPage = () => {
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
-    const handleShowDetail = (surat) => {
-        setSelectedSurat(surat);
+    const handleShowDetail = (surat, jenisSurat) => {
+        setSelectedSurat({ ...surat, jenisSurat });
         setShowDetail(true);
     };
     const handleCloseDetail = () => setShowDetail(false);
@@ -57,11 +60,11 @@ const WargaPage = () => {
             const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
-    
+
             if (response.status !== 200) {
                 throw new Error(`Failed to download PDF. Status code: ${response.status}`);
             }
-    
+
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
@@ -74,7 +77,6 @@ const WargaPage = () => {
             console.error('Error downloading pdf:', err);
         }
     };
-    
 
     const filteredSuratAcara = DataWarga.suratAcara?.filter(surat =>
         surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())
@@ -123,7 +125,7 @@ const WargaPage = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(surat)}
+                                                onClick={() => handleShowDetail(surat, surat.jenisSurat)}
                                             >
                                                 View
                                             </button>
@@ -133,7 +135,6 @@ const WargaPage = () => {
                                             >
                                                 Download PDF
                                             </button>
-
                                         </td>
                                     </tr>
                                 ))}
@@ -158,6 +159,7 @@ const WargaPage = () => {
                                     <th>#</th>
                                     <th>Aspirasi</th>
                                     <th>Status</th>
+                                    <th>Status Pengajuan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -167,15 +169,14 @@ const WargaPage = () => {
                                         <td>{index + 1}</td>
                                         <td>{aspirasi.aspirasi}</td>
                                         <td>{aspirasiDecider(aspirasi.isPublish)}</td>
+                                        <td>{pengajuanStatusDecider(aspirasi.isPending)}</td>
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(aspirasi)}
+                                                onClick={() => handleShowDetail(aspirasi, 'aspirasi')}
                                             >
                                                 View
                                             </button>
-
-
                                         </td>
                                     </tr>
                                 ))}

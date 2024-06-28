@@ -5,6 +5,7 @@ const admin = new mongoose.Schema({
     nik: { type:Number, required: true, default: '',unique: true},
     nohp: { type:Number, required: true, default: ''},
     userName : { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    token: { type: String, required: false, default: '' },
     password: { type:String, required: true, default: ''},
 },{timestamp: true});
 

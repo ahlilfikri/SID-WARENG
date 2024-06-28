@@ -1,7 +1,10 @@
-const {postAdmin,getAdminById,updateAdmin,deleteAdmin,postWarga,postRt,postRw,postPerangkatDesa,postPimpinanDesa}=
+const {loginAdmin,logoutAdmin,postAdmin,getAdminById,updateAdmin,deleteAdmin,postWarga,postRt,postRw,postPerangkatDesa,postPimpinanDesa}=
 require('../../controllers/adminController/AdminController');
 const express = require('express');
 const Router = express.Router();
+
+Router.post('/login-admin',loginAdmin);
+Router.post('/logout-admin',logoutAdmin);
 
 Router.post('/post-admin',postAdmin);
 Router.get('/get-admin/:id',getAdminById);
@@ -19,6 +22,9 @@ module.exports = Router;
 
 
 // note :
+//login admin : http://localhost:3555/api/v1/admin/login-admin
+//logout admin : http://localhost:3555/api/v1/admin/logout-admin
+
 // post admin : http://localhost:3555/api/v1/admin/post-admin
 // get admin by id : http://localhost:3555/api/v1/admin/get-admin/:id
 // update admin by id : http://localhost:3555/api/v1/admin/update-admin/:id

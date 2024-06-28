@@ -119,7 +119,7 @@ const Routing = createBrowserRouter([
         />,
       },
       {
-        path: "/admin-aspirasi",
+        path: "/login-admin",
         element: <LoginAdmin />,
       },
       {
