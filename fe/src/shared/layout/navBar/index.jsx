@@ -93,6 +93,9 @@ const Navbar = ({ type }) => {
                         <li className="nav-item dropdown px-1">
                             <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kegiatan-program-desa' ? 'active underline' : ''}`} to="/kegiatan-program-desa">Kegiatan Desa</Link>
                         </li>
+                        <li className="nav-item dropdown px-1">
+                            <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/portal-terintegrasi' ? 'active underline' : ''}`} to="/portal-terintegrasi">Portal Terintegrasi</Link>
+                        </li>
                         {userData == null && (
                             <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
                                 <Link className='nav-link' to="/login" >
