@@ -140,7 +140,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'bantuan sosial'){
+        if(jenisSurat === 'bantuan_sosial'){
             const subSurat = await jenisSuratModel.suratBantuanSosial.findById(id);
             if (!subSurat){
                 return res.status(404).send({
