@@ -9,9 +9,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
 
     const [detailSurat, setDetailSurat] = useState(null);
 
-
-    useEffect(() => {
-        fetchDetailSurat();
+    const connditionEditAble = () => {
         if (
             surat.statusPersetujuan === "ditolak rt" ||
             surat.statusPersetujuan === "ditolak rw" ||
@@ -19,7 +17,12 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         ) {
             setEditAble(true);
         }
-    }, [surat]);
+    
+    }
+    useEffect(() => {
+        fetchDetailSurat();
+        connditionEditAble();
+    }, [ surat.jenisSurat, surat.subSuratId ]);
 
     const handleIsiAcaraChange = (index, event) => {
         const newIsiAcara = [...isiAcara];
@@ -41,6 +44,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
             const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
             const subSuratId = surat.subSuratId;
             const request = await axios.get(`http://localhost:3555/api/v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+            console.log("Detail surat: ", request.data.data); 
             setDetailSurat(request.data.data);
         } catch (err) {
             console.error("Error fetching detail surat: ", err);
@@ -49,7 +53,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
 
     const handleSave = async () => {
         try {
-            console.log("Saving surat with ID:", surat._id);  // Added log to check ID
+            console.log("Saving surat with ID:", surat._id); 
             const response = await axios.put(`http://localhost:3555/api/v1/surat/revisi-surat-warga/${surat._id}`, {
                 "newIsiAcara": isiAcara
             });
