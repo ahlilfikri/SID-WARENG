@@ -133,7 +133,7 @@ const Navbar = ({ type }) => {
                                 {adminData?.admin &&
                                     (
                                         <li className="nav-item dropdown px-1">
-                                            <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/admin' ? 'active underline' : ''}`} to="/admin">Administrasi</Link>
+                                            <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/dashboard-admin' ? 'active underline' : ''}`} to="/dashboard-admin">Administrasi</Link>
                                         </li>
                                     )
                                 }

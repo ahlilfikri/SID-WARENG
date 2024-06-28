@@ -23,6 +23,8 @@ import RwPage from "./administration/pages/administration/rw/rw.page";
 import KasiPage from "./administration/pages/administration/kasi/kasi.page";
 import KadesPage from "./administration/pages/administration/kades/kades.page";
 import getToken from "./shared/functions/functions";
+//ADMIN
+import DashboardAdmin from "./admin";
 
 import App from "./App";
 
@@ -93,6 +95,22 @@ const Routing = createBrowserRouter([
         path: "/forgot-password",
         element: <ForgotPassword />,
       },
+      //ADMIN
+      {
+        path: "/dashboard-admin",
+        element: <DashboardAdmin />,
+      },
+      {
+        path: "/login-admin",
+        element: <LoginAdmin />,
+      },
+      {
+        path: "/admin-aspirasi-page",
+        element: <ProtectedRoute
+          element={<AdminAspirasiPage />}
+          authorizedRoles={[5]}
+        />
+      },
       //SID
       {
         path: "/informasi-desa",
@@ -118,17 +136,7 @@ const Routing = createBrowserRouter([
           authorizedRoles={[1, 2, 3, 4, 5]}
         />,
       },
-      {
-        path: "/login-admin",
-        element: <LoginAdmin />,
-      },
-      {
-        path: "/admin-aspirasi-page",
-        element: <ProtectedRoute
-          element={<AdminAspirasiPage />}
-          authorizedRoles={[5]}
-        />
-      },
+
       //ADMINISTRATION
       {
         path: "/warga",

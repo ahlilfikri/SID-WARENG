@@ -124,7 +124,7 @@ exports.deleteKegiatan = async (req, res) => {
         const result = await kegiatanModel.findByIdAndDelete(id);
         response(200, res, savedKegiatan, 'Success delete kegiatan');
     } catch (error) {
-        response(500, res, 'error', err.message || 'Some error occurred while delete informasi.');
+        response(500, res, 'error', error.message || 'Some error occurred while delete informasi.');
     }
 }
 
