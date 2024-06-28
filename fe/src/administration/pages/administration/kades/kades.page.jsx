@@ -11,10 +11,12 @@ const KadesPage = () => {
     const [DataKades, setDataKades] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
+    const [selectedJenisSurat, setSelectedJenisSurat] = useState('');
     const [condition, setCondition] = useState(false);
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [activeTab, setActiveTab] = useState('comming');
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'asc' });
 
     const id = getToken();
 
@@ -22,7 +24,6 @@ const KadesPage = () => {
         try {
             const res = await axios.get(`http://localhost:3555/api/v1/pimpinanDesa/get/kades/${id}`);
             setDataKades(res.data.data);
-            console.log(DataKades._id);
         } catch (err) {
             console.error(err);
         }
@@ -41,25 +42,72 @@ const KadesPage = () => {
         return isPublish ? 'Untuk Umum' : 'Untuk Kades';
     };
 
+    const pengajuanStatusDecider = (isPending) => {
+        return isPending ? 'Pending' : 'Selesai';
+    };
+
     useEffect(() => {
         getDataKades();
         getDataAspirasi();
     }, [id]);
 
-    const handleShowDetail = (surat) => {
+    const handleShowDetail = (surat, jenisSurat) => {
+        console.log(surat);
         setSelectedSurat(surat);
+        setSelectedJenisSurat(jenisSurat);
         setShowModal(true);
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedSurat(null);
+        setSelectedJenisSurat('');
+    };
+
+    const refreshData = () => {
+        if (activeTab === 'aspirasi') {
+            getDataAspirasi();
+        } else {
+            getDataKades();
+        }
+    };
+
+    const handleSortChange = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedData = (data, isAspirasi) => {
+        return [...data].sort((a, b) => {
+            if (sortConfig.key === 'date') {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                if (sortConfig.direction === 'asc') {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            } else if (sortConfig.key === 'status') {
+                const statusA = isAspirasi ? a.isPending : a.status;
+                const statusB = isAspirasi ? b.isPending : b.status;
+                if (sortConfig.direction === 'asc') {
+                    return statusA - statusB;
+                } else {
+                    return statusB - statusA;
+                }
+            }
+            return 0;
+        });
     };
 
     const renderTable = (data, isAspirasi = false) => {
         const filteredData = data.filter(item =>
             (isAspirasi ? item.aspirasi : item.nameAcara).toLowerCase().includes(searchQuery.toLowerCase())
         );
+        const sortedFilteredData = sortedData(filteredData, isAspirasi);
 
         return (
             <table className="table table-striped table-bordered table-hover">
@@ -68,20 +116,36 @@ const KadesPage = () => {
                         <th>#</th>
                         <th>{isAspirasi ? 'Aspirasi' : 'Nama Acara'}</th>
                         <th>Jenis Surat</th>
+                        {isAspirasi && (
+                            <>
+                                <th>
+                                    <button type="button" onClick={() => handleSortChange('date')}>
+                                        Tanggal {sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+                                    </button>
+                                </th>
+                                <th>
+                                    <button type="button" onClick={() => handleSortChange('status')}>
+                                        Status Pengajuan {sortConfig.key === 'status' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+                                    </button>
+                                </th>
+                            </>
+                        )}
                         <th>{isAspirasi ? 'Status' : 'Action'}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((item, index) => (
+                    {sortedFilteredData.map((item, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{isAspirasi ? item.aspirasi : item.nameAcara}</td>
                             <td>{isAspirasi ? aspirasiDecider(item.isPublish) : item.jenisSurat}</td>
+                            {isAspirasi && <td>{new Date(item.createdAt).toLocaleDateString()}</td>}
+                            {isAspirasi && <td>{pengajuanStatusDecider(item.isPending)}</td>}
                             <td>
                                 <button
                                     className="btn btn-success"
                                     onClick={() => {
-                                        handleShowDetail(item);
+                                        handleShowDetail(item, isAspirasi ? 'aspirasi' : item.jenisSurat);
                                         setCondition(!isAspirasi && activeTab === 'pending');
                                     }}
                                     style={{ backgroundColor: '#00917C' }}
@@ -95,7 +159,7 @@ const KadesPage = () => {
             </table>
         );
     };
-    console.log(DataKades);
+
     return (
         <>
             <div className="container-fluid">
@@ -135,11 +199,13 @@ const KadesPage = () => {
             {showModal && (
                 <PopUpDetailSurat
                     surat={selectedSurat}
+                    jenisSurat={selectedJenisSurat}
                     handleCloseModal={handleCloseModal}
                     idTokoh={DataKades._id}
                     condition={condition}
                     role="pp"
                     activeTab={activeTab}
+                    refreshData={refreshData}
                 />
             )}
         </>

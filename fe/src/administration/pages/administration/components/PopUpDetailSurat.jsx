@@ -25,16 +25,33 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
     }, [surat.jenisSurat, surat.subSuratId]);
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
-        console.log(statusPersetujuan);
         try {
             const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
             console.log(request);
+            refreshData();
+            handleCloseModal();
         } catch (err) {
             console.error("Error: ", err);
         }
-    };
+    }
+
+    const handlePersetujuanAspirasi = async (statusPersetujuan) => {
+        try {
+            const update = {
+                siApproved: statusPersetujuan,
+                isPending: false
+            };
+
+            const request = await axios.put(`http://localhost:3557/api/v1/aspirasi/updateAspirasi/${surat._id}`, update);
+            console.log(request);
+            refreshData(); 
+            handleCloseModal();
+        } catch (err) {
+            console.error("Error: ", err);
+        }
+    }
 
     const BypassController = (role) => {
         if (role === 'rt') {
@@ -52,77 +69,91 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
     };
 
     return (
-        <Modal show={true} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Detail Surat</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>Nama Acara: {surat.nameAcara}</p>
-                <p>Jenis Surat: {surat.jenisSurat}</p>
-                <p>Tanggal Mulai: {formatDate(surat.tanggalMulai)}</p>
-                <p>Tanggal Selesai: {formatDate(surat.tanggalSelesai)}</p>
-                <p>Tempat Acara: {surat.tempatAcara}</p>
-                <p>Isi Acara:</p>
-                <ul>
-                    {surat.isiAcara.map((item, index) => (
-                        <li key={index}>{item}</li>
-                    ))}
-                </ul>
-
-                <p>Detail Surat:</p>
-                {detailSurat ? (
-                    <ul>
-                        {Object.entries(detailSurat)
-                            .filter(([key]) => key !== '_id' && key !== '__v')
-                            .map(([key, value], index) => (
-                                <li key={index}>
-                                    {key}: {Array.isArray(value) ? value.join(', ') : value.toString()}
-                                </li>
-                            ))}
-                    </ul>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
-                    Tutup
-                </Button>
-                <div>
-                    <Button variant="success" onClick={() => {
-                        handlePersetujuanSurat(true);
-                        handleCloseModal();
-                    }}>
-                        Setujui
+        <>
+            <Modal show={true} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Detail Surat</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {jenisSurat === 'aspirasi' ? (
+                        <>
+                            <p>Isi Aspirasi: {surat.aspirasi}</p>
+                            <p>Status : {surat.siApproved ? 'disetujui' : surat.isPending ? 'pending': 'ditolak'}</p>
+                        </>
+                    ) : (
+                        <>
+                            <p>Nama Acara: {surat.nameAcara}</p>
+                            <p>Jenis Surat: {jenisSurat}</p>
+                            <p>Tanggal Mulai: {formatDate(surat.tanggalMulai)}</p>
+                            <p>Tanggal Selesai: {formatDate(surat.tanggalSelesai)}</p>
+                            <p>Tempat Acara: {surat.tempatAcara}</p>
+                            <p>Isi Acara:</p>
+                            <ul>
+                                {surat.isiAcara.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Tutup
                     </Button>
-                    <Button variant="danger" onClick={() => {
-                        handlePersetujuanSurat(false);
-                        handleCloseModal();
-                    }}>
-                        Tolak
-                    </Button>
-                </div>
-                {activeTab !== 'approved' && activeTab !== 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
-            </Modal.Footer>
-        </Modal>
+                    {jenisSurat === 'aspirasi' ? (
+                        <>
+                            <Button variant="success mx-2" onClick={() => {
+                                handlePersetujuanAspirasi(true);
+                            }}>
+                                Setujui
+                            </Button>
+                            <Button variant="danger" onClick={() => {
+                                handlePersetujuanAspirasi(false);
+                            }}>
+                                Tolak
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <div>
+                                <Button variant="success mx-2" onClick={() => {
+                                    handlePersetujuanSurat(true);
+                                }}>
+                                    Setujui
+                                </Button>
+                                <Button variant="danger" onClick={() => {
+                                    handlePersetujuanSurat(false);
+                                }}>
+                                    Tolak
+                                </Button>
+                            </div>
+                            {activeTab !== 'approved' && activeTab !== 'rejected' && <BypassSurat suratAcaraId={surat._id} role={BypassController(role)} />}
+                        </>
+                    )}
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 };
 
 PopUpDetailSurat.propTypes = {
     surat: PropTypes.shape({
         _id: PropTypes.string.isRequired,
-        nameAcara: PropTypes.string.isRequired,
-        jenisSurat: PropTypes.string.isRequired,
-        tanggalMulai: PropTypes.string.isRequired,
-        tanggalSelesai: PropTypes.string.isRequired,
-        tempatAcara: PropTypes.string.isRequired,
-        isiAcara: PropTypes.arrayOf(PropTypes.string).isRequired,
+        nameAcara: PropTypes.string,
+        jenisSurat: PropTypes.string,
+        tanggalMulai: PropTypes.string,
+        tanggalSelesai: PropTypes.string,
+        tempatAcara: PropTypes.string,
+        isiAcara: PropTypes.arrayOf(PropTypes.string),
+        aspirasi: PropTypes.string,
         subSuratId: PropTypes.string.isRequired,
     }).isRequired,
+    jenisSurat: PropTypes.string.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
     idTokoh: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
-    activeTab: PropTypes.string
+    activeTab: PropTypes.string,
+    refreshData: PropTypes.func.isRequired
 };
 
 export default PopUpDetailSurat;

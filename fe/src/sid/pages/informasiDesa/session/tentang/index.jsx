@@ -27,11 +27,11 @@ const Tentang = () => {
     return (
         <Fragment>
             <div className="container-fluid tentang-container mt-3 mt-md-5 mb-3 mb-md-5">
-                <div className="row">
+                <div className="row p-0">
                     {data[0]?.img.map((item, index) => {
                         const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item)}`;
                         return (
-                            <div className="col-12 col-md-4 p-0">
+                            <div className="col-12 col-md-4 p-0 px-md-3">
                                 <ImageTentang Foto={imageSrc} />
                             </div>
                         )

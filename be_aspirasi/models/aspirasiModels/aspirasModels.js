@@ -6,6 +6,7 @@ const aspirasiModel = new mongoose.Schema({
     validatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'validator' },
     isPublish: { type: Boolean, default: true },
     siApproved: { type: Boolean, default: false ,required:false},
+    isPending: { type: Boolean, default: true ,required:false},
 }, {timestamps: true});
 
 module.exports = mongoose.model('aspirasi', aspirasiModel);

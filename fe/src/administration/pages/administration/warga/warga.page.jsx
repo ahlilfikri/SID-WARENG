@@ -47,6 +47,10 @@ const WargaPage = () => {
         return isPublish ? 'Untuk umum' : 'Untuk kades';
     }
 
+    const pengajuanStatusDecider = (isPending) => {
+        return isPending ? 'Pending' : 'Selesai';
+    }
+
     useEffect(() => {
         GetDataWarga();
         GetDataAspirasiWarga();
@@ -68,11 +72,11 @@ const WargaPage = () => {
             const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
-    
+
             if (response.status !== 200) {
                 throw new Error(`Failed to download PDF. Status code: ${response.status}`);
             }
-    
+
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
@@ -133,7 +137,7 @@ const WargaPage = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(surat)}
+                                                onClick={() => handleShowDetail(surat, surat.jenisSurat)}
                                             >
                                                 View
                                             </button>
@@ -143,7 +147,6 @@ const WargaPage = () => {
                                             >
                                                 Download PDF
                                             </button>
-
                                         </td>
                                     </tr>
                                 ))}
@@ -168,6 +171,7 @@ const WargaPage = () => {
                                     <th>#</th>
                                     <th>Aspirasi</th>
                                     <th>Status</th>
+                                    <th>Status Pengajuan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -177,10 +181,11 @@ const WargaPage = () => {
                                         <td>{index + 1}</td>
                                         <td>{aspirasi.aspirasi}</td>
                                         <td>{aspirasiDecider(aspirasi.isPublish)}</td>
+                                        <td>{pengajuanStatusDecider(aspirasi.isPending)}</td>
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(aspirasi)}
+                                                onClick={() => handleShowDetail(aspirasi, 'aspirasi')}
                                             >
                                                 View
                                             </button>
