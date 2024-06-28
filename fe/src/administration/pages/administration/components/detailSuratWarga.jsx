@@ -7,7 +7,11 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const [editAble, setEditAble] = useState(false);
     const [isiAcara, setIsiAcara] = useState(surat.isiAcara || []);
 
+    const [detailSurat, setDetailSurat] = useState(null);
+
+
     useEffect(() => {
+        fetchDetailSurat();
         if (
             surat.statusPersetujuan === "ditolak rt" ||
             surat.statusPersetujuan === "ditolak rw" ||
@@ -30,6 +34,17 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const handleRemoveIsiAcara = (index) => {
         const newIsiAcara = isiAcara.filter((_, i) => i !== index);
         setIsiAcara(newIsiAcara);
+    };
+
+    const fetchDetailSurat = async () => {
+        try {
+            const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
+            const subSuratId = surat.subSuratId;
+            const request = await axios.get(`http://localhost:3555/api/v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+            setDetailSurat(request.data.data);
+        } catch (err) {
+            console.error("Error fetching detail surat: ", err);
+        }
     };
 
     const handleSave = async () => {
@@ -68,6 +83,20 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                                 ))}
                                 </ul>
                             </div>
+                            <p>Detail Surat:</p>
+                            {detailSurat ? (
+                                <ul>
+                                    {Object.entries(detailSurat)
+                                        .filter(([key]) => key !== '_id' && key !== '__v')
+                                        .map(([key, value], index) => (
+                                            <li key={index}>
+                                                {key}: {Array.isArray(value) ? value.join(', ') : value.toString()}
+                                            </li>
+                                        ))}
+                                </ul>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                             {editAble && (
                                 console.log("Editable", editAble),  // Added log to check if editable
                                 <div>
