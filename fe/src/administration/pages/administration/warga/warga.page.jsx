@@ -12,6 +12,7 @@ import FormSuratIzinKeramaian from '../components/formSubSuratPerizinan/form_Sur
 import FormSuratKeteranganKelahiran from '../components/formSubSuratPerizinan/form_SuratKeteranganKelahiran';
 import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
 import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
+import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
 const WargaPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -213,6 +214,7 @@ const WargaPage = () => {
                                         <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button> 
                                         <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
                                         <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
+                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
                                     </div>
                                 )}
 
@@ -237,6 +239,9 @@ const WargaPage = () => {
                                 )}
                                 {selectedForm === 'FormSuratBantuanSosial' && (
                                     <FormSuratBantuanSosial handleCloseModal={handleCloseModal} />
+                                )}
+                                {selectedForm === 'FormSuratKeteranganNikah' && (
+                                    <FormSuratKeteranganNikah handleCloseModal={handleCloseModal} />
                                 )}
 
 

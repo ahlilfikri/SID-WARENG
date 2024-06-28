@@ -20,15 +20,9 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
         }
     }
 
-    // const handleSetuju = () => {
-    //     handlePersetujuanSurat(true);
-    //     handleCloseModal();
-    // }
+    console.log(surat);
 
-    // const handleTolak = () => {
-    //     handlePersetujuanSurat(false);
-    //     handleCloseModal();
-    // }
+    // const getDetailSurat = async () => {};
 
     const BypassController = (role) => {
         if (role === 'rt') {
