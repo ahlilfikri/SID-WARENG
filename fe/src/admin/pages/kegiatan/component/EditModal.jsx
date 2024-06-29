@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageError from '../../../assets/ImageErrorHandling.svg';
+import ImageError from '../../../../assets/ImageErrorHandling.svg';
 
 const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentKegiatan, handleDeleteImage, setSelectedImage }) => {
 
