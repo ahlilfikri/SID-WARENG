@@ -132,7 +132,7 @@ const PortalControl = () => {
                             <td>{index + 1}</td>
                             <td>{item.title}</td>
                             <td>{item.content}</td>
-                            <td>{item.isi}</td>
+                            <td style={{ maxWidth: '300px', overflowWrap: 'break-word' }}>{item.isi}</td>
                             <td>
                                 <div className="d-inline">
                                     {item.img.map((image, imgIndex) => {
@@ -162,6 +162,7 @@ const PortalControl = () => {
             </table>
         );
     };
+    
 
     return (
         <Fragment>
