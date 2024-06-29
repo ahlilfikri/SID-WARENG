@@ -111,49 +111,51 @@ const InformasiControl = () => {
 
     const renderTable = (data) => {
         return (
-            <table className="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Content</th>
-                        <th>Images</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item, index) => (
-                        <tr key={item._id}>
-                            <td>{index + 1}</td>
-                            <td>{item.title}</td>
-                            <td>{item.content}</td>
-                            <td>
-                                <div className="d-inline">
-                                    {item.img.map((image, imgIndex) => {
-                                        const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
-                                        return (
-                                            <img
-                                                className='my-2'
-                                                key={imgIndex}
-                                                src={imageSrc}
-                                                alt={`img-${imgIndex}`}
-                                                width="50"
-                                                onError={handleImageError}
-                                                onClick={() => setSelectedImage(imageSrc)}
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </td>
-                            <td>
-                                <button className="btn btn-primary mx-1" onClick={() => handleEdit(item)}>Edit</button>
-                                <button className="btn btn-danger mx-1" onClick={() => handleDelete(item._id)}>Delete</button>
-                            </td>
+            <div className="table-responsive">
+                <table className="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Images</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={item._id}>
+                                <td>{index + 1}</td>
+                                <td>{item.title}</td>
+                                <td>{item.content}</td>
+                                <td>
+                                    <div className="d-inline">
+                                        {item.img.map((image, imgIndex) => {
+                                            const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                            return (
+                                                <img
+                                                    className='my-2'
+                                                    key={imgIndex}
+                                                    src={imageSrc}
+                                                    alt={`img-${imgIndex}`}
+                                                    width="50"
+                                                    onError={handleImageError}
+                                                    onClick={() => setSelectedImage(imageSrc)}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button className="btn btn-primary mx-1" onClick={() => handleEdit(item)}>Edit</button>
+                                    <button className="btn btn-danger mx-1" onClick={() => handleDelete(item._id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     };
 

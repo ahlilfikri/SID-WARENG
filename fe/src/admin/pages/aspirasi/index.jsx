@@ -74,46 +74,49 @@ const AspirasiControl = () => {
         const sortedFilteredData = sortedData(filteredData);
 
         return (
-            <table className="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Aspirasi</th>
-                        <th>Jenis Surat</th>
-                        <th>
-                            <button type="button" onClick={() => handleSortChange('date')}>
-                                Tanggal {sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
-                            </button>
-                        </th>
-                        <th>
-                            <button type="button" onClick={() => handleSortChange('status')}>
-                                Status Pengajuan {sortConfig.key === 'status' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
-                            </button>
-                        </th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedFilteredData.map((item, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.aspirasi}</td>
-                            <td>{aspirasiDecider(item.isPublish)}</td>
-                            <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                            <td>{pengajuanStatusDecider(item.isPending)}</td>
-                            <td>
-                                <button
-                                    className="btn btn-success"
-                                    onClick={() => handleShowDetail(item)}
-                                    style={{ backgroundColor: '#00917C' }}
-                                >
-                                    View
+            <div className="table-responsive">
+
+                <table className="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Aspirasi</th>
+                            <th>Jenis Surat</th>
+                            <th>
+                                <button type="button" onClick={() => handleSortChange('date')}>
+                                    Tanggal {sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
                                 </button>
-                            </td>
+                            </th>
+                            <th>
+                                <button type="button" onClick={() => handleSortChange('status')}>
+                                    Status Pengajuan {sortConfig.key === 'status' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+                                </button>
+                            </th>
+                            <th>Status</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {sortedFilteredData.map((item, index) => (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.aspirasi}</td>
+                                <td>{aspirasiDecider(item.isPublish)}</td>
+                                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                                <td>{pengajuanStatusDecider(item.isPending)}</td>
+                                <td>
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={() => handleShowDetail(item)}
+                                        style={{ backgroundColor: '#00917C' }}
+                                    >
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     };
 
