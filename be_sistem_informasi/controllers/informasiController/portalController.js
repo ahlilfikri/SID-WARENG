@@ -63,13 +63,15 @@ exports.putPortal = async (req, res) => {
 
         try {
             const { id } = req.params;
-            const { title, content, isi } = req.body;
+            const { title, content, isi, img } = req.body;
 
-            let updateFields = { title, content, isi };
+            let updateFields = { title, content, isi, img };
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
                 updateFields.img = newImages;
+            }else{
+                updateFields.img = img;
             }
 
             const updatedPortal = await portalModel.findByIdAndUpdate(id, updateFields, { new: true });

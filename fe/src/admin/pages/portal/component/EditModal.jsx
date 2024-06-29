@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageError from '../../../../assets/ImageErrorHandling.svg';
 
-const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentPortal, handleDeleteImage, setSelectedImage }) => {
+const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentPortal, handleDeleteImage, setSelectedImage, handleNewImagesChange }) => {
 
     const handleImageError = (e) => {
         e.target.src = ImageError;
@@ -77,6 +77,16 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                                         );
                                     })}
                                 </div>
+                            </div>
+                            <div className="form-group">
+                                <label>Add New Images</label>
+                                <input
+                                    type="file"
+                                    name="newImages"
+                                    onChange={handleNewImagesChange}
+                                    className="form-control"
+                                    multiple
+                                />
                             </div>
                             <div className="modal-footer">
                                 <button type="submit" className="btn btn-success">Save</button>

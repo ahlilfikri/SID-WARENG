@@ -15,6 +15,7 @@ const PerangkatDesa = () => {
         try {
             const response = await axios.get(`${port}v1/perangkatDesa/get`);
             // const response = await axios.get(`${port}v1/user/get`);
+            console.log(response);
             setData(response.data.data);
         } catch (error) {
             console.log(error.message);

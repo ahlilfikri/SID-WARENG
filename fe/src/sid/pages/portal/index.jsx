@@ -51,7 +51,7 @@ const Portal = () => {
                                             <div className="col-10">
                                                 <img src={imageSrc} alt="" className='mx-auto' style={{width:"100%", borderRadius : '2vh'}}/>
                                                 <p className='py-2' style={{fontSize:'24px'}}>{item.title}</p>
-                                                <p className='text-dark'>{item.isi}</p>
+                                                <p className='text-dark' style={{textAlign:'justify'}} >{item.isi}</p>
                                                 <a href={item.content}>Baca lebih banyak</a>
                                             </div>
                                             <div className="col-1"></div>

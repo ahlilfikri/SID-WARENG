@@ -55,20 +55,41 @@ const KegiatanControl = () => {
 
     const handleDeleteImage = async (image) => {
         const updatedImages = currentKegiatan.img.filter(img => img !== image);
+        console.log(updatedImages);
         try {
             const response = await axios.put(`http://localhost:3556/api/v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
-            setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
             console.log(response);
+            setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
             getDataKegiatan();
         } catch (err) {
             console.error(err);
         }
     };
 
-    const handleSaveEdit = async (e) => {
+    const handleSaveEdit = async (e, newImages) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', editForm.title);
+        formData.append('content', editForm.content);
+        formData.append('date', editForm.date);
+        formData.append('location', editForm.location);
+        
+        if (newImages.length > 0) {
+            const oldImages = currentKegiatan.img || [];
+            oldImages.forEach(img => formData.append('img', img));
+            newImages.forEach(img => formData.append('img', img));
+        } else {
+            const oldImages = currentKegiatan.img || [];
+            oldImages.forEach(img => formData.append('img', img));
+        }
+        
         try {
-            await axios.put(`http://localhost:3556/api/v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, editForm);
+            const response = await axios.put(`http://localhost:3556/api/v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(response);
             setIsEditing(false);
             setCurrentKegiatan({});
             setEditForm({ title: '', content: '', date: '', location: '' });
@@ -77,6 +98,7 @@ const KegiatanControl = () => {
             console.error(err);
         }
     };
+
 
     const handleEditFormChange = (e) => {
         setEditForm({ ...editForm, [e.target.name]: e.target.value });

@@ -11,7 +11,7 @@ const PortalControl = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [currentPortal, setCurrentPortal] = useState({});
-    const [editForm, setEditForm] = useState({ title: '', content: '', isi: '' });
+    const [editForm, setEditForm] = useState({ title: '', content: '', isi: '', newImages: null });
     const [addForm, setAddForm] = useState({ title: '', content: '', isi: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -49,6 +49,7 @@ const PortalControl = () => {
             title: portal.title,
             content: portal.content,
             isi: portal.isi,
+            newImages: null, // Reset newImages pada form edit
         });
     };
 
@@ -57,7 +58,6 @@ const PortalControl = () => {
         try {
             const response = await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
             setCurrentPortal({ ...currentPortal, img: updatedImages });
-            console.log(response);
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -66,11 +66,31 @@ const PortalControl = () => {
 
     const handleSaveEdit = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', editForm.title);
+        formData.append('content', editForm.content);
+        formData.append('isi', editForm.isi);
+
+        // Tambahkan gambar lama jika ada gambar baru yang dipilih
+        if (editForm.newImages && editForm.newImages.length > 0) {
+            currentPortal.img.forEach(img => formData.append('img', img));
+            for (let i = 0; i < editForm.newImages.length; i++) {
+                formData.append('img', editForm.newImages[i]);
+            }
+        } else {
+            // Jika tidak ada gambar baru, tetap tambahkan gambar lama ke form data
+            currentPortal.img.forEach(img => formData.append('img', img));
+        }
+
         try {
-            await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, editForm);
+            await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setIsEditing(false);
             setCurrentPortal({});
-            setEditForm({ title: '', content: '', isi: '' });
+            setEditForm({ title: '', content: '', isi: '', newImages: null });
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -136,21 +156,25 @@ const PortalControl = () => {
                                 <td style={{ maxWidth: '300px', overflowWrap: 'break-word' }}>{item.isi}</td>
                                 <td>
                                     <div className="d-inline">
-                                        {item.img.map((image, imgIndex) => {
-                                            const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
-                                            return (
-                                                <img
-                                                    className='my-2'
-                                                    key={imgIndex}
-                                                    src={imageSrc}
-                                                    alt={`img-${imgIndex}`}
-                                                    width="50"
-                                                    onError={handleImageError}
-                                                    onClick={() => setSelectedImage(imageSrc)}
-                                                    style={{ cursor: 'pointer' }}
-                                                />
-                                            );
-                                        })}
+                                        {item.img && item.img.length > 0 ? (
+                                            item.img.map((image, imgIndex) => {
+                                                const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                                return (
+                                                    <img
+                                                        className='my-2'
+                                                        key={imgIndex}
+                                                        src={imageSrc}
+                                                        alt={`img-${imgIndex}`}
+                                                        width="50"
+                                                        onError={handleImageError}
+                                                        onClick={() => setSelectedImage(imageSrc)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                );
+                                            })
+                                        ) : (
+                                            <p>No images</p>
+                                        )}
                                     </div>
                                 </td>
                                 <td>
@@ -164,7 +188,6 @@ const PortalControl = () => {
             </div>
         );
     };
-    
 
     return (
         <Fragment>
@@ -181,6 +204,7 @@ const PortalControl = () => {
                 currentPortal={currentPortal}
                 handleDeleteImage={handleDeleteImage}
                 setSelectedImage={setSelectedImage}
+                handleNewImagesChange={(e) => setEditForm({ ...editForm, newImages: e.target.files })}
             />
 
             <AddModal

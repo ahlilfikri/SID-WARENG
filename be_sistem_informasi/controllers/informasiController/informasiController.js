@@ -26,7 +26,7 @@ exports.postInformasi = async (req, res) => {
         if (error) {
             console.error(error);
             console.error(error.message);
-            response(500, res, 'error', err.message || 'Internal Server Error');
+            response(500, res, 'error', error.message || 'Internal Server Error');
             return;
         }
 
@@ -57,18 +57,24 @@ exports.putInformasi = async (req, res) => {
     uploadProjectImages(req, res, async (error) => {
         if (error) {
             console.error(error.message);
-            response(500, res, 'error', err.message || 'Internal Server Error');
+            response(500, res, 'error', error.message || 'Internal Server Error');
             return;
         }
 
         try {
             const { id } = req.params;
-            const { title, content } = req.body;
+            const { title, content, img } = req.body;
             let updateFields = { title, content };
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
-                updateFields.img = newImages;
+                if (img && Array.isArray(img)) {
+                    updateFields.img = img.concat(newImages);
+                } else {
+                    updateFields.img = newImages;
+                }
+            } else {
+                updateFields.img = img;
             }
 
             const updatedInformasi = await informasiModel.findByIdAndUpdate(id, updateFields, { new: true });

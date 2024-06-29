@@ -26,22 +26,26 @@ const Dashboard = () => {
                         <div className="" id="sidebar-wrapper" > 
                             <div className="sidebar-heading p-2">MENU</div>
                             <div className="list-group list-group-flush">
-                                <p href="#" 
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
                                    className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Aspirasi' ? 'active' : ''}`} 
                                    onClick={() => handleActiveTab('Aspirasi')}>
                                     Aspirasi
                                 </p>
-                                <p href="#" 
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
                                    className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Informasi' ? 'active' : ''}`} 
                                    onClick={() => handleActiveTab('Informasi')}>
                                     Informasi
                                 </p>
-                                <p href="#" 
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
                                    className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Kegiatan' ? 'active' : ''}`} 
                                    onClick={() => handleActiveTab('Kegiatan')}>
                                     Kegiatan
                                 </p>
-                                <p href="#" 
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
                                    className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Portal' ? 'active' : ''}`} 
                                    onClick={() => handleActiveTab('Portal')}>
                                     Portal

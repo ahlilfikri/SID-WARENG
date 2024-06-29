@@ -61,10 +61,29 @@ const InformasiControl = () => {
         }
     };
 
-    const handleSaveEdit = async (e) => {
+    const handleSaveEdit = async (e, newImages) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', editForm.title);
+        formData.append('content', editForm.content);
+
+        // Tambahkan gambar lama jika ada gambar baru yang dipilih
+        if (newImages.length > 0) {
+            const oldImages = currentInformasi.img || [];
+            oldImages.forEach(img => formData.append('img', img));
+            newImages.forEach(img => formData.append('img', img));
+        } else {
+            // Jika tidak ada gambar baru, tetap tambahkan gambar lama ke form data
+            const oldImages = currentInformasi.img || [];
+            oldImages.forEach(img => formData.append('img', img));
+        }
+
         try {
-            await axios.put(`http://localhost:3556/api/v1/informasi/update-informasi/${currentInformasi._id}`, editForm);
+            await axios.put(`http://localhost:3556/api/v1/informasi/update-informasi/${currentInformasi._id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setIsEditing(false);
             setCurrentInformasi({});
             setEditForm({ title: '', content: '' });

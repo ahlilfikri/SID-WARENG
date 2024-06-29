@@ -108,39 +108,39 @@ const Navbar = ({ type }) => {
                         )}
                         {userData != null && (
                             <>
-                                <li className="nav-item dropdown px-1">
+                                <li className="nav-item dropdown">
                                     {userData.data?.role == 5 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kades' ? 'active underline' : ''}`} to="/kades">Administrasi</Link>
                                     )}
                                 </li>
-                                <li className="nav-item dropdown px-1">
+                                <li className="nav-item dropdown">
                                     {userData.data?.role == 4 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/kasi' ? 'active underline' : ''}`} to="/kasi">Administrasi</Link>
                                     )}
                                 </li>
-                                <li className="nav-item dropdown px-1">
+                                <li className="nav-item dropdown">
                                     {userData.data?.role == 3 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/rw' ? 'active underline' : ''}`} to="/rw">Administrasi</Link>
                                     )}
                                 </li>
-                                <li className="nav-item dropdown px-1">
+                                <li className="nav-item dropdown">
                                     {userData.data?.role == 2 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/rt' ? 'active underline' : ''}`} to="/rt">Administrasi</Link>
                                     )}
                                 </li>
-                                <li className="nav-item dropdown px-1">
+                                <li className="nav-item dropdown">
                                     {userData.data?.role == 1 && (
                                         <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/warga' ? 'active underline' : ''}`} to="/warga">Administrasi</Link>
                                     )}
                                 </li>
                                 {adminData?.admin &&
                                     (
-                                        <li className="nav-item dropdown px-1">
+                                        <li className="nav-item dropdown">
                                             <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/dashboard-admin' ? 'active underline' : ''}`} to="/dashboard-admin">Administrasi</Link>
                                         </li>
                                     )
                                 }
-                                <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
+                                <li className="nav-item" style={{ borderLeft: '2px solid white' }}>
                                     <Link className='nav-link' to="/">
                                         <div className="text-light wrap p-1 px-2" style={{ background: '#00917C', borderRadius: '0.5vw' }}>
                                             <i className="fa-regular fa-user text-light me-2"></i>

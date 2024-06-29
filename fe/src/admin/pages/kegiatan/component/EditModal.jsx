@@ -1,12 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import ImageError from '../../../../assets/ImageErrorHandling.svg';
 
 const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentKegiatan, handleDeleteImage, setSelectedImage }) => {
 
+    const [newImages, setNewImages] = useState([]);
+
     const handleImageError = (e) => {
         e.target.src = ImageError;
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        handleSaveEdit(e, newImages); // Panggil handleSaveEdit dengan gambar baru
+    };
+
+    const handleNewImagesChange = (e) => {
+        setNewImages([...e.target.files]);
     };
 
     return (
@@ -20,7 +31,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                         </button>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={handleSaveEdit}>
+                        <form onSubmit={handleFormSubmit}>
                             <div className="form-group">
                                 <label>Title</label>
                                 <input
@@ -91,6 +102,16 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                                         );
                                     })}
                                 </div>
+                            </div>
+                            <div className="form-group">
+                                <label>Add New Images</label>
+                                <input
+                                    type="file"
+                                    name="newImages"
+                                    onChange={handleNewImagesChange}
+                                    className="form-control"
+                                    multiple
+                                />
                             </div>
                             <div className="modal-footer">
                                 <button type="submit" className="btn btn-success">Save</button>
