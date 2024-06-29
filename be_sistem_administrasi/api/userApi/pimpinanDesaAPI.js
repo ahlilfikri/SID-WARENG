@@ -3,8 +3,8 @@ const express = require('express');
 const Router = express.Router();
 
 
-Router.get('/get', getAllPimpinanDesa); // htt
-Router.get('/get/:role', getKades); // http://localhost:3555/api/v1/pimpinanDesa/get/:role
+Router.get('/get', getAllPimpinanDesa); // http://localhost:3555/api/v1/pimpinanDesa/get
+Router.get('/get/', getKades); // http://localhost:3555/api/v1/pimpinanDesa/get
 
 Router.get('/get/kades/:id',getPimpinanDesaById) // http://localhost:3555/api/v1/pimpinanDesa/get/kades/:id
 
