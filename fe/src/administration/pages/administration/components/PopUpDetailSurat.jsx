@@ -6,8 +6,11 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
+const port = import.meta.env.VITE_BASE_API_URL2;
+
 const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab }) => {
     const [detailSurat, setDetailSurat] = useState(null);
+    const [status, setStatus] = useState('loading'); // Default loading state
 
     useEffect(() => {
         const fetchDetailSurat = async () => {
@@ -16,8 +19,10 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
                 const subSuratId = surat.subSuratId;
                 const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
                 setDetailSurat(request.data.data);
+                setStatus('success');
             } catch (err) {
                 console.error("Error fetching detail surat: ", err);
+                setStatus('error');
             }
         };
 
@@ -37,12 +42,16 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
     };
 
     const BypassController = (role) => {
-        if (role === 'rt') {
-            return 'rt';
-        } else if (role === 'rw') {
-            return 'rw';
-        } else if (role === 'pd' || role === 'pp') {
-            return 'pd';
+        switch (role) {
+            case 'rt':
+                return 'rt';
+            case 'rw':
+                return 'rw';
+            case 'pd':
+            case 'pp':
+                return 'pd';
+            default:
+                return '';
         }
     };
 
@@ -70,7 +79,9 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
                 </ul>
 
                 <p>Detail Surat:</p>
-                {detailSurat ? (
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak dapat dimuat.</p>}
+                {status === 'success' && detailSurat && (
                     <ul>
                         {Object.entries(detailSurat)
                             .filter(([key]) => key !== '_id' && key !== '__v')
@@ -80,8 +91,6 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
                                 </li>
                             ))}
                     </ul>
-                ) : (
-                    <p>Loading...</p>
                 )}
             </Modal.Body>
             <Modal.Footer>

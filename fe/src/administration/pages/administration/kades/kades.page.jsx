@@ -6,6 +6,8 @@ import './index.css';
 
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
+const port = import.meta.env.VITE_BASE_API_URL2;
+const port2 = import.meta.env.VITE_BASE_API_URL3;
 
 const KadesPage = () => {
     const [DataKades, setDataKades] = useState([]);
@@ -22,7 +24,7 @@ const KadesPage = () => {
 
     const getDataKades = async () => {
         try {
-            const res = await axios.get(`http://localhost:3555/api/v1/pimpinanDesa/get/kades/${id}`);
+            const res = await axios.get(`${port}v1/pimpinanDesa/get/kades/${id}`);
             setDataKades(res.data.data);
         } catch (err) {
             console.error(err);
@@ -31,7 +33,7 @@ const KadesPage = () => {
 
     const getDataAspirasi = async () => {
         try {
-            const res = await axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasiKades`);
+            const res = await axios.get(`${port2}v1/aspirasi/getAspirasiKades`);
             setDataAspirasi(res.data);
         } catch (err) {
             console.error(err);
@@ -52,7 +54,6 @@ const KadesPage = () => {
     }, [id]);
 
     const handleShowDetail = (surat, jenisSurat) => {
-        console.log(surat);
         setSelectedSurat(surat);
         setSelectedJenisSurat(jenisSurat);
         setShowModal(true);

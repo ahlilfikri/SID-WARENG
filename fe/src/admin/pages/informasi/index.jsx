@@ -4,8 +4,8 @@ import getToken from '../../../shared/functions/functions';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-const port = import.meta.env.VITE_BASE_API_URL2;
+const port = import.meta.env.VITE_BASE_API_URL;
+const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const InformasiControl = () => {
     const [dataInformasi, setDataInformasi] = useState([]);
@@ -15,13 +15,17 @@ const InformasiControl = () => {
     const [editForm, setEditForm] = useState({ title: '', content: '' });
     const [addForm, setAddForm] = useState({ title: '', content: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
+    const [status, setStatus] = useState('loading'); 
 
     const getDataInformasi = async () => {
+        setStatus('loading');
         try {
             const res = await axios.get(`${port}v1/informasi/get-informasi`);
             setDataInformasi(res.data.data);
+            setStatus('success');
         } catch (err) {
             console.error(err);
+            setStatus('error');
         }
     };
 
@@ -68,13 +72,11 @@ const InformasiControl = () => {
         formData.append('title', editForm.title);
         formData.append('content', editForm.content);
 
-        // Tambahkan gambar lama jika ada gambar baru yang dipilih
         if (newImages.length > 0) {
             const oldImages = currentInformasi.img || [];
             oldImages.forEach(img => formData.append('img', img));
             newImages.forEach(img => formData.append('img', img));
         } else {
-            // Jika tidak ada gambar baru, tetap tambahkan gambar lama ke form data
             const oldImages = currentInformasi.img || [];
             oldImages.forEach(img => formData.append('img', img));
         }
@@ -151,7 +153,7 @@ const InformasiControl = () => {
                                 <td>
                                     <div className="d-inline">
                                         {item.img.map((image, imgIndex) => {
-                                            const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                            const imageSrc = `${port2}${encodeURIComponent(image)}`;
                                             return (
                                                 <img
                                                     className='my-2'
@@ -183,7 +185,9 @@ const InformasiControl = () => {
         <Fragment>
             <h1 className='my-2 my-md-5'>Daftar Informasi</h1>
             <button className="btn btn-success mb-3" onClick={() => setIsAdding(true)}>Add Informasi</button>
-            {dataInformasi.length > 0 ? renderTable(dataInformasi) : <p>Loading...</p>}
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+            {status === 'success' && dataInformasi.length > 0 && renderTable(dataInformasi)}
 
             <EditModal
                 isEditing={isEditing}

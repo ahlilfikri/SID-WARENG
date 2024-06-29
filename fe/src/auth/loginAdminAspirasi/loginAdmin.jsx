@@ -17,7 +17,7 @@ const LoginAdmin = () => {
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:3555/api/v1/admin/login-admin', {
+            const res = await axios.post(`${port}v1/admin/login-admin`, {
                 name: name,
                 password: password
             });

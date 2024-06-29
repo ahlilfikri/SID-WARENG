@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ImageError from '../../../../assets/ImageErrorHandling.svg';
+const port = import.meta.env.VITE_BASE_API_URL4;
 
 const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentInformasi, handleDeleteImage, setSelectedImage }) => {
     const [newImages, setNewImages] = useState([]);
@@ -54,7 +55,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                                 <label>Images</label>
                                 <div>
                                     {currentInformasi.img && currentInformasi.img.map((image, imgIndex) => {
-                                        const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                        const imageSrc = `${port}${encodeURIComponent(image)}`;
                                         return (
                                             <div key={imgIndex} className="d-inline-block position-relative mx-1">
                                                 <img

@@ -1,11 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
-import getToken from '../../../shared/functions/functions';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-const port = import.meta.env.VITE_BASE_API_URL2;
+const port = import.meta.env.VITE_BASE_API_URL;
+const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const KegiatanControl = () => {
     const [dataKegiatan, setDataKegiatan] = useState([]);
@@ -15,13 +14,17 @@ const KegiatanControl = () => {
     const [editForm, setEditForm] = useState({ title: '', content: '', date: '', location: '' });
     const [addForm, setAddForm] = useState({ title: '', content: '', date: '', location: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
+    const [status, setStatus] = useState('loading');
 
     const getDataKegiatan = async () => {
+        setStatus('loading');
         try {
             const res = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
             setDataKegiatan(res.data.data);
+            setStatus('success');
         } catch (err) {
             console.error(err);
+            setStatus('error');
         }
     };
 
@@ -35,8 +38,7 @@ const KegiatanControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`${port}v1/kegiatan/delete-kegiatan/${id}`);
-            console.log(response);
+            await axios.delete(`${port}v1/kegiatan/delete-kegiatan/${id}`);
             getDataKegiatan();
         } catch (err) {
             console.error(err);
@@ -56,10 +58,8 @@ const KegiatanControl = () => {
 
     const handleDeleteImage = async (image) => {
         const updatedImages = currentKegiatan.img.filter(img => img !== image);
-        console.log(updatedImages);
         try {
-            const response = await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
-            console.log(response);
+            await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
             setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
             getDataKegiatan();
         } catch (err) {
@@ -74,7 +74,7 @@ const KegiatanControl = () => {
         formData.append('content', editForm.content);
         formData.append('date', editForm.date);
         formData.append('location', editForm.location);
-        
+
         if (newImages.length > 0) {
             const oldImages = currentKegiatan.img || [];
             oldImages.forEach(img => formData.append('img', img));
@@ -83,14 +83,13 @@ const KegiatanControl = () => {
             const oldImages = currentKegiatan.img || [];
             oldImages.forEach(img => formData.append('img', img));
         }
-        
+
         try {
-            const response = await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
+            await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response);
             setIsEditing(false);
             setCurrentKegiatan({});
             setEditForm({ title: '', content: '', date: '', location: '' });
@@ -99,7 +98,6 @@ const KegiatanControl = () => {
             console.error(err);
         }
     };
-
 
     const handleEditFormChange = (e) => {
         setEditForm({ ...editForm, [e.target.name]: e.target.value });
@@ -162,7 +160,7 @@ const KegiatanControl = () => {
                                 <td>
                                     <div className="d-inline">
                                         {item.img.map((image, imgIndex) => {
-                                            const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                            const imageSrc = `${port2}${encodeURIComponent(image)}`;
                                             return (
                                                 <img
                                                     className='my-2'
@@ -196,7 +194,9 @@ const KegiatanControl = () => {
         <Fragment>
             <h1 className='my-2 my-md-5'>Daftar Kegiatan</h1>
             <button className="btn btn-success mb-3" onClick={() => setIsAdding(true)}>Add Kegiatan</button>
-            {dataKegiatan.length > 0 ? renderTable(dataKegiatan) : <p>Loading...</p>}
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+            {status === 'success' && dataKegiatan.length > 0 && renderTable(dataKegiatan)}
 
             <EditModal
                 isEditing={isEditing}

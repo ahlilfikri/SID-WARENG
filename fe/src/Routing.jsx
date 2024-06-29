@@ -28,7 +28,7 @@ import getToken from "./shared/functions/functions";
 import DashboardAdmin from "./admin";
 
 import App from "./App";
-const port = import.meta.env.VITE_BASE_API_URL;
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
   const [userData, setUserData] = useState(null); // State untuk data pengguna

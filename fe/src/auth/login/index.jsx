@@ -4,6 +4,7 @@ import NavBar from '../../shared/layout/navBar';
 import Footer from '../../shared/layout/footer';
 import axios from 'axios';
 import './index.css';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const SignUp = () => {
         try {
             console.log('Sending request with data:', { name: name.toUpperCase(), password: password });
 
-            const res = await axios.post('http://localhost:3555/api/v1/warga/login', {
+            const res = await axios.post(`${port}v1/warga/login`, {
                 name: name.toUpperCase(),
                 password: password
             });

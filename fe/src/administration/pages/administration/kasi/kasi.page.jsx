@@ -3,9 +3,9 @@ import axios from 'axios';
 import './index.css';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
-
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const KasiPage = () => {
     const [DataKasi, setDataKasi] = useState([]);
@@ -14,17 +14,19 @@ const KasiPage = () => {
     const [condition, setCondition] = useState(false);
     const [activeTab, setActiveTab] = useState('comming');
     const [searchQuery, setSearchQuery] = useState('');
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/perangkatDesa/get/${id}`)
+        axios.get(`${port}v1/perangkatDesa/get/${id}`)
             .then((res) => {
                 setDataKasi(res.data.data);
-                console.log(DataKasi._id)
+                setStatus('success');
             })
             .catch((err) => {
                 console.error(err);
+                setStatus('error');
             });
     }, [id]);
 
@@ -105,10 +107,16 @@ const KasiPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'comming' && DataKasi.suratAcaraComing && DataKasi.suratAcaraComing.length > 0 ? renderTable(DataKasi.suratAcaraComing) : <p>Belum ada surat acara</p>}
-                {activeTab === 'pending' && DataKasi.suratAcaraPending && DataKasi.suratAcaraPending.length > 0 ? renderTable(DataKasi.suratAcaraPending) : <p>Belum ada surat yang tersedia</p>}
-                {activeTab === 'approved' && DataKasi.suratAcaraApproved && DataKasi.suratAcaraApproved.length > 0 ? renderTable(DataKasi.suratAcaraApproved) : <p>Belum ada surat yang tersedia</p>}
-                {activeTab === 'rejected' && DataKasi.suratAcaraRejected && DataKasi.suratAcaraRejected.length > 0 ? renderTable(DataKasi.suratAcaraRejected) : <p>Belum ada surat yang tersedia</p>}
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <>
+                        {activeTab === 'comming' && DataKasi.suratAcaraComing && DataKasi.suratAcaraComing.length > 0 ? renderTable(DataKasi.suratAcaraComing) : <p>Belum ada surat acara</p>}
+                        {activeTab === 'pending' && DataKasi.suratAcaraPending && DataKasi.suratAcaraPending.length > 0 ? renderTable(DataKasi.suratAcaraPending) : <p>Belum ada surat yang tersedia</p>}
+                        {activeTab === 'approved' && DataKasi.suratAcaraApproved && DataKasi.suratAcaraApproved.length > 0 ? renderTable(DataKasi.suratAcaraApproved) : <p>Belum ada surat yang tersedia</p>}
+                        {activeTab === 'rejected' && DataKasi.suratAcaraRejected && DataKasi.suratAcaraRejected.length > 0 ? renderTable(DataKasi.suratAcaraRejected) : <p>Belum ada surat yang tersedia</p>}
+                    </>
+                )}
                 <Footer type={3}></Footer>
             </div>
             {showModal && (

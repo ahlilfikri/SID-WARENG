@@ -5,6 +5,7 @@ import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const RwPage = () => {
     const [DataRw, setDataRw] = useState([]);
@@ -13,19 +14,20 @@ const RwPage = () => {
     const [condition, setCondition] = useState(false);
     const [activeTab, setActiveTab] = useState('comming');
     const [searchQuery, setSearchQuery] = useState('');
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/rw/get/${id}`)
+        axios.get(`${port}v1/rw/get/${id}`)
             .then((res) => {
                 setDataRw(res.data.data);
-                console.log(DataRw._id)
+                setStatus('success');
             })
             .catch((err) => {
                 console.error(err);
+                setStatus('error');
             });
-
     }, [id]);
 
     const handleShowDetail = (surat) => {
@@ -105,11 +107,17 @@ const RwPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'comming' && DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Belum ada surat acara</p>}
-                {activeTab === 'pending' && DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Belum ada surat acara</p>}
-                {activeTab === 'approved' && DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Belum ada surat acara</p>}
-                {activeTab === 'rejected' && DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Belum ada surat acara</p>}
-                <Footer type={3}></Footer> 
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <>
+                        {activeTab === 'comming' && DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Belum ada surat acara</p>}
+                        {activeTab === 'pending' && DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Belum ada surat acara</p>}
+                        {activeTab === 'approved' && DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Belum ada surat acara</p>}
+                        {activeTab === 'rejected' && DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Belum ada surat acara</p>}
+                    </>
+                )}
+                <Footer type={3}></Footer>
             </div>
             {showModal && (
                 <PopUpDetailSurat

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
 import getToken from '../../../shared/functions/functions';
-import PopUpDetailAspirasi from './component/PopUpDetailAspirasi'; // Import the new popup component
+import PopUpDetailAspirasi from './component/PopUpDetailAspirasi';
+
 const port = import.meta.env.VITE_BASE_API_URL3;
 
 const AspirasiControl = () => {
@@ -11,15 +12,19 @@ const AspirasiControl = () => {
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'asc' });
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
 
     const getDataAspirasi = async () => {
+        setStatus('loading');
         try {
             const res = await axios.get(`${port}v1/aspirasi/getAspirasiAdmin`);
             setDataAspirasi(res.data);
+            setStatus('success');
         } catch (err) {
             console.error(err);
+            setStatus('error');
         }
     };
 
@@ -136,12 +141,14 @@ const AspirasiControl = () => {
                     />
                 </div>
             </div>
-            {dataAspirasi && renderTable(dataAspirasi)}
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+            {status === 'success' && dataAspirasi && renderTable(dataAspirasi)}
             {showModal && (
                 <PopUpDetailAspirasi
                     surat={selectedSurat}
                     handleCloseModal={handleCloseModal}
-                    refreshData={getDataAspirasi} // Pass the refresh function to the popup component
+                    refreshData={getDataAspirasi}
                 />
             )}
         </>

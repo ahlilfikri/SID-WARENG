@@ -7,8 +7,8 @@ const port = import.meta.env.VITE_BASE_API_URL2;
 const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const [editAble, setEditAble] = useState(false);
     const [isiAcara, setIsiAcara] = useState(surat.isiAcara || []);
-
     const [detailSurat, setDetailSurat] = useState(null);
+    const [status, setStatus] = useState('loading'); // loading, success, error
 
     const connditionEditAble = () => {
         if (
@@ -18,12 +18,12 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         ) {
             setEditAble(true);
         }
-    
-    }
+    };
+
     useEffect(() => {
         fetchDetailSurat();
         connditionEditAble();
-    }, [ surat.jenisSurat, surat.subSuratId ]);
+    }, [surat.jenisSurat, surat.subSuratId]);
 
     const handleIsiAcaraChange = (index, event) => {
         const newIsiAcara = [...isiAcara];
@@ -47,8 +47,10 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
             const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
             console.log("Detail surat: ", request.data.data); 
             setDetailSurat(request.data.data);
+            setStatus('success');
         } catch (err) {
             console.error("Error fetching detail surat: ", err);
+            setStatus('error');
         }
     };
 
@@ -75,21 +77,22 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                             <button type="button" className="btn-close" onClick={handleCloseModal}></button>
                         </div>
                         <div className="modal-body">
-                            <p>Nomor Surat: {surat.nomorSurat? surat.nomorSurat: "Belum ada nomor surat"}</p>
+                            <p>Nomor Surat: {surat.nomorSurat ? surat.nomorSurat : "Belum ada nomor surat"}</p>
                             <p>Nama Acara: {surat.nameAcara}</p>
                             <p>Jenis Surat: {surat.jenisSurat}</p>
                             <p>Status: {surat.statusAcara}</p>
                             <p>Status Persetujuan: {surat.statusPersetujuan}</p>
-                            <div>isi Acara: 
+                            <div>Isi Acara:
                                 <ul>
-
-                                {isiAcara.map((isi, index) => (
-                                    <li key={index}>{isi}</li>
-                                ))}
+                                    {isiAcara.map((isi, index) => (
+                                        <li key={index}>{isi}</li>
+                                    ))}
                                 </ul>
                             </div>
                             <p>Detail Surat:</p>
-                            {detailSurat ? (
+                            {status === 'loading' && <p>Loading...</p>}
+                            {status === 'error' && <p>Data tidak dapat dimuat.</p>}
+                            {status === 'success' && detailSurat && (
                                 <ul>
                                     {Object.entries(detailSurat)
                                         .filter(([key]) => key !== '_id' && key !== '__v')
@@ -99,11 +102,8 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                                             </li>
                                         ))}
                                 </ul>
-                            ) : (
-                                <p>Loading...</p>
                             )}
                             {editAble && (
-                                console.log("Editable", editAble),  // Added log to check if editable
                                 <div>
                                     {isiAcara.map((isi, index) => (
                                         <div className="form-group" key={index}>
@@ -141,7 +141,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
             </div>
         </>
     );
-}
+};
 
 DetailSuratWarga.propTypes = {
     surat: PropTypes.object.isRequired,

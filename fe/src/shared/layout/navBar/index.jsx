@@ -6,6 +6,7 @@ import LoginIcon from './assets/LoginIcon.svg';
 import axios from 'axios';
 import './index.css';
 import getToken from '../../functions/functions.jsx';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const Navbar = ({ type }) => {
     const location = useLocation();
@@ -23,7 +24,7 @@ const Navbar = ({ type }) => {
 
     const handleLogout = async () => {
         try{
-            const res = await axios.post(`http://localhost:3555/api/v1/warga/logout/${id}`);
+            const res = await axios.post(`${port}v1/warga/logout/${id}`);
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login');
@@ -43,7 +44,7 @@ const Navbar = ({ type }) => {
             }
 
             try {
-                const res = await axios.get(`http://localhost:3555/api/v1/user/get/${id}`, {
+                const res = await axios.get(`${port}v1/user/get/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -61,7 +62,7 @@ const Navbar = ({ type }) => {
             }
 
             try {
-                const res = await axios.get(`http://localhost:3555/api/v1/admin/get-admin/${id}`, {
+                const res = await axios.get(`${port}v1/admin/get-admin/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

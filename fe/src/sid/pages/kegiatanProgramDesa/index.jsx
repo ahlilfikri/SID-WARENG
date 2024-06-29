@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Logo from '../../../assets/LogoWareng.svg';
 
 const port = import.meta.env.VITE_BASE_API_URL;
+const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const KegiatanProgramDesa = () => {
     const [data, setData] = useState([]);
@@ -129,12 +130,12 @@ const KegiatanProgramDesa = () => {
                                 <button className="btn btn-success" onClick={handleReset}>Reset</button>
                             </div>
                         </div>
-                        {status === 'loading' && <p>Loading...</p>}
-                        {status === 'error' && <p>Data Tidak Berhasil Ditampilkan</p>}
+                        {status === 'loading' && <p className="text-center">Loading...</p>}
+                        {status === 'error' && <p className="text-center text-danger">Data tidak berhasil ditampilkan.</p>}
                         {status === 'success' && data && data.length > 0 ? (
                             <div className="row">
                                 {data && Array.isArray(data) && data.map((item, index) => {
-                                    const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img[0])}`;
+                                    const imageSrc = `${port2}${encodeURIComponent(item.img[0])}`;
                                     return (
                                         <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }} key={index}>
                                             <div>
@@ -163,7 +164,7 @@ const KegiatanProgramDesa = () => {
                                 })}
                             </div>
                         ) : (
-                            <div>No data available</div>
+                            <div className="text-center">Tidak ada data tersedia.</div>
                         )}
                     </div>
                     <div className="col-0 col-md-1"></div>

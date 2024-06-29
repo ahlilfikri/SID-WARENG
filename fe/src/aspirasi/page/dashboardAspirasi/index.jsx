@@ -5,6 +5,8 @@ import Footer from '../../../shared/layout/footer';
 import axios from 'axios';
 import getToken from '../../../administration/pages/administration/shared/functions';
 import './index.css';
+const port = import.meta.env.VITE_BASE_API_URL2;
+const port2 = import.meta.env.VITE_BASE_API_URL3;
 
 const Aspirasi = () => {
     const [warga, setWarga] = useState([]);
@@ -21,7 +23,7 @@ const Aspirasi = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
+        axios.get(`${port}v1/warga/get/${id}`)
             .then((res) => {
                 setWarga(res.data.data);
                 console.log(res.data.data._id);
@@ -34,7 +36,7 @@ const Aspirasi = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3557/api/v1/aspirasi/postAspirasi/${warga._id}`, data);
+            const response = await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
             setData({
                 aspirasi: '',

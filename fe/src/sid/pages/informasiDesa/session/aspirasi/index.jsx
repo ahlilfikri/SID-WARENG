@@ -11,23 +11,27 @@ const port = import.meta.env.VITE_BASE_API_URL3;
 const AspirasiDesa = () => {
     const [data, setData] = useState([]);
     const [slidesToShow, setSlidesToShow] = useState(3);
+    const [status, setStatus] = useState('');
 
     const GetFromAPI = async () => {
+        setStatus('loading');
         try {
             const response = await axios.get(`${port}v1/aspirasi/getAspirasiApproved`);
             const data = response.data;
             setData(data);
             
             console.log(data.length);
-            if (data.length == 1) {
+            if (data.length === 1) {
                 setSlidesToShow(1);
-            } else if (data.length == 2) {
+            } else if (data.length === 2) {
                 setSlidesToShow(2);
             } else {
                 setSlidesToShow(3);
             }
+            setStatus('success');
         } catch (error) {
             console.log(error.message);
+            setStatus('error');
         }
     };
 
@@ -39,9 +43,11 @@ const AspirasiDesa = () => {
         <Fragment>
             <div className="container-fluid aspirasi-desa-container mb-0 mb-md-5">
                 <p>Aspirasi Desa</p>
-                <Slider {...getSettings(slidesToShow)}>
-                    {data.map((item, index) => {
-                        return (
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <Slider {...getSettings(slidesToShow)}>
+                        {data.map((item, index) => (
                             <div key={index}>
                                 <div className="card aspirasi-desa-card m-3 py-4 mx-2" style={{ borderRadius: '1vw', border: '1px solid #00917C', transition: 'transform 0.3s ease' }}>
                                     <div className="row">
@@ -56,9 +62,9 @@ const AspirasiDesa = () => {
                                 </div>
                                 <div className="col-1"></div>
                             </div>
-                        );
-                    })}
-                </Slider>
+                        ))}
+                    </Slider>
+                )}
             </div>
         </Fragment>
     )

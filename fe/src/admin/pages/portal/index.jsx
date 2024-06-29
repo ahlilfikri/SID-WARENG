@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
-import getToken from '../../../shared/functions/functions';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-const port = import.meta.env.VITE_BASE_API_URL2;
+
+const port = import.meta.env.VITE_BASE_API_URL;
+const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const PortalControl = () => {
     const [dataPortal, setDataPortal] = useState([]);
@@ -15,13 +15,17 @@ const PortalControl = () => {
     const [editForm, setEditForm] = useState({ title: '', content: '', isi: '', newImages: null });
     const [addForm, setAddForm] = useState({ title: '', content: '', isi: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
+    const [status, setStatus] = useState('loading'); 
 
     const getDataPortal = async () => {
+        setStatus('loading');
         try {
             const res = await axios.get(`${port}v1/portal/get-portal`);
             setDataPortal(res.data.data);
+            setStatus('success');
         } catch (err) {
             console.error(err);
+            setStatus('error');
         }
     };
 
@@ -35,8 +39,7 @@ const PortalControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`${port}v1/portal/delete-portal/${id}`);
-            console.log(response);
+            await axios.delete(`${port}v1/portal/delete-portal/${id}`);
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -50,14 +53,14 @@ const PortalControl = () => {
             title: portal.title,
             content: portal.content,
             isi: portal.isi,
-            newImages: null, // Reset newImages pada form edit
+            newImages: null,
         });
     };
 
     const handleDeleteImage = async (image) => {
         const updatedImages = currentPortal.img.filter(img => img !== image);
         try {
-            const response = await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
+            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
             setCurrentPortal({ ...currentPortal, img: updatedImages });
             getDataPortal();
         } catch (err) {
@@ -72,14 +75,12 @@ const PortalControl = () => {
         formData.append('content', editForm.content);
         formData.append('isi', editForm.isi);
 
-        // Tambahkan gambar lama jika ada gambar baru yang dipilih
         if (editForm.newImages && editForm.newImages.length > 0) {
             currentPortal.img.forEach(img => formData.append('img', img));
             for (let i = 0; i < editForm.newImages.length; i++) {
                 formData.append('img', editForm.newImages[i]);
             }
         } else {
-            // Jika tidak ada gambar baru, tetap tambahkan gambar lama ke form data
             currentPortal.img.forEach(img => formData.append('img', img));
         }
 
@@ -159,7 +160,7 @@ const PortalControl = () => {
                                     <div className="d-inline">
                                         {item.img && item.img.length > 0 ? (
                                             item.img.map((image, imgIndex) => {
-                                                const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(image)}`;
+                                                const imageSrc = `${port2}${encodeURIComponent(image)}`;
                                                 return (
                                                     <img
                                                         className='my-2'
@@ -194,7 +195,9 @@ const PortalControl = () => {
         <Fragment>
             <h1 className='my-2 my-md-5'>Daftar Portal</h1>
             <button className="btn btn-success mb-3" onClick={() => setIsAdding(true)}>Add Portal</button>
-            {dataPortal.length > 0 ? renderTable(dataPortal) : <p>Loading...</p>}
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+            {status === 'success' && dataPortal.length > 0 && renderTable(dataPortal)}
 
             <EditModal
                 isEditing={isEditing}
