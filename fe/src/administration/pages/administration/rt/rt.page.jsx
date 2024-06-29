@@ -89,7 +89,7 @@ const RtPage = () => {
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="pending">Surat Acara Pending</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan</option>
                             <option value="approved">Surat Acara Disetujui</option>
                             <option value="rejected">Surat Acara Ditolak</option>
                         </select>
@@ -108,9 +108,9 @@ const RtPage = () => {
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
                 {status === 'success' && (
                     <>
-                        {activeTab === 'pending' && DataRt.suratAcaraPending && DataRt.suratAcaraPending.length > 0 ? renderTable(DataRt.suratAcaraPending) : <p>Tidak ada surat yang tersedia</p>}
-                        {activeTab === 'approved' && DataRt.suratAcaraApproved && DataRt.suratAcaraApproved.length > 0 ? renderTable(DataRt.suratAcaraApproved) : <p>Tidak ada surat yang disetujui</p>}
-                        {activeTab === 'rejected' && DataRt.suratAcaraRejected && DataRt.suratAcaraRejected.length > 0 ? renderTable(DataRt.suratAcaraRejected) : <p>Tidak ada surat yang ditolak</p>}
+                        {activeTab === 'pending' && DataRt.suratAcaraPending && (DataRt.suratAcaraPending.length > 0 ? renderTable(DataRt.suratAcaraPending) : <p>Tidak ada surat acara yang menunggu persetujuan</p>)}
+                        {activeTab === 'approved' && DataRt.suratAcaraApproved && (DataRt.suratAcaraApproved.length > 0 ? renderTable(DataRt.suratAcaraApproved) : <p>Tidak ada surat acara yang disetujui</p>)}
+                        {activeTab === 'rejected' && DataRt.suratAcaraRejected && (DataRt.suratAcaraRejected.length > 0 ? renderTable(DataRt.suratAcaraRejected) : <p>Tidak ada surat acara yang ditolak</p>)}
                     </>
                 )}
                 <Footer type={3}></Footer>

@@ -46,7 +46,7 @@ const Portal = () => {
             <div className="container-fluid portal-container p-0">
                 <div className="container-fluid portal-container-background pb-3 pb-md-0 p-0">
                     <Navbar type={0}></Navbar>
-                    <h1 className='text-center text-light pt-5 pb-2'>Portal Web Pemerintah Daerah</h1>
+                    <h1 className='text-center pt-5 pb-2' style={{color: '#006254'}}>Portal Web Pemerintah Daerah</h1>
                     {status === 'loading' && (
                         <p className="text-center mt-5">Loading...</p>
                     )}

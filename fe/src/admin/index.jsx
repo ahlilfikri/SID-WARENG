@@ -53,8 +53,8 @@ const Dashboard = () => {
                                 </p>
                                 <p href="#"
                                     style={{cursor:'pointer'}} 
-                                   className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Portal' ? 'active' : ''}`} 
-                                   onClick={() => handleActiveTab('Kontrol_pengguna')}>
+                                   className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Kontrol' ? 'active' : ''}`} 
+                                   onClick={() => handleActiveTab('Kontrol')}>
                                     Kontrol pengguna
                                 </p>
                             </div>
@@ -65,7 +65,7 @@ const Dashboard = () => {
                         {activeTab === 'Informasi' && <InformasiControl />}
                         {activeTab === 'Kegiatan' && <KegiatanControl />}
                         {activeTab === 'Portal' && <PortalControl />}
-                        {activeTab === 'Kontrol_pengguna' && <Kontrol_pengguna />}
+                        {activeTab === 'Kontrol' && <Kontrol_pengguna />}
                     </div>
                 </div>
             </div>

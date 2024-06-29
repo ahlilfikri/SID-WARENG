@@ -1,9 +1,10 @@
-const {getUserByIdDecrypt,getAllUser,getPaginateUser,getUserById,postUser,postManyUser,updateuserById,deleteUserById} = 
+const {getUserByName,getUserByIdDecrypt,getAllUser,getPaginateUser,getUserById,postUser,postManyUser,updateuserById,deleteUserById} = 
 require('../../controllers/userController/userController');
 const express = require('express');
 const Router = express.Router();
 
 Router.get('/get',getAllUser);
+Router.get('/get-name',getUserByName);
 Router.get('/get/paginate',getPaginateUser);
 Router.get('/get/:id',getUserById);
 

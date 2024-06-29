@@ -90,8 +90,8 @@ const RwPage = () => {
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="comming">Surat Acara Comming</option>
-                            <option value="pending">Surat Acara Pending</option>
+                            <option value="comming">Surat Acara Akan Datang</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan</option>
                             <option value="approved">Surat Acara Disetujui</option>
                             <option value="rejected">Surat Acara Ditolak</option>
                         </select>
@@ -110,10 +110,10 @@ const RwPage = () => {
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
                 {status === 'success' && (
                     <>
-                        {activeTab === 'comming' && DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Belum ada surat acara</p>}
-                        {activeTab === 'pending' && DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Belum ada surat acara</p>}
-                        {activeTab === 'approved' && DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Belum ada surat acara</p>}
-                        {activeTab === 'rejected' && DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Belum ada surat acara</p>}
+                        {activeTab === 'comming' && DataRw.suratAcaraComing && (DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Tidak ada surat acara akan datang</p>)}
+                        {activeTab === 'pending' && DataRw.suratAcaraPending && (DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Tidak ada surat acara menunggu persetujuan</p>)}
+                        {activeTab === 'approved' && DataRw.suratAcaraApproved && (DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Tidak ada surat acara disetujui</p>)}
+                        {activeTab === 'rejected' && DataRw.suratAcaraDitolak && (DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Tidak ada surat acara ditolak</p>)}
                     </>
                 )}
                 <Footer type={3}></Footer>

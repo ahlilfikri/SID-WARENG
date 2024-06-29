@@ -172,10 +172,10 @@ const KadesPage = () => {
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="comming">Surat Acara Comming</option>
-                            <option value="pending">Surat Acara Pending</option>
-                            <option value="approved">Surat Acara Approved</option>
-                            <option value="rejected">Surat Acara Rejected</option>
+                            <option value="comming">Surat Acara Akan Datang</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan </option>
+                            <option value="approved">Surat Acara Disetujui</option>
+                            <option value="rejected">Surat Acara Ditolak</option>
                             <option value="aspirasi">Aspirasi</option>
                         </select>
                     </div>
@@ -189,10 +189,10 @@ const KadesPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'comming' && DataKades.suratAcaraComing && renderTable(DataKades.suratAcaraComing)}
-                {activeTab === 'pending' && DataKades.suratAcaraPending && renderTable(DataKades.suratAcaraPending)}
-                {activeTab === 'approved' && DataKades.suratAcaraApproved && renderTable(DataKades.suratAcaraApproved)}
-                {activeTab === 'rejected' && DataKades.suratAcaraRejected && renderTable(DataKades.suratAcaraRejected)}
+                {activeTab === 'comming' && DataKades.suratAcaraComing && (DataKades.suratAcaraComing.length > 0 ? renderTable(DataKades.suratAcaraComing) : <p>Tidak ada surat acara akan datang</p> )}
+                {activeTab === 'pending' && DataKades.suratAcaraPending && (DataKades.suratAcaraPending.length > 0 ? renderTable(DataKades.suratAcaraPending) : <p>Tidak ada surat menunggu persetujuan</p>)}
+                {activeTab === 'approved' && DataKades.suratAcaraApproved && (DataKades.suratAcaraApproved.length > 0 ? renderTable(DataKades.suratAcaraApproved) : <p>Tidak ada surat disetujui</p>)}
+                {activeTab === 'rejected' && DataKades.suratAcaraRejected && (DataKades.suratAcaraRejected.length > 0 ? renderTable(DataKades.suratAcaraRejected) : <p>Tidak ada surat ditolak</p>)}
                 {activeTab === 'aspirasi' && dataAspirasi && renderTable(dataAspirasi, true)}
                 <Footer type={3}></Footer> 
             </div>
