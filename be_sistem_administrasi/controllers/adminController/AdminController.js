@@ -323,3 +323,48 @@ exports.postPimpinanDesa = async (req,res) => {
         });
     }
 };
+
+
+/// count All document user
+exports.countAllDocument = async (req,res) => {
+    try{
+        const totalUser = await userModel.countDocuments();
+        const totalWarga = await WargaModel.countDocuments();
+        const totalRt = await rtModel.countDocuments();
+        const totalRw = await rwModel.countDocuments();
+        const totalPerangkatDesa = await pdModel.countDocuments();  
+        const totalPimpinanDesa = await ppModel.countDocuments();
+
+        res.status(200).send({
+            message: "Success get total document",
+            totalUser,
+            totalWarga,
+            totalRt,
+            totalRw,
+            totalPerangkatDesa,
+            totalPimpinanDesa
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while creating warga."
+        });
+    }
+};
+
+
+// count All surat acara
+exports.countAllSurat = async (req,res) => {
+    try{
+        const totalSuratAcara = await db.suratAcara.countDocuments();
+        res.status(200).send({
+            message: "Success get total surat acara",
+            totalSurat : totalSuratAcara
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while creating warga."
+        });
+    }
+};

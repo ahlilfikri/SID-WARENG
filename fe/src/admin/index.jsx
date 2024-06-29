@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Footer from "../shared/layout/footer";
 import Navbar from "../shared/layout/navBar";
 import AspirasiControl from "./pages/aspirasi";
 import InformasiControl from "./pages/informasi";
 import KegiatanControl from "./pages/kegiatan";
 import PortalControl from "./pages/portal";
+import Kontrol_pengguna from "./pages/kontrol/index"
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('Aspirasi');
@@ -50,6 +51,12 @@ const Dashboard = () => {
                                    onClick={() => handleActiveTab('Portal')}>
                                     Portal
                                 </p>
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
+                                   className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'Portal' ? 'active' : ''}`} 
+                                   onClick={() => handleActiveTab('Kontrol_pengguna')}>
+                                    Kontrol pengguna
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -58,6 +65,7 @@ const Dashboard = () => {
                         {activeTab === 'Informasi' && <InformasiControl />}
                         {activeTab === 'Kegiatan' && <KegiatanControl />}
                         {activeTab === 'Portal' && <PortalControl />}
+                        {activeTab === 'Kontrol_pengguna' && <Kontrol_pengguna />}
                     </div>
                 </div>
             </div>

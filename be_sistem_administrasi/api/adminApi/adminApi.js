@@ -1,4 +1,4 @@
-const {loginAdmin,logoutAdmin,postAdmin,getAdminById,updateAdmin,deleteAdmin,postWarga,postRt,postRw,postPerangkatDesa,postPimpinanDesa}=
+const {loginAdmin,logoutAdmin,postAdmin,getAdminById,updateAdmin,deleteAdmin,postWarga,postRt,postRw,postPerangkatDesa,postPimpinanDesa,countAllDocument,countAllSurat}=
 require('../../controllers/adminController/AdminController');
 const express = require('express');
 const Router = express.Router();
@@ -16,6 +16,10 @@ Router.post('/makeRt/:idUser',postRt);
 Router.post('/makeRw/:idUser',postRw);
 Router.post('/makePerangkatdesa/:idUser',postPerangkatDesa);
 Router.post('/makePimpinandesa/:idUser',postPimpinanDesa);
+
+//adshboard admin
+Router.get('/count-all-document',countAllDocument);
+Router.get('/count-all-surat-acara',countAllSurat);
 
 
 module.exports = Router;
@@ -35,3 +39,6 @@ module.exports = Router;
 // make rw : http://localhost:3555/api/v1/admin/makeRw/:idUser
 // make perangkat desa : http://localhost:3555/api/v1/admin/makePerangkatdesa/:idUser
 // make pimpinan desa : http://localhost:3555/api/v1/admin/makePimpinandesa/:idUser
+
+// count all document : http://localhost:3555/api/v1/admin/count-all-document
+// count all surat acara : http://localhost:3555/api/v1/admin/count-all-surat-acara
