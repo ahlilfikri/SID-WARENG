@@ -25,10 +25,20 @@ const AddModal = ({ isAdding, setIsAdding, addForm, handleAddFormChange, handleS
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Content</label>
+                                <label>Link</label>
                                 <textarea
                                     name="content"
                                     value={addForm.content}
+                                    onChange={handleAddFormChange}
+                                    className="form-control"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Isi</label>
+                                <textarea
+                                    name="isi"
+                                    value={addForm.isi}
                                     onChange={handleAddFormChange}
                                     className="form-control"
                                     required

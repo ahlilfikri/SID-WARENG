@@ -31,10 +31,20 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Content</label>
+                                <label>Link</label>
                                 <textarea
                                     name="content"
                                     value={editForm.content}
+                                    onChange={handleEditFormChange}
+                                    className="form-control"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Isi</label>
+                                <textarea
+                                    name="isi"
+                                    value={editForm.isi}
                                     onChange={handleEditFormChange}
                                     className="form-control"
                                     required

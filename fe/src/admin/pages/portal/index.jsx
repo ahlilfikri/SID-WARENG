@@ -11,8 +11,8 @@ const PortalControl = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [currentPortal, setCurrentPortal] = useState({});
-    const [editForm, setEditForm] = useState({ title: '', content: '' });
-    const [addForm, setAddForm] = useState({ title: '', content: '', img: null });
+    const [editForm, setEditForm] = useState({ title: '', content: '', isi: '' });
+    const [addForm, setAddForm] = useState({ title: '', content: '', isi: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
 
     const getDataPortal = async () => {
@@ -48,6 +48,7 @@ const PortalControl = () => {
         setEditForm({
             title: portal.title,
             content: portal.content,
+            isi: portal.isi,
         });
     };
 
@@ -69,7 +70,7 @@ const PortalControl = () => {
             await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, editForm);
             setIsEditing(false);
             setCurrentPortal({});
-            setEditForm({ title: '', content: '' });
+            setEditForm({ title: '', content: '', isi: '' });
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -93,6 +94,7 @@ const PortalControl = () => {
         const formData = new FormData();
         formData.append('title', addForm.title);
         formData.append('content', addForm.content);
+        formData.append('isi', addForm.isi);
         for (let i = 0; i < addForm.img.length; i++) {
             formData.append('img', addForm.img[i]);
         }
@@ -104,7 +106,7 @@ const PortalControl = () => {
                 },
             });
             setIsAdding(false);
-            setAddForm({ title: '', content: '', img: null });
+            setAddForm({ title: '', content: '', isi: '', img: null });
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -118,7 +120,8 @@ const PortalControl = () => {
                     <tr>
                         <th>#</th>
                         <th>Title</th>
-                        <th>Content</th>
+                        <th>Link</th>
+                        <th>Isi</th>
                         <th>Images</th>
                         <th>Actions</th>
                     </tr>
@@ -129,6 +132,7 @@ const PortalControl = () => {
                             <td>{index + 1}</td>
                             <td>{item.title}</td>
                             <td>{item.content}</td>
+                            <td>{item.isi}</td>
                             <td>
                                 <div className="d-inline">
                                     {item.img.map((image, imgIndex) => {
