@@ -21,10 +21,18 @@ const Navbar = ({ type }) => {
 
     const id = getToken();
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login', { replace: true });
-        window.location.reload();
+    const handleLogout = async () => {
+        try{
+            const res = await axios.post(`http://localhost:3555/api/v1/warga/logout/${id}`);
+            if (res.status === 200) {
+                localStorage.removeItem('token');
+                navigate('/login');
+            }else{
+                console.log(res);
+            }
+        } catch (err) {
+            console.error(err);
+        } 
     };
 
     useEffect(() => {
