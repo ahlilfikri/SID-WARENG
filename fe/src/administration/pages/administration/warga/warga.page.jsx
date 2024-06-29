@@ -51,6 +51,8 @@ const WargaPage = () => {
         return isPending ? 'Pending' : 'Selesai';
     }
 
+    
+
     useEffect(() => {
         GetDataWarga();
         GetDataAspirasiWarga();
