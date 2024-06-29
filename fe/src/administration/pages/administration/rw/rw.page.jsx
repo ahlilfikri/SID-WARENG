@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const RwPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [DataRw, setDataRw] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);

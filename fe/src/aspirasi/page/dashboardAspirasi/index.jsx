@@ -1,14 +1,13 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import NavBar from '../../../shared/layout/navBar';
 import Footer from '../../../shared/layout/footer';
 import axios from 'axios';
 import getToken from '../../../administration/pages/administration/shared/functions';
 import './index.css';
-const port = import.meta.env.VITE_BASE_API_URL2;
-const port2 = import.meta.env.VITE_BASE_API_URL3;
 
 const Aspirasi = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL3;
     const [warga, setWarga] = useState([]);
     const [data, setData] = useState({
         aspirasi: '',

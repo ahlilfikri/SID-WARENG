@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from 'axios';
 
-const Port = import.meta.env.VITE_BASE_API_URL;
-
 const VisiMisi = () => {
+    const Port = import.meta.env.VITE_BASE_API_URL;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading'); // Menambahkan state status
 

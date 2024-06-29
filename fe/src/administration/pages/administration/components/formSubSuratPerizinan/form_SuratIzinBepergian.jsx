@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const FormSuratIzinBepergian = ({ handleCloseModal }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [warga, setWarga] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

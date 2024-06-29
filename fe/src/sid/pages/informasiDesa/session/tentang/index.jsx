@@ -6,10 +6,10 @@ import Facebook from "../../assets/LogoIconFacebookFooter.png";
 import ImageTentang from './component/imageTentang';
 import axios from 'axios';
 
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const Tentang = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading');
 

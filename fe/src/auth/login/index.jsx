@@ -4,9 +4,9 @@ import NavBar from '../../shared/layout/navBar';
 import Footer from '../../shared/layout/footer';
 import axios from 'axios';
 import './index.css';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const SignUp = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [formData, setFormData] = useState({
         name: '',
         password: ''

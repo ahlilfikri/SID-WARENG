@@ -6,9 +6,9 @@ import LoginIcon from './assets/LoginIcon.svg';
 import axios from 'axios';
 import './index.css';
 import getToken from '../../functions/functions.jsx';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const Navbar = ({ type }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const location = useLocation();
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);

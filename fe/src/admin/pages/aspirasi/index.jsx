@@ -4,9 +4,9 @@ import './index.css';
 import getToken from '../../../shared/functions/functions';
 import PopUpDetailAspirasi from './component/PopUpDetailAspirasi';
 
-const port = import.meta.env.VITE_BASE_API_URL3;
 
 const AspirasiControl = () => {
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);

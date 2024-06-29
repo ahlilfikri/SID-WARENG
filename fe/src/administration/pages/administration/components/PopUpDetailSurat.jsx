@@ -6,9 +6,9 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [detailSurat, setDetailSurat] = useState(null);
     const [status, setStatus] = useState('loading'); // Default loading state
 

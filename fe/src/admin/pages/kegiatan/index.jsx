@@ -3,10 +3,10 @@ import axios from 'axios';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const KegiatanControl = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [dataKegiatan, setDataKegiatan] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);

@@ -13,10 +13,10 @@ import FormSuratKeteranganKelahiran from '../components/formSubSuratPerizinan/fo
 import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
 import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
 import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
-const port = import.meta.env.VITE_BASE_API_URL2;
-const port2 = import.meta.env.VITE_BASE_API_URL3;
 
 const WargaPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL3;
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState([]);

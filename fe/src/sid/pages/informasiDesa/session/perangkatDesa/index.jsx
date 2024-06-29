@@ -6,10 +6,10 @@ import axios from 'axios';
 import ImageError from '../../../../../assets/ImageErrorHandling.svg';
 import Setting from '../../../../constant/carouselSertting2';
 
-const port = import.meta.env.VITE_BASE_API_URL2;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const PerangkatDesa = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading'); // Menambahkan state status
 
@@ -61,10 +61,10 @@ const PerangkatDesa = () => {
                                     <div className="card perangkat-desa-card mx-2" style={{ borderRadius: '1vw', border: '1px solid #00917C', transition: 'transform 0.3s ease', minWidth: '30vw' }}>
                                         <div className="row p-0">
                                             <div className="col-5 p-0">
-                                                <img src={imageSrc} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover', borderTopLeftRadius: '1vw', borderBottomLeftRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
+                                                <img src={imageSrc} alt="" style={{ height: '100%', width: '100%', marginLeft: '12px', objectFit: 'cover', borderTopLeftRadius: '1vw', borderBottomLeftRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
                                             </div>
                                             <div className="col-6 p-0">
-                                                <div className="content p-2">
+                                                <div className="content p-2" style={{marginLeft: '12px'}}>
                                                     <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '27px' }}>{item.user.name}</p>
                                                     <p style={{ fontFamily: 'poppins', fontSize: '14px' }}>{roleToString(item.user.role)}</p>
                                                     <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.status}</p>

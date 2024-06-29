@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-const port = import.meta.env.VITE_BASE_API_URL3;
 
 const PopUpDetailAspirasi = ({ surat, handleCloseModal, refreshData }) => {
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

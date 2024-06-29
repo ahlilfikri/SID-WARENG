@@ -4,10 +4,10 @@ import getToken from '../../../shared/functions/functions';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const InformasiControl = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [dataInformasi, setDataInformasi] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);

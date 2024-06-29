@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const FormPerizinanSurat = ({ handleCloseModal }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [warga, setWarga] = useState('');
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',

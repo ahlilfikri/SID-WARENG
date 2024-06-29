@@ -7,10 +7,10 @@ import axios from 'axios';
 import ImageError from '../../../../../assets/ImageErrorHandling.svg';
 import getSettings from '../../../../constant/carouselSertting';
 
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const KegiatanDesa = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [data, setData] = useState([]);
     const [slidesToShow, setSlidesToShow] = useState(3);
     const [status, setStatus] = useState('');

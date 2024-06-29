@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Button, Spinner, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const BypassSurat = ({ suratAcaraId, role }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');

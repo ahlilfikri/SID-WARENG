@@ -5,15 +5,14 @@ import Navbar from "../../../shared/layout/navBar";
 import axios from 'axios';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const DetailKegiatanDesa = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [SM, setSM] = useState(window.innerWidth <= 768);
     const [data, setData] = useState({});
-    const [status, setStatus] = useState('loading'); // Menambahkan state status
+    const [status, setStatus] = useState('loading');
     const { id } = useParams();
-    const [imageSrc, setImageSrc] = useState(null);
 
     const GetFromAPI = async () => {
         setStatus('loading');
@@ -52,17 +51,17 @@ const DetailKegiatanDesa = () => {
     }, []);
 
     useEffect(() => {
-        if (data.img && data.img.length > 0) {
-            setImageSrc(`${port2}${encodeURIComponent(data.img[0])}`);
+        if (data.img && data.img.length > 1) {
+            console.log(data.img);
         }
     }, [data]);
 
     return (
         <Fragment>
-            <div className="container-fluid informasi-desa-container" style={{ overflow: 'hidden' }}>
+            <div className="container-fluid informasi-desa-container p-0" style={{ overflow: 'hidden' }}>
                 <Navbar type={0}></Navbar>
-                <div className="background-hijau" style={{ position: 'absolute', width: '100%', height: SM ? '30%' : '50%', background: '#00917C', zIndex: '-1' }}></div>
-                <div className="row">
+                <div className="background-hijau p-0 m-0" style={{ position: 'absolute', width: '100%', height: SM ? '270px' : '300px', background: '#00917C', zIndex: '-1' }}></div>
+                <div className="row p-0">
                     <div className="col-0 col-md-1"></div>
                     <div className="col-12 col-md-10 text-center">
                         <p className="pt-4" style={{ fontSize: '16px', color: 'white' }}>Desa Wareng</p>
@@ -78,7 +77,7 @@ const DetailKegiatanDesa = () => {
                                 <div className="wrap-img p-4">
                                     <div className="py-4 mx-auto" style={{ width: '75%', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '1vw' }}>
                                         <div className="mx-auto" style={{ maxWidth: '622px', maxHeight: '266px' }}>
-                                            <img src={imageSrc || ImageError} alt="" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', borderRadius: '1vw' }} />
+                                            <img src={`${port2}${encodeURIComponent(data.img && data.img[0])}` || ImageError} alt="" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', borderRadius: '1vw' }} />
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +102,20 @@ const DetailKegiatanDesa = () => {
                                                 <p style={{ fontSize: '16px', textAlign: 'left' }}>{formatDate(new Date(data.date))}</p>
                                             </div>
                                         </div>
+                                        {data.img && data.img.length > 1 && (
+                                            <div className="row mt-5">
+                                                <div className="col-12">
+                                                    <p style={{ fontSize: '20px', fontWeight: '500', textAlign: 'left', borderBottom: '5px solid #00917C' }}>Gambar Terkait</p>
+                                                    <div className="d-flex flex-wrap">
+                                                        {data.img.slice(1).map((img, index) => (
+                                                            <div key={index} className="p-2" style={{ flex: '1 0 21%', margin: '5px' }}>
+                                                                <img src={`${port2}${encodeURIComponent(img)}`} alt="" style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '1vw' }} onError={(e) => e.target.src = ImageError} />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="col-1 col-md-0"></div>
                                 </div>

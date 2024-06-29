@@ -9,10 +9,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Logo from '../../../assets/LogoWareng.svg';
 
-const port = import.meta.env.VITE_BASE_API_URL;
-const port2 = import.meta.env.VITE_BASE_API_URL4;
 
 const KegiatanProgramDesa = () => {
+    const port = import.meta.env.VITE_BASE_API_URL;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [data, setData] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);

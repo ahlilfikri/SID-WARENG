@@ -6,9 +6,9 @@ import './index.css';
 import axios from 'axios';
 import getSettings from '../../../../constant/carouselSertting';
 
-const port = import.meta.env.VITE_BASE_API_URL3;
 
 const AspirasiDesa = () => {
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [data, setData] = useState([]);
     const [slidesToShow, setSlidesToShow] = useState(3);
     const [status, setStatus] = useState('');

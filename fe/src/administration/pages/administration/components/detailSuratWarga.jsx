@@ -2,9 +2,9 @@ import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-const port = import.meta.env.VITE_BASE_API_URL2;
 
 const DetailSuratWarga = ({ surat, handleCloseModal }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [editAble, setEditAble] = useState(false);
     const [isiAcara, setIsiAcara] = useState(surat.isiAcara || []);
     const [detailSurat, setDetailSurat] = useState(null);

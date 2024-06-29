@@ -4,11 +4,11 @@ import getToken from '../../../administration/pages/administration/shared/functi
 import NavBar from '../../../shared/layout/navBar';
 import Footer from '../../../shared/layout/footer';
 
-const port = import.meta.env.VITE_BASE_API_URL3;
-const port2 = import.meta.env.VITE_BASE_API_URL;
-const port3 = import.meta.env.VITE_BASE_API_URL2;
 
 const AdminAspirasiPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL;
+    const port3 = import.meta.env.VITE_BASE_API_URL2;
     const [dataAdmin, setDataAdmin] = useState(null);
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
