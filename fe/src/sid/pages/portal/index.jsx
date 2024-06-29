@@ -49,9 +49,9 @@ const Portal = () => {
                                         <div className="row">
                                             <div className="col-1"></div>
                                             <div className="col-10">
-                                                <img src={imageSrc} alt="" className='mx-auto' style={{width:"80%"}}/>
-                                                <p>{item.title}</p>
-                                                <p className='text-dark'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco </p>
+                                                <img src={imageSrc} alt="" className='mx-auto' style={{width:"100%", borderRadius : '2vh'}}/>
+                                                <p className='py-2' style={{fontSize:'24px'}}>{item.title}</p>
+                                                <p className='text-dark'>{item.isi}</p>
                                                 <a href={item.content}>Baca lebih banyak</a>
                                             </div>
                                             <div className="col-1"></div>
