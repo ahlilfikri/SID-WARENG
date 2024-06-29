@@ -1,35 +1,47 @@
-import react, {useEffect,useState, Fragment } from 'react'
-import Navbar from '../../../shared/layout/navBar'
-import Footer from '../../../shared/layout/footer'
-import './index.css'
+import React, { useEffect, useState, Fragment } from 'react';
+import Navbar from '../../../shared/layout/navBar';
+import Footer from '../../../shared/layout/footer';
+import './index.css';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Setting from '../../constant/carouselSertting';
-import Image from './assets/fotoportal.png'
+import getSettings from '../../constant/carouselSertting';
+import ImageError from '../../../assets/ImageErrorHandling.svg';
 import axios from 'axios';
+
 const port = import.meta.env.VITE_BASE_API_URL;
-
-
 
 const Portal = () => {
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('');
+    const [slidesToShow, setSlidesToShow] = useState(3);
 
     const GetFromAPI = async () => {
-        setStatus('loading')
+        setStatus('loading');
         try {
             const response = await axios.get(`${port}v1/portal/get-portal`);
-            setData(response.data.data);
-            setStatus('success')
+            const data = response.data.data;
+            setData(data);
+            setStatus('success');
+
+            // Set slidesToShow based on data length
+            if (data.length === 1) {
+                setSlidesToShow(1);
+            } else if (data.length === 2) {
+                setSlidesToShow(2);
+            } else {
+                setSlidesToShow(3);
+            }
         } catch (error) {
             console.log(error.message);
-            setStatus('error')
+            setStatus('error');
         }
     };
+
     useEffect(() => {
         GetFromAPI();
-        }, []);
+    }, []);
+
     return (
         <Fragment>
             <div className="container-fluid portal-container p-0">
@@ -39,19 +51,18 @@ const Portal = () => {
                     }
                     <Navbar type={0}></Navbar>
                     <h1 className='text-center text-light pt-5 pb-2'>Portal Web Pemerintah Daerah</h1>
-                    <Slider {...Setting}>
-                        {
-                        data.map((item, index) => {
+                    <Slider {...getSettings(slidesToShow)}>
+                        {data.map((item, index) => {
                             const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img)}`;
                             return (
-                                <div key={index}  >
+                                <div key={index}>
                                     <div className="card portal-card m-3 py-4 mx-2" style={{ borderRadius: '1vw', border: '1px solid #00917C', transition: 'transform 0.3s ease' }}>
                                         <div className="row">
                                             <div className="col-1"></div>
                                             <div className="col-10">
-                                                <img src={imageSrc} alt="" className='mx-auto' style={{width:"100%", borderRadius : '2vh'}}/>
-                                                <p className='py-2' style={{fontSize:'24px'}}>{item.title}</p>
-                                                <p className='text-dark' style={{textAlign:'justify'}} >{item.isi}</p>
+                                                <img src={imageSrc} alt="" className='mx-auto' style={{ width: "100%", borderRadius: '2vh' }} onError={(e) => { e.target.src = ImageError; }} />
+                                                <p className='py-2' style={{ fontSize: '24px' }}>{item.title}</p>
+                                                <p className='text-dark' style={{ textAlign: 'justify' }}>{item.isi}</p>
                                                 <a href={item.content}>Baca lebih banyak</a>
                                             </div>
                                             <div className="col-1"></div>
@@ -66,6 +77,7 @@ const Portal = () => {
                 </div>
             </div>
         </Fragment>
-    )
+    );
 }
-export default Portal
+
+export default Portal;
