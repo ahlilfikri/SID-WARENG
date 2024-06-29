@@ -5,6 +5,7 @@ import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
 // import 'bootstrap/dist/css/bootstrap.min.css';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const InformasiControl = () => {
     const [dataInformasi, setDataInformasi] = useState([]);
@@ -17,7 +18,7 @@ const InformasiControl = () => {
 
     const getDataInformasi = async () => {
         try {
-            const res = await axios.get('http://localhost:3556/api/v1/informasi/get-informasi');
+            const res = await axios.get(`${port}v1/informasi/get-informasi`);
             setDataInformasi(res.data.data);
         } catch (err) {
             console.error(err);
@@ -34,7 +35,7 @@ const InformasiControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:3556/api/v1/informasi/delete-informasi/${id}`);
+            await axios.delete(`${port}v1/informasi/delete-informasi/${id}`);
             getDataInformasi();
         } catch (err) {
             console.error(err);
@@ -53,7 +54,7 @@ const InformasiControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentInformasi.img.filter(img => img !== image);
         try {
-            await axios.put(`http://localhost:3556/api/v1/informasi/update-informasi/${currentInformasi._id}`, { ...currentInformasi, img: updatedImages });
+            await axios.put(`${port}v1/informasi/update-informasi/${currentInformasi._id}`, { ...currentInformasi, img: updatedImages });
             setCurrentInformasi({ ...currentInformasi, img: updatedImages });
             getDataInformasi();
         } catch (err) {
@@ -79,7 +80,7 @@ const InformasiControl = () => {
         }
 
         try {
-            await axios.put(`http://localhost:3556/api/v1/informasi/update-informasi/${currentInformasi._id}`, formData, {
+            await axios.put(`${port}v1/informasi/update-informasi/${currentInformasi._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -115,7 +116,7 @@ const InformasiControl = () => {
         }
 
         try {
-            await axios.post('http://localhost:3556/api/v1/informasi/post-informasi', formData, {
+            await axios.post(`${port}v1/informasi/post-informasi`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

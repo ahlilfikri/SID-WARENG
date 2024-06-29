@@ -5,6 +5,7 @@ import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
 // import 'bootstrap/dist/css/bootstrap.min.css';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const KegiatanControl = () => {
     const [dataKegiatan, setDataKegiatan] = useState([]);
@@ -17,7 +18,7 @@ const KegiatanControl = () => {
 
     const getDataKegiatan = async () => {
         try {
-            const res = await axios.get('http://localhost:3556/api/v1/kegiatan/get-kegiatan');
+            const res = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
             setDataKegiatan(res.data.data);
         } catch (err) {
             console.error(err);
@@ -34,7 +35,7 @@ const KegiatanControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3556/api/v1/kegiatan/delete-kegiatan/${id}`);
+            const response = await axios.delete(`${port}v1/kegiatan/delete-kegiatan/${id}`);
             console.log(response);
             getDataKegiatan();
         } catch (err) {
@@ -57,7 +58,7 @@ const KegiatanControl = () => {
         const updatedImages = currentKegiatan.img.filter(img => img !== image);
         console.log(updatedImages);
         try {
-            const response = await axios.put(`http://localhost:3556/api/v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
+            const response = await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
             console.log(response);
             setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
             getDataKegiatan();
@@ -84,7 +85,7 @@ const KegiatanControl = () => {
         }
         
         try {
-            const response = await axios.put(`http://localhost:3556/api/v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
+            const response = await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -124,7 +125,7 @@ const KegiatanControl = () => {
         }
 
         try {
-            await axios.post('http://localhost:3556/api/v1/kegiatan/post-kegiatan', formData, {
+            await axios.post(`${port}v1/kegiatan/post-kegiatan`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

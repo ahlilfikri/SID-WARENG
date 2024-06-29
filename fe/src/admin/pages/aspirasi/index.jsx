@@ -3,6 +3,7 @@ import axios from 'axios';
 import './index.css';
 import getToken from '../../../shared/functions/functions';
 import PopUpDetailAspirasi from './component/PopUpDetailAspirasi'; // Import the new popup component
+const port = import.meta.env.VITE_BASE_API_URL3;
 
 const AspirasiControl = () => {
     const [dataAspirasi, setDataAspirasi] = useState([]);
@@ -15,7 +16,7 @@ const AspirasiControl = () => {
 
     const getDataAspirasi = async () => {
         try {
-            const res = await axios.get('http://localhost:3557/api/v1/aspirasi/getAspirasiAdmin');
+            const res = await axios.get(`${port}v1/aspirasi/getAspirasiAdmin`);
             setDataAspirasi(res.data);
         } catch (err) {
             console.error(err);
@@ -75,12 +76,12 @@ const AspirasiControl = () => {
 
         return (
             <div className="table-responsive">
-
                 <table className="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Aspirasi</th>
+                            <th>Kategori</th>
                             <th>Jenis Surat</th>
                             <th>
                                 <button type="button" onClick={() => handleSortChange('date')}>
@@ -100,6 +101,7 @@ const AspirasiControl = () => {
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.aspirasi}</td>
+                                <td>{item.kategori}</td>
                                 <td>{aspirasiDecider(item.isPublish)}</td>
                                 <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                 <td>{pengajuanStatusDecider(item.isPending)}</td>

@@ -10,7 +10,8 @@ const Aspirasi = () => {
     const [warga, setWarga] = useState([]);
     const [data, setData] = useState({
         aspirasi: '',
-        isPublish: false
+        isPublish: false,
+        kategori: ''
     });
 
     const onChange = (e) => {
@@ -37,7 +38,8 @@ const Aspirasi = () => {
             alert('Aspirasi berhasil dikirim');
             setData({
                 aspirasi: '',
-                isPublish: false
+                isPublish: false,
+                kategori: ''
             });
         } catch (error) {
             console.error('Error posting aspirasi:', error);
@@ -46,10 +48,9 @@ const Aspirasi = () => {
     };
 
     const onRadioChange = (e) => {
-        setData({ ...data, isPublish: e.target.value === 'true' }); // 
+        setData({ ...data, isPublish: e.target.value === 'true' });
     };
 
-    // console.log(data);
     return (
         <Fragment>
             <div className="container-fluid login-container p-0">
@@ -75,6 +76,22 @@ const Aspirasi = () => {
                                                     value={data.aspirasi}
                                                     onChange={onChange}
                                                 />
+                                            </div>
+                                            <div className="mb-2">
+                                                <p className="text-light mb-0" style={{ fontSize: '24px' }}>Kategori</p>
+                                                <select
+                                                    className="form-select"
+                                                    name="kategori"
+                                                    value={data.kategori}
+                                                    onChange={onChange}
+                                                    style={{ borderRadius: '0.5vw', width: '100%' }}
+                                                >
+                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="Infrastuktur">Infrastuktur</option>
+                                                    <option value="Pendidikan">Pendidikan</option>
+                                                    <option value="Kesehatan">Kesehatan</option>
+                                                    <option value="Kesejahteraan">Kesejahteraan</option>
+                                                </select>
                                             </div>
                                             <div className="mb-2">
                                                 <p className="text-light mb-0" style={{ fontSize: '24px' }}>Status</p>

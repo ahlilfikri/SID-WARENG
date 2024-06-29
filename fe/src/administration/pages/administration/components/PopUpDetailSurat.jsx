@@ -14,7 +14,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
             try {
                 const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
                 const subSuratId = surat.subSuratId;
-                const request = await axios.get(`http://localhost:3555/api/v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+                const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
                 setDetailSurat(request.data.data);
             } catch (err) {
                 console.error("Error fetching detail surat: ", err);
@@ -27,7 +27,7 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         console.log(statusPersetujuan);
         try {
-            const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
+            const request = await axios.put(`${port}v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
             console.log(request);

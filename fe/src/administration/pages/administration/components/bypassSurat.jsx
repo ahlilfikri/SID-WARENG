@@ -2,13 +2,14 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const BypassSurat = ({ suratAcaraId, role }) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handleBypassSurat = async () => {
         try {
-            const request = await axios.put(`http://localhost:3555/api/v1/surat/baypass-${role}/${suratAcaraId}`);
+            const request = await axios.put(`${port}v1/surat/baypass-${role}/${suratAcaraId}`);
             console.log(request);
             setIsButtonDisabled(true);
         } catch (err) {

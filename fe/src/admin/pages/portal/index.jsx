@@ -5,6 +5,7 @@ import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 import AddModal from './component/AddModal';
 // import 'bootstrap/dist/css/bootstrap.min.css';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const PortalControl = () => {
     const [dataPortal, setDataPortal] = useState([]);
@@ -17,7 +18,7 @@ const PortalControl = () => {
 
     const getDataPortal = async () => {
         try {
-            const res = await axios.get('http://localhost:3556/api/v1/portal/get-portal');
+            const res = await axios.get(`${port}v1/portal/get-portal`);
             setDataPortal(res.data.data);
         } catch (err) {
             console.error(err);
@@ -34,7 +35,7 @@ const PortalControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3556/api/v1/portal/delete-portal/${id}`);
+            const response = await axios.delete(`${port}v1/portal/delete-portal/${id}`);
             console.log(response);
             getDataPortal();
         } catch (err) {
@@ -56,7 +57,7 @@ const PortalControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentPortal.img.filter(img => img !== image);
         try {
-            const response = await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
+            const response = await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
             setCurrentPortal({ ...currentPortal, img: updatedImages });
             getDataPortal();
         } catch (err) {
@@ -83,7 +84,7 @@ const PortalControl = () => {
         }
 
         try {
-            await axios.put(`http://localhost:3556/api/v1/portal/update-portal/${currentPortal._id}`, formData, {
+            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -120,7 +121,7 @@ const PortalControl = () => {
         }
 
         try {
-            await axios.post('http://localhost:3556/api/v1/portal/post-portal', formData, {
+            await axios.post(`${port}v1/portal/post-portal`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

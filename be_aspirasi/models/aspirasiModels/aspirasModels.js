@@ -7,6 +7,7 @@ const aspirasiModel = new mongoose.Schema({
     isPublish: { type: Boolean, default: true },
     siApproved: { type: Boolean, default: false ,required:false},
     isPending: { type: Boolean, default: true ,required:false},
+    kategori: { type: String ,required: true},
 }, {timestamps: true});
 
 module.exports = mongoose.model('aspirasi', aspirasiModel);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const FormPerizinanSurat = ({handleCloseModal}) => {
     const [warga, setWarga] = useState('');
@@ -27,7 +28,7 @@ const FormPerizinanSurat = ({handleCloseModal}) => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${idWarga}`)
+        axios.get(`${port}v1/warga/get/${idWarga}`)
             .then((res) => {
                 setWarga(res.data.data._id);
             })
@@ -49,7 +50,7 @@ const FormPerizinanSurat = ({handleCloseModal}) => {
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, {
+            const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, {
                 nameAcara,
                 jenisSurat,
                 tanggalMulai,

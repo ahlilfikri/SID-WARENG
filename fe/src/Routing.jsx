@@ -28,6 +28,7 @@ import getToken from "./shared/functions/functions";
 import DashboardAdmin from "./admin";
 
 import App from "./App";
+const port = import.meta.env.VITE_BASE_API_URL;
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
   const [userData, setUserData] = useState(null); // State untuk data pengguna
@@ -40,7 +41,7 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
       const token = localStorage.getItem('token');
 
       try {
-        const res = await axios.get(`http://localhost:3555/api/v1/user/get/${id}`, {
+        const res = await axios.get(`${port}v1/user/get/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const FormSuratIzinKeramaian = ({ handleCloseModal }) => {
     const [warga, setWarga] = useState('');
@@ -33,7 +34,7 @@ const FormSuratIzinKeramaian = ({ handleCloseModal }) => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${idWarga}`)
+        axios.get(`${port}v1/warga/get/${idWarga}`)
             .then((res) => {
                 setWarga(res.data.data._id);
             })
@@ -60,7 +61,7 @@ const FormSuratIzinKeramaian = ({ handleCloseModal }) => {
         e.preventDefault();
         console.log(dataSurat); // Debugging log
         try {
-            const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
+            const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             console.log(res.data);
             handleCloseModal(); // Close modal after successful submit
         } catch (err) {

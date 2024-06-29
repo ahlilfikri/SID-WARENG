@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+const port = import.meta.env.VITE_BASE_API_URL3;
 
 const PopUpDetailAspirasi = ({ surat, handleCloseModal, refreshData }) => {
 
@@ -10,7 +11,7 @@ const PopUpDetailAspirasi = ({ surat, handleCloseModal, refreshData }) => {
                 isPending: false
             };
 
-            const request = await axios.put(`http://localhost:3557/api/v1/aspirasi/updateAspirasi/${surat._id}`, update);
+            const request = await axios.put(`${port}v1/aspirasi/updateAspirasi/${surat._id}`, update);
             console.log(request);
             refreshData(); 
             handleCloseModal();

@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const [editAble, setEditAble] = useState(false);
@@ -43,7 +44,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         try {
             const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
             const subSuratId = surat.subSuratId;
-            const request = await axios.get(`http://localhost:3555/api/v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+            const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
             console.log("Detail surat: ", request.data.data); 
             setDetailSurat(request.data.data);
         } catch (err) {
@@ -54,7 +55,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const handleSave = async () => {
         try {
             console.log("Saving surat with ID:", surat._id); 
-            const response = await axios.put(`http://localhost:3555/api/v1/surat/revisi-surat-warga/${surat._id}`, {
+            const response = await axios.put(`${port}v1/surat/revisi-surat-warga/${surat._id}`, {
                 "newIsiAcara": isiAcara
             });
             console.log("Success edit surat acara:", response.data);
