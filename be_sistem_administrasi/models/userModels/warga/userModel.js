@@ -4,6 +4,7 @@ const user = new mongoose.Schema({
     name: { type: String, required: true },
     nik: { type: String, required: false, default: '' },
     password: { type: String, required: false, default: '' },
+    profileImage: { type: String, required: false, default: '' }, // path image
     alamat: { type: String, required: false, default: '' },
     domisili: [{ type: String, required: false, default: '' }],  // array of string[rt,rw,desa,kecamatan,kabupaten,provinsi]
     // nohp: { type: Number, required: true, default: '' },
