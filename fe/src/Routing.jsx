@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createBrowserRouter } from "react-router-dom";
 import { useEffect, useState } from 'react'; // Import useEffect and useState
 import { useNavigate } from 'react-router-dom';

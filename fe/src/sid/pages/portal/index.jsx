@@ -34,10 +34,14 @@ const Portal = () => {
         <Fragment>
             <div className="container-fluid portal-container p-0">
                 <div className="container-fluid portal-container-background pb-3 pb-md-0 p-0">
+                    {
+                        console.log(status)
+                    }
                     <Navbar type={0}></Navbar>
                     <h1 className='text-center text-light pt-5 pb-2'>Portal Web Pemerintah Daerah</h1>
                     <Slider {...Setting}>
-                        {data.map((item, index) => {
+                        {
+                        data.map((item, index) => {
                             const imageSrc = `http://localhost:3556/upload/${encodeURIComponent(item.img)}`;
                             return (
                                 <div key={index}  >
