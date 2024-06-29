@@ -4,14 +4,25 @@ const port = import.meta.env.VITE_BASE_API_URL4;
 
 const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentInformasi, handleDeleteImage, setSelectedImage }) => {
     const [newImages, setNewImages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleImageError = (e) => {
         e.target.src = ImageError;
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        handleSaveEdit(e, newImages); // Panggil handleSaveEdit dengan gambar baru
+        setLoading(true);
+        setError(null);
+        try {
+            await handleSaveEdit(e, newImages); // Call handleSaveEdit with new images
+            setIsEditing(false);
+        } catch (err) {
+            setError('Failed to save information');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleNewImagesChange = (e) => {
@@ -29,6 +40,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                         </button>
                     </div>
                     <div className="modal-body">
+                        {error && <div className="alert alert-danger" role="alert">{error}</div>}
                         <form onSubmit={handleFormSubmit}>
                             <div className="form-group">
                                 <label>Title</label>
@@ -90,8 +102,12 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="submit" className="btn btn-success">Save</button>
-                                <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
+                                <button type="submit" className="btn btn-success" disabled={loading}>
+                                    {loading ? 'Saving...' : 'Save'}
+                                </button>
+                                <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)} disabled={loading}>
+                                    Cancel
+                                </button>
                             </div>
                         </form>
                     </div>
