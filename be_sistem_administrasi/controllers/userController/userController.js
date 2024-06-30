@@ -35,6 +35,8 @@ exports.getUserByName = async (req, res) => {
         });
     }
 };
+
+
 exports.getPaginateUser = async (req,res) => {
     try{
         const page = parseInt(req.query.page) || 1;
@@ -103,38 +105,6 @@ exports.getUserById = async (req,res) => {
         });
     }
 }
-
-exports.getUserByName = async (req, res) => {
-    try {
-        const { name } = req.body;
-        console.log("Request body:", req.body); // Logging request body
-        console.log("Name parameter:", name); // Logging name parameter
-
-        if (!name) {
-            return res.status(400).send({
-                message: "Name parameter is required"
-            });
-        }
-
-        const dataUser = await userModel.find();
-        if (dataUser) {
-            res.status(200).send({
-                message: "Success get user by name",
-                data: dataUser
-            });
-        } else {
-            res.status(404).send({
-                message: "User not found"
-            });
-        }
-    } catch (error) {
-        res.status(500).send({
-            message: error.message || "Some error occurred while getting user by name."
-        });
-    }
-};
-
-
 
 exports.getUserByIdDecrypt = async (req, res) => {
     try {
