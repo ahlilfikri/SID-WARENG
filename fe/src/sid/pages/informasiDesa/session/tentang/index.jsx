@@ -33,7 +33,10 @@ const Tentang = () => {
             <div className="container-fluid tentang-container mt-3 mt-md-5 mb-3 mb-md-5">
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
-                {status === 'success' && (
+                {status === 'success' && data.length === 0 && (
+                    <p>Belum ada data yang ditambahkan</p>
+                )}
+                {status === 'success' && data.length > 0 && (
                     <div className="row p-0">
                         {data[0]?.img.map((item, index) => {
                             const imageSrc = `${port2}${encodeURIComponent(item)}`;

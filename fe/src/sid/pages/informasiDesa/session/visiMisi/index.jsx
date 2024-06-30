@@ -4,7 +4,7 @@ import axios from 'axios';
 const VisiMisi = () => {
     const Port = import.meta.env.VITE_BASE_API_URL;
     const [data, setData] = useState([]);
-    const [status, setStatus] = useState('loading'); 
+    const [status, setStatus] = useState('loading');
 
     const getFromAPI = async () => {
         setStatus('loading');
@@ -21,13 +21,16 @@ const VisiMisi = () => {
     useEffect(() => {
         getFromAPI();
     }, []);
-    
+
     return (
         <Fragment>
             <div className="container-fluid visi-misi-container py-4 px-5 mb-0 mb-md-5" style={{ backgroundColor: '#00917C', borderRadius: '2vw' }}>
                 {status === 'loading' && <p style={{ color: 'white' }}>Loading...</p>}
                 {status === 'error' && <p style={{ color: 'white' }}>Data tidak dapat ditampilkan.</p>}
-                {status === 'success' && (
+                {status === 'success' && data.length === 0 && (
+                    <p>Belum ada data yang ditambahkan</p>
+                )}
+                {status === 'success' && data.length > 0 && (
                     <>
                         <p style={{ color: 'white', fontSize: '48px', fontWeight: 'bold' }}>Visi</p>
                         <p style={{ color: 'white', fontSize: '20px', textAlign: 'justify' }}>{data.length > 0 ? data[0]?.visi : 'Data tidak dapat ditampilkan'}</p>

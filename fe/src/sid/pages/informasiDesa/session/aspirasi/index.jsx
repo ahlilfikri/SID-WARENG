@@ -19,8 +19,7 @@ const AspirasiDesa = () => {
             const response = await axios.get(`${port}v1/aspirasi/getAspirasiApproved`);
             const data = response.data;
             setData(data);
-            
-            console.log(data.length);
+
             if (data.length === 1) {
                 setSlidesToShow(1);
             } else if (data.length === 2) {
@@ -45,7 +44,10 @@ const AspirasiDesa = () => {
                 <p>Aspirasi Desa</p>
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
-                {status === 'success' && (
+                {status === 'success' && data.length === 0 && (
+                    <p>Belum ada data yang ditambahkan</p>
+                )}
+                {status === 'success' && data.length > 0 &&(
                     <Slider {...getSettings(slidesToShow)}>
                         {data.map((item, index) => (
                             <div key={index}>

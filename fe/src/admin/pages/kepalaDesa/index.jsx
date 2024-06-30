@@ -18,7 +18,6 @@ const KepalaDesaControl = () => {
         try {
             const res = await axios.get(`${port}v1/pimpinanDesa/get`);
             setDataKepalaDesa(res.data.data);
-            console.log(res.data.data);
             setStatus('success');
         } catch (err) {
             console.error(err);
@@ -68,7 +67,6 @@ const KepalaDesaControl = () => {
 
     const handleSaveEdit = async (e) => {
         e.preventDefault();
-        console.log(editForm);
         const formData = new FormData();
         formData.append('name', editForm.name);
         formData.append('nik', editForm.nik);

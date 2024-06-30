@@ -72,7 +72,10 @@ const DetailKegiatanDesa = () => {
                         {status === 'error' && (
                             <p>Data tidak dapat dimuat.</p>
                         )}
-                        {status === 'success' && (
+                        {status === 'success' && data.length === 0 &&(
+                            <p>Belum ada data yang ditambahkan</p>
+                        )}
+                        {status === 'success' && data.length > 0  &&(
                             <>
                                 <div className="wrap-img p-4">
                                     <div className="py-4 mx-auto" style={{ width: '75%', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '1vw' }}>

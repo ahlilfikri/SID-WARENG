@@ -19,7 +19,6 @@ const PerangkatDesaControl = () => {
         try {
             const res = await axios.get(`${port}v1/perangkatDesa/get`);
             setDataPerangkatDesa(res.data.data);
-            console.log(res.data.data);
             setStatus('success');
         } catch (err) {
             console.error(err);
@@ -69,7 +68,6 @@ const PerangkatDesaControl = () => {
 
     const handleSaveEdit = async (e) => {
         e.preventDefault();
-        console.log(editForm);
         const formData = new FormData();
         formData.append('name', editForm.name);
         formData.append('nik', editForm.nik);

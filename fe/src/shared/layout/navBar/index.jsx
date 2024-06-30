@@ -23,17 +23,30 @@ const Navbar = ({ type }) => {
     const id = getToken();
 
     const handleLogout = async () => {
-        try{
+        try {
             const res = await axios.post(`${port}v1/warga/logout/${id}`);
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login');
-            }else{
+            } else {
                 console.log(res);
             }
         } catch (err) {
             console.error(err);
-        } 
+        }
+    };
+    const handleLogoutAdmin = async () => {
+        try {
+            const res = await axios.post(`${port}v1/admin/logout-admin/${id}`);
+            if (res.status === 200) {
+                localStorage.removeItem('token');
+                navigate('/login-admin');
+            } else {
+                console.log(res);
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     useEffect(() => {
@@ -157,9 +170,15 @@ const Navbar = ({ type }) => {
                                         </div>
                                     </Link>
                                 </li>
-                                <li className="nav-item dropdown px-1" onClick={handleLogout}>
-                                    <Link style={{ color: type ? 'white' : 'black' }} className="nav-link" to="/login"><button className='btn btn-danger'>Logout</button></Link>
-                                </li>
+                                {adminData?.admin ?
+                                    <li className="nav-item dropdown px-1" onClick={handleLogoutAdmin}>
+                                        <Link style={{ color: type ? 'white' : 'black' }} className="nav-link" to="/login-admin"><button className='btn btn-danger'>Logout</button></Link>
+                                    </li>
+                                    :
+                                    <li className="nav-item dropdown px-1" onClick={handleLogout}>
+                                        <Link style={{ color: type ? 'white' : 'black' }} className="nav-link" to="/login"><button className='btn btn-danger'>Logout</button></Link>
+                                    </li>
+                                }
                             </>
                         )}
                     </ul>

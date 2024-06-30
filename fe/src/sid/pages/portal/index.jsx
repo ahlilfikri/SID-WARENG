@@ -54,7 +54,7 @@ const Portal = () => {
                         <p className="text-center text-danger mt-5">Gagal memuat data.</p>
                     )}
                     {status === 'success' && data.length === 0 && (
-                        <p className="text-center text-danger mt-5" style={{ backgroundColor: 'white' }}>Data tidak tersedia.</p>
+                        <p className="text-center text-danger mt-5" style={{ backgroundColor: 'white' }}>Belum ada data yang ditambahkan.</p>
                     )}
                     {status === 'success' && data.length > 0 && (
                         <Slider {...getSettings(slidesToShow)}>

@@ -4,7 +4,7 @@ const express = require('express');
 const Router = express.Router();
 
 Router.post('/login-admin',loginAdmin);
-Router.post('/logout-admin',logoutAdmin);
+Router.post('/logout-admin/:id',logoutAdmin);
 
 Router.post('/post-admin',postAdmin);
 Router.get('/get-admin/:id',getAdminById);

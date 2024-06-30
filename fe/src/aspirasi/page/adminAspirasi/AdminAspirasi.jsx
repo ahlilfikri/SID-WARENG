@@ -4,7 +4,6 @@ import getToken from '../../../administration/pages/administration/shared/functi
 import NavBar from '../../../shared/layout/navBar';
 import Footer from '../../../shared/layout/footer';
 
-
 const AdminAspirasiPage = () => {
     const port = import.meta.env.VITE_BASE_API_URL3;
     const port2 = import.meta.env.VITE_BASE_API_URL;
@@ -13,6 +12,7 @@ const AdminAspirasiPage = () => {
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
     const [selectedAspirasi, setSelectedAspirasi] = useState(null); 
 
     const id = getToken();
@@ -20,10 +20,17 @@ const AdminAspirasiPage = () => {
     const getAspirasi = async () => {
         try {
             const res = await axios.get(`${port}v1/aspirasi/getAspirasiAdmin`);
-            setDataAspirasi(res.data);
-            console.log('get aspirasi admin [line 21]:', res.data);
+            if (res.data && res.data.length > 0) {
+                setDataAspirasi(res.data);
+                setIsLoading(false);
+            } else {
+                setDataAspirasi([]);
+                setIsLoading(false);
+            }
         } catch (err) {
             console.error(err);
+            setIsError(true);
+            setIsLoading(false);
         }
     };
 
@@ -45,6 +52,7 @@ const AdminAspirasiPage = () => {
             setDataAdmin(res.data);
         } catch (err) {
             console.error(err);
+            setIsError(true);
         }
     };
 
@@ -53,7 +61,6 @@ const AdminAspirasiPage = () => {
             try {
                 const res = await axios.get(`${port3}v1/user/get/${idWarga}`);
                 if (res.data && res.data.data && res.data.data.name) {
-                    console.log(res.data.data.name);
                     setWargaNames(prevNames => ({ ...prevNames, [idWarga]: res.data.data.name }));
                 } else {
                     console.error(`Name not found for warga ID: ${idWarga}`);
@@ -68,7 +75,6 @@ const AdminAspirasiPage = () => {
         const fetchData = async () => {
             await getAspirasi();
             await getAdmin();
-            setIsLoading(false); 
         };
         fetchData();
     }, [id]);
@@ -93,28 +99,36 @@ const AdminAspirasiPage = () => {
         return <div>Loading...</div>;
     }
 
+    if (isError) {
+        return <div>Loading data failed.</div>;
+    }
+
     return (
         <div className="container-fluid">
             <NavBar type={0} />
             <h1 className='my-2 my-md-5'>Aspirasi Page</h1>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Aspirasi</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Tanggal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {dataAspirasi.map((data, index) => (
-                        <tr key={index} onClick={() => handleRowClick(data)}>
-                            <td>{cutString(data.aspirasi)}</td>
-                            <td>{wargaNames[data.wargaId] || 'Loading...'}</td>
-                            <td>{tanggalFormat(data.createdAt)}</td>
+            {dataAspirasi.length === 0 ? (
+                <div>Belum ada data yang ditambahkan.</div>
+            ) : (
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Aspirasi</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Tanggal</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {dataAspirasi.map((data, index) => (
+                            <tr key={index} onClick={() => handleRowClick(data)}>
+                                <td>{cutString(data.aspirasi)}</td>
+                                <td>{wargaNames[data.wargaId] || 'Loading...'}</td>
+                                <td>{tanggalFormat(data.createdAt)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
             {selectedAspirasi && (
                 <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
                     <div className="modal-dialog">

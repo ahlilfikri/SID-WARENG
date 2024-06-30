@@ -22,7 +22,6 @@ const KegiatanDesa = () => {
             const data = response.data.data;
             setData(data);
 
-            console.log(data.length);
             if (data.length === 1) {
                 setSlidesToShow(1);
             } else if (data.length === 2) {
@@ -47,7 +46,10 @@ const KegiatanDesa = () => {
                 <p>Kegiatan Desa</p>
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
-                {status === 'success' && (
+                {status === 'success' && data.length === 0 &&(
+                    <p>Belum ada data yang ditambahkan</p>
+                )}
+                {status === 'success' && data.length > 0 &&(
                     <Slider {...getSettings(slidesToShow)}>
                         {data.map((item, index) => {
                             const imageSrc = `${port2}${encodeURIComponent(item.img[0])}`;

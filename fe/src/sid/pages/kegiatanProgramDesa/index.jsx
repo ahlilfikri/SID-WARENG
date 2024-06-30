@@ -164,7 +164,7 @@ const KegiatanProgramDesa = () => {
                                 })}
                             </div>
                         ) : (
-                            <div className="text-center">Tidak ada data tersedia.</div>
+                            <div className="text-center">Belum ada data yang ditambahkan.</div>
                         )}
                     </div>
                     <div className="col-0 col-md-1"></div>
