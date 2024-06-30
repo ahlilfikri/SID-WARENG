@@ -22,7 +22,6 @@ const KegiatanDesa = () => {
             const data = response.data.data;
             setData(data);
 
-            // Set slidesToShow based on data length
             console.log(data.length);
             if (data.length === 1) {
                 setSlidesToShow(1);

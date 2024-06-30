@@ -74,7 +74,7 @@ const KegiatanProgramDesa = () => {
         GetFromAPI();
         const interval = setInterval(() => {
             setCurrentDate(new Date());
-        }, 60000); // update every minute
+        }, 60000);
         return () => clearInterval(interval);
     }, []);
 

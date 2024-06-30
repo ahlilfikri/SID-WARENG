@@ -1,6 +1,4 @@
 
-
-//component
 import { Fragment } from "react";
 import Footer from "../../../shared/layout/footer";
 import Navbar from "../../../shared/layout/navBar";

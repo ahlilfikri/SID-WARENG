@@ -66,7 +66,7 @@ const FormSuratIzinKeramaian = ({ handleCloseModal }) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        console.log(dataSurat); // Debugging log
+        console.log(dataSurat); 
         try {
             const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             console.log(res.data);

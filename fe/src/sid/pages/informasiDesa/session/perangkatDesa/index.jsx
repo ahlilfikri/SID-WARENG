@@ -11,7 +11,7 @@ const PerangkatDesa = () => {
     const port = import.meta.env.VITE_BASE_API_URL2;
     const port2 = import.meta.env.VITE_BASE_API_URL4;
     const [data, setData] = useState([]);
-    const [status, setStatus] = useState('loading'); // Menambahkan state status
+    const [status, setStatus] = useState('loading'); 
 
     const GetFromAPI = async () => {
         setStatus('loading');

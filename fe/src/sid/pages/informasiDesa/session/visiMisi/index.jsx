@@ -4,7 +4,7 @@ import axios from 'axios';
 const VisiMisi = () => {
     const Port = import.meta.env.VITE_BASE_API_URL;
     const [data, setData] = useState([]);
-    const [status, setStatus] = useState('loading'); // Menambahkan state status
+    const [status, setStatus] = useState('loading'); 
 
     const getFromAPI = async () => {
         setStatus('loading');
