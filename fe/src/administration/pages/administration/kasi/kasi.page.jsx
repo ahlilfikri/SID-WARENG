@@ -1,30 +1,31 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
-
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
 
 const KasiPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [DataKasi, setDataKasi] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [condition, setCondition] = useState(false);
     const [activeTab, setActiveTab] = useState('comming');
     const [searchQuery, setSearchQuery] = useState('');
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/perangkatDesa/get/${id}`)
+        axios.get(`${port}v1/perangkatDesa/get/${id}`)
             .then((res) => {
                 setDataKasi(res.data.data);
-                console.log(DataKasi._id)
+                setStatus('success');
             })
             .catch((err) => {
                 console.error(err);
+                setStatus('error');
             });
     }, [id]);
 
@@ -83,16 +84,16 @@ const KasiPage = () => {
                 <Navbar className="" type={0}></Navbar>
                 <h1 className='my-2 my-md-5'>Administrasi Kasi</h1>
                 <div className="row">
-                    <div className="col-12 col-md-6 mb-3">
+                    <div className="col-12 col-md-6 mb-3" >
                         <select
                             className="form-select"
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="comming">Surat Acara Comming</option>
-                            <option value="pending">Surat Acara Pending</option>
-                            <option value="approved">Surat Acara Approved</option>
-                            <option value="rejected">Surat Acara Rejected</option>
+                            <option value="comming">Surat Acara Akan Datang</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan</option>
+                            <option value="approved">Surat Acara Disetujui</option>
+                            <option value="rejected">Surat Acara Ditolak</option>
                         </select>
                     </div>
                     <div className="col-12 col-md-6 mb-3">
@@ -105,10 +106,16 @@ const KasiPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'comming' && DataKasi.suratAcaraComing && DataKasi.suratAcaraComing.length > 0 ? renderTable(DataKasi.suratAcaraComing) : <p>Belum ada surat acara</p>}
-                {activeTab === 'pending' && DataKasi.suratAcaraPending && DataKasi.suratAcaraPending.length > 0 ? renderTable(DataKasi.suratAcaraPending) : <p>Belum ada surat yang tersedia</p>}
-                {activeTab === 'approved' && DataKasi.suratAcaraApproved && DataKasi.suratAcaraApproved.length > 0 ? renderTable(DataKasi.suratAcaraApproved) : <p>Belum ada surat yang tersedia</p>}
-                {activeTab === 'rejected' && DataKasi.suratAcaraRejected && DataKasi.suratAcaraRejected.length > 0 ? renderTable(DataKasi.suratAcaraRejected) : <p>Belum ada surat yang tersedia</p>}
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <>
+                        {activeTab === 'comming' && DataKasi.suratAcaraComing && (DataKasi.suratAcaraComing.length > 0 ? renderTable(DataKasi.suratAcaraComing) : <p>Tidak ada surat acara akan datang</p>)}
+                        {activeTab === 'pending' && DataKasi.suratAcaraPending && (DataKasi.suratAcaraPending.length > 0 ? renderTable(DataKasi.suratAcaraPending) : <p>Tidak ada surat acara menunggu persetujuan</p>)}
+                        {activeTab === 'approved' && DataKasi.suratAcaraApproved && (DataKasi.suratAcaraApproved.length > 0 ? renderTable(DataKasi.suratAcaraApproved) : <p>Tidak ada surat acara disetujui</p>)}
+                        {activeTab === 'rejected' && DataKasi.suratAcaraRejected && (DataKasi.suratAcaraRejected.length > 0 ? renderTable(DataKasi.suratAcaraRejected) : <p>Tidak ada surat yang ditolak</p>)}
+                    </>
+                )}
                 <Footer type={3}></Footer>
             </div>
             {showModal && (

@@ -7,7 +7,8 @@ import Navbar from "../../../shared/layout/navBar";
 import Tentang from "./session/tentang";
 import VisiMisi from "./session/visiMisi";
 import KegiatanDesa from "./session/kegiatanDesa";
-import PerangkatDesa from "./session/perangkatDesa"
+import PerangkatDesa from "./session/perangkatDesa";
+import AspirasiDesa from "./session/aspirasi";
 
 const InformasiDesa = () => {
 
@@ -22,6 +23,7 @@ const InformasiDesa = () => {
                         <VisiMisi />
                         <KegiatanDesa />
                         <PerangkatDesa />
+                        <AspirasiDesa />
                     </div>
                     <div className="col-0 col-md-1">
                     </div>

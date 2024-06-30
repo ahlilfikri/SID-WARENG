@@ -24,6 +24,7 @@ const getBase64Image = (filePath) => {
 
 const aksara_jawa = getBase64Image(path.resolve(__dirname, '../../../assets/surat_utils/aksara_jawa.png'));
 const logo = getBase64Image(path.resolve(__dirname, '../../../assets/surat_utils/logo_wareng.png'));
+const TTD = getBase64Image(path.resolve(__dirname, '../../../assets/surat_utils/ceritanya_TTD.png'));
 
 const suratDecider = async (jenisSurat, subSuratId) => {
     try {
@@ -59,7 +60,28 @@ const suratDecider = async (jenisSurat, subSuratId) => {
     }
 };
 
-const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user, subSuratId }) => {
+const TTD_kades = (statusPersetujuan,formattedDate) => {
+    if(statusPersetujuan === "disetujui pimpinan desa"){
+        return `
+        <p>Wareng, ${formattedDate}</p>
+        <p>Lurah Wareng</p>
+        <img class="ttd-kades" src="${TTD}" alt="">
+        <p>(............. Ari Wibawa ,S.IP. .............)</p>
+        `;
+    } else {
+        return `
+        <p>Wareng, ${formattedDate}</p>
+        <p>Lurah Wareng</p>
+        <br>
+            <h1> Belum disetujui oleh pimpinan desa</h1>
+        <br>
+        <br>
+        <p>(............................................)</p>
+        `;
+    }
+}
+
+const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user, subSuratId,statusPersetujuan }) => {
     const aesKey = crypto.scryptSync(
         process.env.encrypt_key_one,
         process.env.encrypt_key_two,
@@ -83,6 +105,12 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
                 margin: 0;
                 padding: 0;
                 line-height: 1.5;
+            }
+            .ttd-kades{
+                width: 100px;
+                height: 100px;
+                margin-top: 20px;
+                margin-left: 20px;
             }
             .surat{
                 width: 210mm;
@@ -242,12 +270,7 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
             </div>
              <div class="surat-tandatangan">
                 <div class="ttd">
-                    <p>Wareng, ${formattedDate}</p>
-                    <p>Lurah Wareng</p>
-                    <br>
-                    <br>
-                    <br>
-                    <p>(............................................)</p>
+                    ${TTD_kades(statusPersetujuan,formattedDate)}
                 </div>
             </div>
         </div>

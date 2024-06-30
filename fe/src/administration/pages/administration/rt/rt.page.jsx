@@ -1,29 +1,30 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
 
 const RtPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [DataRt, setDataRt] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [condition, setCondition] = useState(false);
     const [activeTab, setActiveTab] = useState('pending');
     const [searchQuery, setSearchQuery] = useState('');
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/rt/getRt/${id}`)
+        axios.get(`${port}v1/rt/getRt/${id}`)
             .then((res) => {
                 setDataRt(res.data.data);
-                console.log(res.data.data);
-                
+                setStatus('success');
             })
             .catch((err) => {
                 console.error(err);
+                setStatus('error');
             });
     }, [id]);
 
@@ -53,8 +54,7 @@ const RtPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                    filteredData.map((surat, index) => (
+                    {filteredData.map((surat, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{surat.nameAcara}</td>
@@ -89,7 +89,7 @@ const RtPage = () => {
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="pending">Surat Acara Pending</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan</option>
                             <option value="approved">Surat Acara Disetujui</option>
                             <option value="rejected">Surat Acara Ditolak</option>
                         </select>
@@ -104,10 +104,16 @@ const RtPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'pending' && DataRt.suratAcaraPending && DataRt.suratAcaraPending.length > 0 ? renderTable(DataRt.suratAcaraPending) : <p>Tidak ada surat yang tersedia</p>}
-                {activeTab === 'approved' && DataRt.suratAcaraApproved && DataRt.suratAcaraApproved.length > 0 ? renderTable(DataRt.suratAcaraApproved) : <p>Tidak ada surat yang disetujui</p>}
-                {activeTab === 'rejected' && DataRt.suratAcaraRejected && DataRt.suratAcaraRejected.length > 0 ? renderTable(DataRt.suratAcaraRejected) : <p>Tidak ada surat yang ditolak</p>}
-                <Footer type={3}></Footer> 
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <>
+                        {activeTab === 'pending' && DataRt.suratAcaraPending && (DataRt.suratAcaraPending.length > 0 ? renderTable(DataRt.suratAcaraPending) : <p>Tidak ada surat acara yang menunggu persetujuan</p>)}
+                        {activeTab === 'approved' && DataRt.suratAcaraApproved && (DataRt.suratAcaraApproved.length > 0 ? renderTable(DataRt.suratAcaraApproved) : <p>Tidak ada surat acara yang disetujui</p>)}
+                        {activeTab === 'rejected' && DataRt.suratAcaraRejected && (DataRt.suratAcaraRejected.length > 0 ? renderTable(DataRt.suratAcaraRejected) : <p>Tidak ada surat acara yang ditolak</p>)}
+                    </>
+                )}
+                <Footer type={3}></Footer>
             </div>
             {showModal && (
                 <PopUpDetailSurat
@@ -118,10 +124,6 @@ const RtPage = () => {
                     role="rt"
                 />
             )}
-
-            {
-                console.log(DataRt._id)
-            }
         </>
     );
 };

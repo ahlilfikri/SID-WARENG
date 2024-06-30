@@ -33,11 +33,12 @@ exports.postPortal = async (req, res) => {
         }
 
         try {
-            const { title, content } = req.body;
+            const { title, content, isi } = req.body;
             const imgs = req.files.map((file) => file.filename);
             const newPortal = new portalModel({
                 title,
                 content,
+                isi,
                 img: imgs,
             });
 
@@ -62,13 +63,15 @@ exports.putPortal = async (req, res) => {
 
         try {
             const { id } = req.params;
-            const { title, content } = req.body;
+            const { title, content, isi, img } = req.body;
 
-            let updateFields = { title, content };
+            let updateFields = { title, content, isi, img };
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
                 updateFields.img = newImages;
+            }else{
+                updateFields.img = img;
             }
 
             const updatedPortal = await portalModel.findByIdAndUpdate(id, updateFields, { new: true });

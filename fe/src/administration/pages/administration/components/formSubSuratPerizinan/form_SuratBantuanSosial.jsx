@@ -3,7 +3,10 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const FormSuratBantuanSosial = ({ handleCloseModal }) => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [warga, setWarga] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',
         jenisSurat: 'bantuan sosial',
@@ -31,13 +34,16 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${idWarga}`)
-            .then((res) => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`${port}v1/warga/get/${idWarga}`);
                 setWarga(res.data.data._id);
-            })
-            .catch((err) => {
+            } catch (err) {
                 console.error(err);
-            });
+                setError('Failed to fetch warga data');
+            }
+        };
+        fetchData();
     }, [idWarga]);
 
     const onChange = e => {
@@ -62,13 +68,17 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        console.log(dataSurat); 
+        setLoading(true);
+        setError(null);
         try {
-            const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
+            const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             console.log(res.data);
             handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);
+            setError('Failed to submit form');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -83,6 +93,7 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
     return (
         <div className="container">
             <h2 className="mt-4 mb-3">Buat Surat Bantuan Sosial</h2>
+            {error && <div className="alert alert-danger" role="alert">{error}</div>}
             <form onSubmit={onSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Nama Acara</label>
@@ -136,7 +147,9 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
                 ))}
                 <button type="button" className="btn btn-primary me-2" onClick={addKeteranganLainnyaField}>Tambah Keterangan Lainnya</button>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary" disabled={loading}>
+                    {loading ? 'Loading...' : 'Submit'}
+                </button>
             </form>
         </div>
     );

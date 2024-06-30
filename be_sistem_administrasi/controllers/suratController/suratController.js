@@ -223,7 +223,8 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             Warga: suratAcara.wargaId,
             nomoSurat: suratAcara.nomorSurat,
             user: dataUser,
-            subSuratId: suratAcara.subSuratId
+            subSuratId: suratAcara.subSuratId,
+            statusPersetujuan: suratAcara.statusPersetujuan
         };
 
         console.log('Data:', data)
@@ -491,6 +492,8 @@ exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
         const { statusPersetujuanReq } = req.body;
         const dataPD = await PerangkatDesaModel.findById(perangkatDesaId);
         const surat = await suratAcaraModel.findById(suratAcaraId);
+
+        console.log(dataPD);
         
 
         if (!dataPD || !surat) {

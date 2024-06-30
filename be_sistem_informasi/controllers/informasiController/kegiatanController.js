@@ -59,7 +59,7 @@ exports.postKegiatan = async (req, res) => {
         if (error) {
             console.error(error);
             console.error(error.message);
-            response(500, res, 'error', err.message || 'Internal Server Error');
+            response(500, res, 'error', error.message || 'Internal Server Error');
             return;
         }
 
@@ -89,21 +89,30 @@ exports.putKegiatan = async (req, res) => {
     uploadProjectImages(req, res, async (error) => {
         if (error) {
             console.error(error.message);
-            response(500, res, 'error', err.message || 'Internal Server Error');
+            response(500, res, 'error', error.message || 'Internal Server Error');
             return;
         }
 
         try {
             const { id } = req.params;
-            const { title, content, date, location } = req.body;
+            const { title, content, date, location, img } = req.body;
 
             let updateFields = { title, content, date, location };
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
-                updateFields.img = newImages;
+                console.log('Existing Images:', img);
+                console.log('New Images:', newImages);
+                if (img && Array.isArray(img)) {
+                    updateFields.img = img.concat(newImages);
+                } else {
+                    updateFields.img = newImages;
+                }
+            } else {
+                updateFields.img = img;
             }
 
+            console.log('Update Fields:', updateFields);
             const updatedKegiatan = await kegiatanModel.findByIdAndUpdate(id, updateFields, { new: true });
 
             if (!updatedKegiatan) {
@@ -113,10 +122,12 @@ exports.putKegiatan = async (req, res) => {
             response(200, res, updatedKegiatan, 'Success put kegiatan');
 
         } catch (error) {
-            response(500, res, 'error', error.message || 'Some error occurred while put informasi.');
+            response(500, res, 'error', error.message || 'Some error occurred while put kegiatan.');
         }
     });
-}
+};
+
+
 
 exports.deleteKegiatan = async (req, res) => {
     try {
@@ -124,7 +135,7 @@ exports.deleteKegiatan = async (req, res) => {
         const result = await kegiatanModel.findByIdAndDelete(id);
         response(200, res, savedKegiatan, 'Success delete kegiatan');
     } catch (error) {
-        response(500, res, 'error', err.message || 'Some error occurred while delete informasi.');
+        response(500, res, 'error', error.message || 'Some error occurred while delete informasi.');
     }
 }
 

@@ -114,7 +114,9 @@ exports.getSubSuratById = async (req, res) => {
     try{
         const {id, jenisSurat} = req.params;
 
-        if(jenisSurat === 'surat keterangan usaha'){
+        console.log("jenis surat",jenisSurat);
+
+        if(jenisSurat === 'surat_keterangan_usaha'){
             const subSurat = await jenisSuratModel.suratKeteranganUsaha.findById (id);
             if(!subSurat){
                 return res.status(404).send({
@@ -127,7 +129,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'keterangan nikah'){
+        if(jenisSurat === 'keterangan_nikah'){
             const subSurat = await jenisSuratModel.suratKeteranganNikah.findById(id);
             if(!subSurat){
                 return res.status(404).send({
@@ -154,8 +156,8 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'surat pengantar skck'){
-            const subSurat = await jenisSuratModel.surat
+        if(jenisSurat === 'surat_pengantar_skck'){
+            const subSurat = await jenisSuratModel.suratSkck.findById(id);  
             if (!subSurat){
                 return res.status(404).send({
                     message: "sub surat not found with id " + id
@@ -168,7 +170,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'surat kelahiran'){
+        if(jenisSurat === 'surat_kelahiran'){
             const subSurat = await jenisSuratModel.suratKeteranganKelahiran.findById(id);
             
             if (!subSurat){
@@ -183,7 +185,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'surat izin keramaian'){
+        if(jenisSurat === 'surat_izin_keramaian'){
             const subSurat = await jenisSuratModel.suratIzinKeramaian.findById(id);
             if (!subSurat){
                 return res.status(404).send({
@@ -197,7 +199,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'surat izin bepergian'){
+        if(jenisSurat === 'surat_izin_bepergian'){
             const subSurat = await jenisSuratModel.suratIzinBepergian.findById(id);
             if (!subSurat){
                 return res.status(404).send({
@@ -211,7 +213,7 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'keterangan tidak mampu'){
+        if(jenisSurat === 'keterangan_tidak_mampu'){
             const subSurat = await jenisSuratModel.suratKeteranganTidakMampu.findById(id);
             if (!subSurat){
                 return res.status(404).send({
@@ -225,12 +227,21 @@ exports.getSubSuratById = async (req, res) => {
             });
         }
 
-        if(jenisSurat === 'surat kematian'){
+        if(jenisSurat === 'surat_kematian'){
             const subSurat = await jenisSuratModel.suratKuasaAktaKematian.findById(id);
-            return subSurat;
+            if (!subSurat){
+                return res.status(404).send({
+                    message: "sub surat not found with id " + id
+                });
+            }
+
+            res.status(200).send({
+                message: "Success get sub surat by id",
+                data: subSurat
+            });
         }
 
-        if(jenisSurat === 'pencatatan kependudukan'){
+        if(jenisSurat === 'pencatatan_kependudukan'){
             const subSurat = await jenisSuratModel.suratPencatatanKependudukan.findById(id);
             if (!subSurat){
                 return res.status(404).send({

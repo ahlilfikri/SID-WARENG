@@ -4,7 +4,9 @@ import NavBar from '../../shared/layout/navBar/index'
 import Footer from '../../shared/layout/footer/index'
 import axios from 'axios';
 
+
 const LoginAdmin = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [formData, setFormData] = useState({
         name: '',
         password: ''
@@ -16,18 +18,21 @@ const LoginAdmin = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        
-        
         try {
-            const res = await axios.post('http://localhost:3556/api/v1/admin/login-admin', {
-                "name" : name.toUpperCase(),
-                "password" : password
+            const res = await axios.post(`${port}v1/admin/login-admin`, {
+                name: name,
+                password: password
             });
-            localStorage.setItem('token', res.data.data.token);
-            window.location.href = '/informasi-desa';
+
+            if (res.data && res.data.data && res.data.data.token) {
+                localStorage.setItem('token', res.data.data.token);
+                window.location.href = '/informasi-desa';
+            } else {
+                throw new Error('Invalid response from server');
+            }
 
         } catch (err) {
-            console.error(err.response.data);
+            console.error(err);
         }
     };
 

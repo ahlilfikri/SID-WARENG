@@ -6,45 +6,18 @@ const SuratAcaraModel = db.suratAcara;
 
 exports.getKades = async (req, res) => {
     try{
-        const roleKades = 1;
-        const roleWakilKades = 2;
-        const {role} = req.params;// 1 / 2
-        if (!role){
-            return res.status(400).send({
-                message: "Role not found"
+     
+        const dataKades = await db.user.find({role: 5})
+        if (!dataKades){
+            return res.status(404).send({
+                message: "Data kades not found"
             });
         }
-        if (role !== roleKades && role !== roleWakilKades){
-            return res.status(400).send({
-                message: "Role not found"
-            });
-        }
-        if (role === roleKades){
-            const dataKades = await KadesModel.find({role: roleKades})
-            if (!dataKades){
-                return res.status(404).send({
-                    message: "Data kades not found"
-                });
-            }
-            res.status(200).send({
-                message: "Success get kades",
-                data: dataKades
-            });
-        }
-
-        if (role === roleWakilKades){
-            const dataKades = await KadesModel.find({role: roleWakilKades})
-            if (!dataKades){
-                return res.status(404).send({
-                    message: "Data wakil kades not found"
-                });
-            }
-            res.status(200).send({
-                message: "Success get wakil kades",
-                data: dataKades
-            });
-        }
-
+        res.status(200).send({
+            message: "Success get kades",
+            data: dataKades
+        });
+        
     }catch(error){
         res.status(500).send({
             message: error.message || "Some error occurred while get kades."
@@ -76,7 +49,7 @@ exports.getPimpinanDesaById = async (req, res) => {
 
 exports.getAllPimpinanDesa = async (req, res) => {
     try{
-        const dataKades = await KadesModel.find();
+        const dataKades = await KadesModel.find().populate('user');
         if (!dataKades){
             return res.status(404).send({
                 message: "Data kades not found"

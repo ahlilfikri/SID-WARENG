@@ -17,61 +17,47 @@ const {generatePDF} = require('../../middleware/fileUpload');
 const wargaModel = require('../../models/userModels/warga/wargaModel');
 
 
-exports.LoginWarga = async (req,res) => {
-    const {name,password} = req.body;
-    try{
+
+exports.LoginWarga = async (req, res) => {
+    const { name, password } = req.body;
+    try {
         const dataNama = name.toUpperCase();
-        const dataUser = await userModel.findOne({name: dataNama});
+        const dataUser = await userModel.findOne({ name: dataNama });
+
         if (!dataUser) {
-            throw new Error('user not found with name :  ' + name);
+            return res.status(404).send({
+                message: `User not found with name: ${name}`
+            });
         }
-        const comparePassword = bcrypt.compare(password, dataUser.password);
+
+        const comparePassword = await bcrypt.compare(password, dataUser.password);
         console.log('comparePassword:', comparePassword);
         if (!comparePassword) {
             return res.status(400).send({
                 message: "Invalid Password!"
             });
         }
-        const token = jwt.sign({id: dataUser._id}, process.env.LOGIN_TOKEN, {expiresIn: '1d'});
+
+        const token = jwt.sign({ id: dataUser._id }, process.env.LOGIN_TOKEN, { expiresIn: '1d' });
         dataUser.token = token;
         await dataUser.save();
+
         res.status(200).send({
             status: 'success',
             message: "Success login warga",
-            data: dataUser
+            data: {
+                id: dataUser._id,
+                name: dataUser.name,
+                token: dataUser.token
+            }
         });
-    }catch(error){
-        console.log('Error:', error);
+    } catch (error) {
+        console.error('Error:', error);
         res.status(500).send({
             message: error.message || "Some error occurred while login warga."
         });
     }
 };
-
-exports.LogOutWarga = async (req,res) => {
-    const {id} = req.params;
-    try{
-        const dataUser = await userModel.findById(id);
-        if (!dataUser) {
-            return res.status(404).send({
-                message: "User not found with id " + id
-            });
-        }
-
-        dataUser.token = '';
-        await dataUser.save();
-
-        res.status(200).send({
-            message: "Success logout warga",
-            data: dataUser
-        });
-
-    }catch(error){
-        res.status(500).send({
-            message: error.message || "Some error occurred while logout warga."
-        });
-    }
-}
 
 exports.RegisterWarga = async (req, res) => {
     try {
@@ -101,12 +87,12 @@ exports.RegisterWarga = async (req, res) => {
                 throw new Error('User already registered as warga');
             }
 
-            const encryptedPassword = encrypt.enkripsi(password, aesKey, iv).encryptedData;
+            const hashedPassword = await bcrypt.hash(password, 10);
             const newWarga = await wargaModel.create({
                 user: checkUsername._id
             });
 
-            checkUsername.password = encryptedPassword;
+            checkUsername.password = hashedPassword;
             checkUsername.nohp = encrypt.enkripsi(nohp, aesKey, iv).encryptedData; 
             checkUsername.role = 1;
             await checkUsername.save();
@@ -130,6 +116,36 @@ exports.RegisterWarga = async (req, res) => {
         });
     }
 };
+
+
+exports.LogOutWarga = async (req,res) => {
+    try{
+        console.log('test')
+        const {id} = req.params;
+        const dataUser = await userModel.findById(id);
+        if (!dataUser) {
+            return res.status(404).send({
+                message: "User not found with id " + id
+            });
+        }
+
+        console.log('dataUser:', dataUser);
+
+        dataUser.token = '';
+        await dataUser.save();
+
+        res.status(200).send({
+            message: "Success logout warga",
+            data: dataUser
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while logout warga."
+        });
+    }
+}
+
 
 
 // forgot password warga

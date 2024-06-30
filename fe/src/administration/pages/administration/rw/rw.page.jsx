@@ -1,31 +1,32 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
 
 const RwPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [DataRw, setDataRw] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [condition, setCondition] = useState(false);
     const [activeTab, setActiveTab] = useState('comming');
     const [searchQuery, setSearchQuery] = useState('');
+    const [status, setStatus] = useState('loading');
 
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/rw/get/${id}`)
+        axios.get(`${port}v1/rw/get/${id}`)
             .then((res) => {
                 setDataRw(res.data.data);
-                console.log(DataRw._id)
+                setStatus('success');
             })
             .catch((err) => {
                 console.error(err);
+                setStatus('error');
             });
-
     }, [id]);
 
     const handleShowDetail = (surat) => {
@@ -89,8 +90,8 @@ const RwPage = () => {
                             aria-label="Select Category"
                             onChange={(e) => setActiveTab(e.target.value)}
                         >
-                            <option value="comming">Surat Acara Comming</option>
-                            <option value="pending">Surat Acara Pending</option>
+                            <option value="comming">Surat Acara Akan Datang</option>
+                            <option value="pending">Surat Acara Menunggu Persetujuan</option>
                             <option value="approved">Surat Acara Disetujui</option>
                             <option value="rejected">Surat Acara Ditolak</option>
                         </select>
@@ -105,11 +106,17 @@ const RwPage = () => {
                         />
                     </div>
                 </div>
-                {activeTab === 'comming' && DataRw.suratAcaraComing && DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Belum ada surat acara</p>}
-                {activeTab === 'pending' && DataRw.suratAcaraPending && DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Belum ada surat acara</p>}
-                {activeTab === 'approved' && DataRw.suratAcaraApproved && DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Belum ada surat acara</p>}
-                {activeTab === 'rejected' && DataRw.suratAcaraDitolak && DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Belum ada surat acara</p>}
-                <Footer type={3}></Footer> 
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                {status === 'success' && (
+                    <>
+                        {activeTab === 'comming' && DataRw.suratAcaraComing && (DataRw.suratAcaraComing.length > 0 ? renderTable(DataRw.suratAcaraComing) : <p>Tidak ada surat acara akan datang</p>)}
+                        {activeTab === 'pending' && DataRw.suratAcaraPending && (DataRw.suratAcaraPending.length > 0 ? renderTable(DataRw.suratAcaraPending) : <p>Tidak ada surat acara menunggu persetujuan</p>)}
+                        {activeTab === 'approved' && DataRw.suratAcaraApproved && (DataRw.suratAcaraApproved.length > 0 ? renderTable(DataRw.suratAcaraApproved) : <p>Tidak ada surat acara disetujui</p>)}
+                        {activeTab === 'rejected' && DataRw.suratAcaraDitolak && (DataRw.suratAcaraDitolak.length > 0 ? renderTable(DataRw.suratAcaraDitolak) : <p>Tidak ada surat acara ditolak</p>)}
+                    </>
+                )}
+                <Footer type={3}></Footer>
             </div>
             {showModal && (
                 <PopUpDetailSurat

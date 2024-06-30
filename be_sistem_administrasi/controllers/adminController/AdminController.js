@@ -8,6 +8,61 @@ const ppModel = db.pimpinanDesa;
 const userModel = db.user;
 const AdminModel = db.admin;
 
+const jwt = require('jsonwebtoken');
+
+
+exports.loginAdmin = async (req, res) => {
+    const {name,password} = req.body;
+    try{
+        const dataUser = await adminModels.findOne({name: name});
+        if (!dataUser) {
+            throw new Error('user not found with name :  ' + name);
+        }
+        const comparePassword = password == dataUser.password
+        if (!comparePassword) {
+            return res.status(400).send({
+                message: "Invalid Password!"
+            });
+        }
+        const token = jwt.sign({id: dataUser._id}, process.env.LOGIN_TOKEN, {expiresIn: '1d'});
+        dataUser.token = token;
+        await dataUser.save();
+        res.status(200).send({
+            status: 'success',
+            message: "Success login Admin",
+            data: dataUser
+        });
+    }catch(error){
+        console.log('Error:', error);
+        res.status(500).send({
+            message: error.message || "Some error occurred while login Admin."
+        });
+    }
+}
+exports.logoutAdmin = async (req, res) => {
+    const {id} = req.params;
+    try{
+        const dataUser = await adminModels.findById(id);
+        if (!dataUser) {
+            return res.status(404).send({
+                message: "User not found with id " + id
+            });
+        }
+
+        dataUser.token = '';
+        await dataUser.save();
+
+        res.status(200).send({
+            message: "Success logout warga",
+            data: dataUser
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while logout warga."
+        });
+    }
+}
 // CRUD OPERATIONS
 // CREATE
 exports.postAdmin = async (req, res) => {
@@ -262,6 +317,51 @@ exports.postPimpinanDesa = async (req,res) => {
             message: "Success create pimpinan desa",
             data: newPimpinanDesa
         });
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while creating warga."
+        });
+    }
+};
+
+
+/// count All document user
+exports.countAllDocument = async (req,res) => {
+    try{
+        const totalUser = await userModel.countDocuments();
+        const totalWarga = await WargaModel.countDocuments();
+        const totalRt = await rtModel.countDocuments();
+        const totalRw = await rwModel.countDocuments();
+        const totalPerangkatDesa = await pdModel.countDocuments();  
+        const totalPimpinanDesa = await ppModel.countDocuments();
+
+        res.status(200).send({
+            message: "Success get total document",
+            totalUser,
+            totalWarga,
+            totalRt,
+            totalRw,
+            totalPerangkatDesa,
+            totalPimpinanDesa
+        });
+
+    }catch(error){
+        res.status(500).send({
+            message: error.message || "Some error occurred while creating warga."
+        });
+    }
+};
+
+
+// count All surat acara
+exports.countAllSurat = async (req,res) => {
+    try{
+        const totalSuratAcara = await db.suratAcara.countDocuments();
+        res.status(200).send({
+            message: "Success get total surat acara",
+            totalSurat : totalSuratAcara
+        });
+
     }catch(error){
         res.status(500).send({
             message: error.message || "Some error occurred while creating warga."

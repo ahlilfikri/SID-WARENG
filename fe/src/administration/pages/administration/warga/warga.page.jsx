@@ -15,10 +15,14 @@ import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_Sur
 import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
 const WargaPage = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL3;
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState([]);
     const [DataAspirasi, setDataAspirasi] = useState([]);
+    const [statusSurat, setStatusSurat] = useState('loading');
+    const [statusAspirasi, setStatusAspirasi] = useState('loading');
     const [selectedSurat, setSelectedSurat] = useState(null);
     const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
@@ -27,24 +31,32 @@ const WargaPage = () => {
 
     const GetDataWarga = async () => {
         try {
-            const response = await axios.get(`http://localhost:3555/api/v1/warga/get/${id}`);
+            const response = await axios.get(`${port}v1/warga/get/${id}`);
             setDataWarga(response.data.data);
+            setStatusSurat('success');
         } catch (error) {
             console.error('Error getting data warga:', error);
+            setStatusSurat('error');
         }
     };
 
     const GetDataAspirasiWarga = async () => {
         try {
-            const response = await axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasi/my/${id}`);
+            const response = await axios.get(`${port2}v1/aspirasi/getAspirasi/my/${id}`);
             setDataAspirasi(response.data);
+            setStatusAspirasi('success');
         } catch (error) {
             console.error('Error getting data warga:', error);
+            setStatusAspirasi('error');
         }
     };
 
     const aspirasiDecider = (isPublish) => {
         return isPublish ? 'Untuk umum' : 'Untuk kades';
+    }
+
+    const pengajuanStatusDecider = (isPending) => {
+        return isPending ? 'Pending' : 'Selesai';
     }
 
     useEffect(() => {
@@ -65,14 +77,14 @@ const WargaPage = () => {
 
     const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
         try {
-            const response = await axios.get(`http://localhost:3555/api/v1/surat/get/generatePdf/${idSuratAcara}`, {
+            const response = await axios.get(`${port}v1/surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
-    
+
             if (response.status !== 200) {
                 throw new Error(`Failed to download PDF. Status code: ${response.status}`);
             }
-    
+
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
@@ -112,7 +124,9 @@ const WargaPage = () => {
                         onChange={(e) => setSearchQuerySurat(e.target.value)}
                         className="form-control mb-3"
                     />
-                    {filteredSuratAcara && filteredSuratAcara.length > 0 ? (
+                    {statusSurat === 'loading' && <p>Loading...</p>}
+                    {statusSurat === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                    {statusSurat === 'success' && filteredSuratAcara && filteredSuratAcara.length > 0 ? (
                         <table className="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -133,7 +147,7 @@ const WargaPage = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(surat)}
+                                                onClick={() => handleShowDetail(surat, surat.jenisSurat)}
                                             >
                                                 View
                                             </button>
@@ -143,7 +157,6 @@ const WargaPage = () => {
                                             >
                                                 Download PDF
                                             </button>
-
                                         </td>
                                     </tr>
                                 ))}
@@ -161,13 +174,16 @@ const WargaPage = () => {
                         onChange={(e) => setSearchQueryAspirasi(e.target.value)}
                         className="form-control mb-3"
                     />
-                    {filteredAspirasi && filteredAspirasi.length > 0 ? (
+                    {statusAspirasi === 'loading' && <p>Loading...</p>}
+                    {statusAspirasi === 'error' && <p>Data tidak berhasil dimuat.</p>}
+                    {statusAspirasi === 'success' && filteredAspirasi && filteredAspirasi.length > 0 ? (
                         <table className="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Aspirasi</th>
                                     <th>Status</th>
+                                    <th>Status Pengajuan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -177,10 +193,11 @@ const WargaPage = () => {
                                         <td>{index + 1}</td>
                                         <td>{aspirasi.aspirasi}</td>
                                         <td>{aspirasiDecider(aspirasi.isPublish)}</td>
+                                        <td>{pengajuanStatusDecider(aspirasi.isPending)}</td>
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(aspirasi)}
+                                                onClick={() => handleShowDetail(aspirasi, 'aspirasi')}
                                             >
                                                 View
                                             </button>
@@ -218,7 +235,6 @@ const WargaPage = () => {
                                     </div>
                                 )}
 
-
                                 {selectedForm === 'FormPencatatanKependudukan' && (
                                     <FormPencatatanKependudukan handleCloseModal={handleCloseModal} />
                                 )}
@@ -243,7 +259,6 @@ const WargaPage = () => {
                                 {selectedForm === 'FormSuratKeteranganNikah' && (
                                     <FormSuratKeteranganNikah handleCloseModal={handleCloseModal} />
                                 )}
-
 
                                 {/*  */}
                             </div>

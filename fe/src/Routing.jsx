@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createBrowserRouter } from "react-router-dom";
 import { useEffect, useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
@@ -23,8 +24,11 @@ import RwPage from "./administration/pages/administration/rw/rw.page";
 import KasiPage from "./administration/pages/administration/kasi/kasi.page";
 import KadesPage from "./administration/pages/administration/kades/kades.page";
 import getToken from "./shared/functions/functions";
+//ADMIN
+import DashboardAdmin from "./admin";
 
 import App from "./App";
+const port = import.meta.env.VITE_BASE_API_URL2;
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
   const [userData, setUserData] = useState(null); 
@@ -37,7 +41,7 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
       const token = localStorage.getItem('token');
 
       try {
-        const res = await axios.get(`http://localhost:3555/api/v1/user/get/${id}`, {
+        const res = await axios.get(`${port}v1/user/get/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -93,6 +97,22 @@ const Routing = createBrowserRouter([
         path: "/forgot-password",
         element: <ForgotPassword />,
       },
+      //ADMIN
+      {
+        path: "/dashboard-admin",
+        element: <DashboardAdmin />,
+      },
+      {
+        path: "/login-admin",
+        element: <LoginAdmin />,
+      },
+      {
+        path: "/admin-aspirasi-page",
+        element: <ProtectedRoute
+          element={<AdminAspirasiPage />}
+          authorizedRoles={[5]}
+        />
+      },
       //SID
       {
         path: "/informasi-desa",
@@ -118,17 +138,7 @@ const Routing = createBrowserRouter([
           authorizedRoles={[1, 2, 3, 4, 5]}
         />,
       },
-      {
-        path: "/admin-aspirasi",
-        element: <LoginAdmin />,
-      },
-      {
-        path: "/admin-aspirasi-page",
-        element: <ProtectedRoute
-          element={<AdminAspirasiPage />}
-          authorizedRoles={[5]}
-        />
-      },
+
       //ADMINISTRATION
       {
         path: "/warga",

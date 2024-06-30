@@ -1,5 +1,4 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import NavBar from '../../../shared/layout/navBar';
 import Footer from '../../../shared/layout/footer';
 import axios from 'axios';
@@ -7,10 +6,13 @@ import getToken from '../../../administration/pages/administration/shared/functi
 import './index.css';
 
 const Aspirasi = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL3;
     const [warga, setWarga] = useState([]);
     const [data, setData] = useState({
         aspirasi: '',
-        isPublish: false
+        isPublish: false,
+        kategori: ''
     });
 
     const onChange = (e) => {
@@ -20,7 +22,7 @@ const Aspirasi = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`http://localhost:3555/api/v1/warga/get/${id}`)
+        axios.get(`${port}v1/warga/get/${id}`)
             .then((res) => {
                 setWarga(res.data.data);
                 console.log(res.data.data._id);
@@ -33,11 +35,12 @@ const Aspirasi = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3557/api/v1/aspirasi/postAspirasi/${warga._id}`, data);
+            const response = await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
             setData({
                 aspirasi: '',
-                isPublish: false
+                isPublish: false,
+                kategori: ''
             });
         } catch (error) {
             console.error('Error posting aspirasi:', error);
@@ -46,10 +49,9 @@ const Aspirasi = () => {
     };
 
     const onRadioChange = (e) => {
-        setData({ ...data, isPublish: e.target.value === 'true' }); // 
+        setData({ ...data, isPublish: e.target.value === 'true' });
     };
 
-    // console.log(data);
     return (
         <Fragment>
             <div className="container-fluid login-container p-0">
@@ -75,6 +77,22 @@ const Aspirasi = () => {
                                                     value={data.aspirasi}
                                                     onChange={onChange}
                                                 />
+                                            </div>
+                                            <div className="mb-2">
+                                                <p className="text-light mb-0" style={{ fontSize: '24px' }}>Kategori</p>
+                                                <select
+                                                    className="form-select"
+                                                    name="kategori"
+                                                    value={data.kategori}
+                                                    onChange={onChange}
+                                                    style={{ borderRadius: '0.5vw', width: '100%' }}
+                                                >
+                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="Infrastuktur">Infrastuktur</option>
+                                                    <option value="Pendidikan">Pendidikan</option>
+                                                    <option value="Kesehatan">Kesehatan</option>
+                                                    <option value="Kesejahteraan">Kesejahteraan</option>
+                                                </select>
                                             </div>
                                             <div className="mb-2">
                                                 <p className="text-light mb-0" style={{ fontSize: '24px' }}>Status</p>
