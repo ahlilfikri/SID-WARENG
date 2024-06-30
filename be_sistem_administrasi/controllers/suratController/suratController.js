@@ -187,12 +187,11 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
     }
 }
-
 exports.generateSuratPdf_TAVERSION = async (req, res) => {
     try {
         const { idSuratAcara } = req.params;
         const suratAcara = await suratAcaraModel.findById(idSuratAcara).populate('wargaId');
-
+        console.log(idSuratAcara);
         if (!suratAcara) {
             return res.status(404).send({ message: `Surat Acara with id ${idSuratAcara} not found` });
         }
@@ -240,6 +239,7 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
         res.status(500).send({ message: error.message || "Some error occurred while generating Surat Acara." });
     }
 };
+
 
 exports.updateSuratPdf_TAVERSION = async (req, res) => {
     try {
