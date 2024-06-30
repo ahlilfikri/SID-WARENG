@@ -53,16 +53,16 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         }
     };
 
-    const handleSave = async () => {
-        try {
-            const response = await axios.put(`${port}v1/surat/revisi-surat-warga/${surat._id}`, {
-                "newIsiAcara": isiAcara
-            });
-            handleCloseModal();
-        } catch (error) {
-            console.error("Error editing surat acara:", error);
-        }
-    };
+    // const handleSave = async () => {
+    //     try {
+    //         const response = await axios.put(`${port}v1/surat/revisi-surat-warga/${surat._id}`, {
+    //             "newIsiAcara": isiAcara
+    //         });
+    //         handleCloseModal();
+    //     } catch (error) {
+    //         console.error("Error editing surat acara:", error);
+    //     }
+    // };
 
     return (
         <>
@@ -127,11 +127,11 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                             <Button variant="secondary" onClick={handleCloseModal}>
                                 Tutup
                             </Button>
-                            {editAble && (
+                            {/* {editAble && (
                                 <Button variant="primary" onClick={handleSave}>
                                     Save
                                 </Button>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>

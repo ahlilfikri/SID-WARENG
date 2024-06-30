@@ -81,16 +81,32 @@ const TTD_kades = (statusPersetujuan,formattedDate) => {
     }
 }
 
-const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user, subSuratId,statusPersetujuan }) => {
-    const aesKey = crypto.scryptSync(
-        process.env.encrypt_key_one,
-        process.env.encrypt_key_two,
-        32
-    );
-    const formattedDate = formatTime(new Date()).slice(0, -5);
-    const isiSurat = await suratDecider(jenisSurat, subSuratId);
 
-    return `
+const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user, subSuratId, statusPersetujuan }) => {
+
+
+    try {
+        const aesKey = crypto.scryptSync(
+            process.env.encrypt_key_one,
+            process.env.encrypt_key_two,
+            32
+        );
+    
+        console.log('----------------------------------------')
+        console.log("user               :         ", user)
+        console.log('----------------------------------------')
+    
+        const iv = user.iv; // Pastikan IV diambil dari data user dan memiliki panjang yang benar
+        console.log('AES Key:', aesKey.toString('hex'));
+        console.log('IV:', iv);
+        console.log('User NIK (Encrypted):', user.nik);
+        console.log('User Alamat (Encrypted):', user.alamat);
+    
+        const formattedDate = formatTime(new Date()).slice(0, -5);
+        const isiSurat = await suratDecider(jenisSurat, subSuratId);
+        const decryptedNIK = encrypt.dekripsi(user.nik, aesKey, iv);
+        const decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, iv);
+        return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -235,7 +251,7 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
                     <tr>
                         <td>NIK</td>
                         <td>:</td>
-                        <td>${encrypt.dekripsi(user.nik, aesKey, user.iv)}</td>
+                        <td>${decryptedNIK}</td>
                     </tr>
                     <tr>
                         <td>Jenis Kelamin</td>
@@ -255,7 +271,7 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td>${encrypt.dekripsi(user.alamat, aesKey, user.iv)}</td>
+                        <td>${decryptedAlamat}</td>
                     </tr>
                 </table>
                 <p>
@@ -277,7 +293,17 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
     </body>
     </html>
     `;
+    } catch (err) {
+        console.error('Decryption error:', err);
+        throw new Error('Decryption failed. Please check the key, IV, and encrypted data.');
+    }
+
+    
 };
+
+
+
+
 
 const formatTime = (timeString) => {
     const date = new Date(timeString);
@@ -296,6 +322,8 @@ const formatTime = (timeString) => {
 
 const generateSuratPDF = async (data) => {
     const html = await generateHTML(data);
+    console.log('Generated HTML:', html); 
+    
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage(); 
 
@@ -306,5 +334,6 @@ const generateSuratPDF = async (data) => {
     await browser.close();
     return pdfBuffer;
 };
+
 
 module.exports = { generateSuratPDF };

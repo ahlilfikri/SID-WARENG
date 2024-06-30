@@ -15,7 +15,7 @@ Router.get('/get/surat',auth.wargaValidation,suratController.getAllSuratAcaraLes
 Router.post('/create/suratAcara/TAversion/:idWarga',suratController.wargaCreateSurat_TAVERSION);
 Router.put('/revisi-surat-warga/:suratAcaraId',suratController.suratAcaraRevisi_TAVERSION);
 Router.delete('/delete/suratAcara/:userId/:suratAcaraId',suratController.deleteSuratAcaraById);
-Router.get('/get/generatePdf/:idSuratAcara',suratController.generateSuratPdf_TAVERSION);
+Router.get('/get/generatePdf/:idSuratAcara',suratController.generateSuratPdf_TAVERSION); //http://localhost:3555/api/v1/surat/get/generatePdf/:idSuratAcara
 
 //Rt
 Router.put('/persetujuan-surat-acara-rt/:rtId/:suratAcaraId',suratController.persetujuanSuratAcaraRt_TAVERSION);

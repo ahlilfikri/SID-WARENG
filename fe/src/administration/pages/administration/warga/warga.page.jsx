@@ -83,6 +83,8 @@ const WargaPage = () => {
     const handleCloseDetail = () => setShowDetail(false);
 
     const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
+        console.log('idSuratAcara:', idSuratAcara);
+        console.log('nameAcara:', nameAcara);
         try {
             const response = await axios.get(`${port}v1/surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
@@ -165,8 +167,9 @@ const WargaPage = () => {
                                             >
                                                 View
                                             </button>
-                                            <button
-                                                className="btn btn-secondary ms-2"
+                                            {/* ini di hilangkan dulu */}
+                                            <button 
+                                                className="btn btn-secondary ms-2 d-none"
                                                 onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
                                             >
                                                 Download PDF
