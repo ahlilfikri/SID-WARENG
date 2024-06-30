@@ -8,15 +8,15 @@ exports.getUserByName = async (req, res) => {
     try {
         const { name } = req.body;
         console.log("Request body:", req.body); 
-        console.log("Name parameter:", name); 
-
+        
         if (!name) {
             return res.status(400).send({
                 message: "Name parameter is required"
             });
         }
-
+        
         const upperName = name.toUpperCase();
+        console.log("Name parameter:", upperName); 
 
         const dataUser = await userModel.findOne({name : upperName});
         if (dataUser) {
