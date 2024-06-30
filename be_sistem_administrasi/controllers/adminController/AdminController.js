@@ -308,7 +308,7 @@ exports.postPimpinanDesa = async (req,res) => {
 
         const newPimpinanDesa = await ppModel.create({
             user: idUser,
-            rolePemimpinDesa : RolePemimpinDesa
+            rolePemimpinDesa : RolePemimpinDesa // 1 = kepala desa
         });
 
         await dataUser.save();
