@@ -139,7 +139,7 @@ const KegiatanProgramDesa = () => {
                                     return (
                                         <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }} key={index}>
                                             <div>
-                                                <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
+                                                <img src={imageSrc} alt="" style={{ height: '250px', width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
                                                 <Link to={`/detail-kegiatan-desa/${item._id}`}>
                                                     <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
                                                 </Link>

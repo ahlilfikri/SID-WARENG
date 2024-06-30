@@ -31,8 +31,28 @@ const Aspirasi = () => {
             });
     }, [id]);
 
+    const validateForm = () => {
+        if (!data.aspirasi) {
+            alert('Aspirasi harus diisi');
+            return false;
+        }
+        if (!data.kategori) {
+            alert('Kategori harus dipilih');
+            return false;
+        }
+        if (data.isPublish === undefined) {
+            alert('Status harus dipilih');
+            return false;
+        }
+        return true;
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+
         try {
             await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
@@ -87,7 +107,7 @@ const Aspirasi = () => {
                                                     style={{ borderRadius: '0.5vw', width: '100%' }}
                                                 >
                                                     <option value="">Pilih Kategori</option>
-                                                    <option value="Infrastuktur">Infrastuktur</option>
+                                                    <option value="Infrastruktur">Infrastruktur</option>
                                                     <option value="Pendidikan">Pendidikan</option>
                                                     <option value="Kesehatan">Kesehatan</option>
                                                     <option value="Kesejahteraan">Kesejahteraan</option>

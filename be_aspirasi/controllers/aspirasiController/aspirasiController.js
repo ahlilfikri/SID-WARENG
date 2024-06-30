@@ -25,6 +25,7 @@ exports.postAspirasi = async (req, res) => {
             data: newAspirasi
         });
     } catch (error) {
+        console.log(error.message);
         res.status(500).send({
             message: error.message || "Some error occurred while posting aspirasi."
         });
@@ -121,9 +122,10 @@ exports.getAspirasiApproved = async (req, res) => {
 
 exports.getAspirasiAll = async (req, res) => {
     try {
-        const { page, size } = req.query;
-        const { limit, offset } = getPagination(page, size);
-        const data = await db.aspirasi.find({isPublish:true}).limit(limit).skip(offset);
+        // const { page, size } = req.query;
+        // const { limit, offset } = getPagination(page, size);
+        // const data = await db.aspirasi.find({isPublish:true}).limit(limit).skip(offset);
+        const data = await db.aspirasi.find();
         if (!data) {
             return res.status(404).send({ message: "Not found aspirasi" });
         }

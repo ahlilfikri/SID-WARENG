@@ -17,7 +17,10 @@ const AspirasiDesa = () => {
         setStatus('loading');
         try {
             const response = await axios.get(`${port}v1/aspirasi/getAspirasiApproved`);
-            const data = response.data;
+            var data = response.data;
+            if (data.length > 10) {
+                data = data.slice(0, 10);
+            }
             setData(data);
 
             if (data.length === 1) {
@@ -47,25 +50,19 @@ const AspirasiDesa = () => {
                 {status === 'success' && data.length === 0 && (
                     <p>Belum ada data yang ditambahkan</p>
                 )}
-                {status === 'success' && data.length > 0 &&(
-                    <Slider {...getSettings(slidesToShow)}>
-                        {data.map((item, index) => (
-                            <div key={index}>
-                                <div className="card aspirasi-desa-card m-3 py-4 mx-2" style={{ borderRadius: '1vw', border: '1px solid #00917C', transition: 'transform 0.3s ease' }}>
-                                    <div className="row">
-                                        <div className="col-1"></div>
-                                        <div className="col-10">
-                                            <div className="content pt-4">
-                                                <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.aspirasi}</p>
-                                                <p style={{ fontFamily: 'poppins', fontSize: '16px', textAlign: 'justify' }}>{item.kategori}</p>
-                                            </div>
-                                        </div>
+                {status === 'success' && data.length > 0 && (
+                    <div class="row">
+                        <Slider {...getSettings(slidesToShow)}>
+                            {data.map((item, index) => (
+                                <div key={index}>
+                                    <div class="card aspirasi-desa-card m-3 py-4 px-2">
+                                        <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.aspirasi}</p>
+                                        <p style={{ fontFamily: 'poppins', fontSize: '16px', textAlign: 'justify' }}>{item.kategori}</p>
                                     </div>
                                 </div>
-                                <div className="col-1"></div>
-                            </div>
-                        ))}
-                    </Slider>
+                            ))}
+                        </Slider>
+                    </div>
                 )}
             </div>
         </Fragment>
