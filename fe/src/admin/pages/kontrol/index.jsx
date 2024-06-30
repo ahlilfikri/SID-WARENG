@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import ModalTambahUser from './component/modal_add_user';
 import ModalTambahRt from './component/modal_add_rt';
 import ModalTambahRw from './component/modal_add_rw'; 
+import ModalTambahPd from './component/modal_add_pd';
 
 const KontrolPengguna = () => {
     const [totalData, setTotalData] = useState({});
@@ -11,6 +12,8 @@ const KontrolPengguna = () => {
     const [showModalUser, setShowModalUser] = useState(false);
     const [showModalRt, setShowModalRt] = useState(false); 
     const [showModalRw, setShowModalRw] = useState(false);
+    const [showModalPd, setShowModalPd] = useState(false);
+
 
     const countUser = async () => {
         try {
@@ -43,6 +46,8 @@ const KontrolPengguna = () => {
     const handleCloseRtModal = () => setShowModalRt(false);
     const handleShowRwModal = () => setShowModalRw(true);
     const handleCloseRwModal = () => setShowModalRw(false);
+    const handleShowPdModal = () => setShowModalPd(true);
+    const handleClosePdModal = () => setShowModalPd(false);
 
     return (
         <>
@@ -85,11 +90,15 @@ const KontrolPengguna = () => {
                 <Button variant="primary" onClick={handleShowRwModal}>
                     Tambah RW
                 </Button>
+                <Button variant="primary" onClick={handleShowPdModal}>
+                    Tambah Perangkat Desa
+                </Button>
             </div>
 
             <ModalTambahUser show={showModalUser} handleClose={handleCloseUserModal} />
             <ModalTambahRt show={showModalRt} handleClose={handleCloseRtModal} /> 
             <ModalTambahRw show={showModalRw} handleClose={handleCloseRwModal} />
+            <ModalTambahPd show={showModalPd} handleClose={handleClosePdModal} />
         </>
     );
 };
