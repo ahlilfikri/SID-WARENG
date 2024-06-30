@@ -5,13 +5,27 @@ const response = require('../../res/response');
 
 
 exports.getPortal = async (req, res) => {
+    const { page = 1, limit = 10 } = req.query; // Default page is 1 and limit is 10
     try {
-        const content = await portalModel.find();
-        response(200, res, content, 'Success get portal');
+        const content = await portalModel.find()
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit));
+
+        const totalItems = await portalModel.countDocuments();
+        const totalPages = Math.ceil(totalItems / limit);
+
+        response(200, res, {
+            data: content,
+            currentPage: parseInt(page),
+            totalPages: totalPages,
+            totalItems: totalItems,
+            itemsPerPage: parseInt(limit)
+        }, 'Success get portal');
     } catch (err) {
-        response(500, res, 'error', err.message || 'Some error occurred while get informasi.');
+        response(500, res, 'error', err.message || 'Some error occurred while getting portal.');
     }
-}
+};
+
 
 exports.getPortalById = async (req, res) => {
     try {

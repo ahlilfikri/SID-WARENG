@@ -21,7 +21,7 @@ const PortalControl = () => {
         setStatus('loading');
         try {
             const res = await axios.get(`${port}v1/portal/get-portal`);
-            setDataPortal(res.data.data);
+            setDataPortal(res.data.data.data);
             setStatus('success');
         } catch (err) {
             console.error(err);

@@ -15,12 +15,16 @@ const KegiatanControl = () => {
     const [addForm, setAddForm] = useState({ title: '', content: '', date: '', location: '', img: null });
     const [selectedImage, setSelectedImage] = useState(null);
     const [status, setStatus] = useState('loading');
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
 
-    const getDataKegiatan = async () => {
+    const getDataKegiatan = async (page, limit) => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
-            setDataKegiatan(res.data.data);
+            const res = await axios.get(`${port}v1/kegiatan/get-kegiatan?page=${page}&limit=${limit}`);
+            setDataKegiatan(res.data.data.data);
+            setTotalPages(res.data.data.totalPages);
             setStatus('success');
         } catch (err) {
             console.error(err);
@@ -29,8 +33,8 @@ const KegiatanControl = () => {
     };
 
     useEffect(() => {
-        getDataKegiatan();
-    }, []);
+        getDataKegiatan(page, limit);
+    }, [page, limit]);
 
     const handleImageError = (e) => {
         e.target.src = ImageError;
@@ -39,7 +43,7 @@ const KegiatanControl = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(`${port}v1/kegiatan/delete-kegiatan/${id}`);
-            getDataKegiatan();
+            getDataKegiatan(page, limit);
         } catch (err) {
             console.error(err);
         }
@@ -61,7 +65,7 @@ const KegiatanControl = () => {
         try {
             await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
             setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
-            getDataKegiatan();
+            getDataKegiatan(page, limit);
         } catch (err) {
             console.error(err);
         }
@@ -93,7 +97,7 @@ const KegiatanControl = () => {
             setIsEditing(false);
             setCurrentKegiatan({});
             setEditForm({ title: '', content: '', date: '', location: '' });
-            getDataKegiatan();
+            getDataKegiatan(page, limit);
         } catch (err) {
             console.error(err);
         }
@@ -130,7 +134,7 @@ const KegiatanControl = () => {
             });
             setIsAdding(false);
             setAddForm({ title: '', content: '', date: '', location: '', img: null });
-            getDataKegiatan();
+            getDataKegiatan(page, limit);
         } catch (err) {
             console.error(err);
         }
@@ -154,7 +158,7 @@ const KegiatanControl = () => {
                     <tbody>
                         {data.map((item, index) => (
                             <tr key={item._id}>
-                                <td>{index + 1}</td>
+                                <td>{(page - 1) * limit + index + 1}</td>
                                 <td>{item.title}</td>
                                 <td>{item.content}</td>
                                 <td>
@@ -186,6 +190,11 @@ const KegiatanControl = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="d-flex justify-content-between">
+                    <button className="btn btn-secondary" onClick={() => setPage(page - 1)} disabled={page === 1}>Previous</button>
+                    <span>Page {page} of {totalPages}</span>
+                    <button className="btn btn-secondary" onClick={() => setPage(page + 1)} disabled={page === totalPages}>Next</button>
+                </div>
             </div>
         );
     };
@@ -197,6 +206,7 @@ const KegiatanControl = () => {
             {status === 'loading' && <p>Loading...</p>}
             {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
             {status === 'success' && dataKegiatan.length > 0 && renderTable(dataKegiatan)}
+            {status === 'success' && dataKegiatan.length === 0 && <p>Belum ada data yang ditambahkan.</p>}
 
             <EditModal
                 isEditing={isEditing}
