@@ -63,11 +63,11 @@ const FormPencatatanKependudukan = ({ handleCloseModal }) => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        console.log(dataSurat); // Debugging log
+        console.log(dataSurat); 
         try {
             const res = await axios.post(`http://localhost:3555/api/v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             console.log(res.data);
-            handleCloseModal(); // Close modal after successful submit
+            handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);
         }

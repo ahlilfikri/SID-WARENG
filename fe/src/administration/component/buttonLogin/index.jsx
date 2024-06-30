@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import { Link } from "react-router-dom";
 import {PropTypes} from 'prop-types';
 import { useState, useEffect } from 'react';
@@ -12,7 +12,6 @@ const ButtonSignin = ({data}) => {
     }
 
     useEffect(()=>{
-        // window.localStorage.removeItem('token');
     }
     ,[]);
 

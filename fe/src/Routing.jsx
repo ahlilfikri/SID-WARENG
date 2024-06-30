@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { useEffect, useState } from 'react'; // Import useEffect and useState
+import { useEffect, useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
+import axios from 'axios'; 
 //SID
 import Landing from './sid/pages/landingPage';
 import InformasiDesa from "./sid/pages/informasiDesa";
@@ -27,8 +27,8 @@ import getToken from "./shared/functions/functions";
 import App from "./App";
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
-  const [userData, setUserData] = useState(null); // State untuk data pengguna
-  const [loading, setLoading] = useState(true); // State untuk loading
+  const [userData, setUserData] = useState(null); 
+  const [loading, setLoading] = useState(true); 
   const id = getToken();
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false); // Set loading to false after fetching data
+        setLoading(false); 
       }
     };
 
@@ -65,7 +65,7 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
   }, [loading, userData, navigate]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading indicator while fetching data
+    return <div>Loading...</div>; 
   }
 
   return isAuthorized() ? element : null;

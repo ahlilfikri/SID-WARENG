@@ -49,7 +49,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
 
     const handleSave = async () => {
         try {
-            console.log("Saving surat with ID:", surat._id);  // Added log to check ID
+            console.log("Saving surat with ID:", surat._id);  
             const response = await axios.put(`http://localhost:3555/api/v1/surat/revisi-surat-warga/${surat._id}`, {
                 "newIsiAcara": isiAcara
             });
@@ -98,7 +98,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                                 <p>Loading...</p>
                             )}
                             {editAble && (
-                                console.log("Editable", editAble),  // Added log to check if editable
+                                console.log("Editable", editAble),  
                                 <div>
                                     {isiAcara.map((isi, index) => (
                                         <div className="form-group" key={index}>
