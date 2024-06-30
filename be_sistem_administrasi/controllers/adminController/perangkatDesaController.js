@@ -12,6 +12,8 @@ exports.getAllPerangkatDesa = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
 
     try {
+
+
         const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
         const perangkatDesaList = await perangkatDesa.find()
             .limit(limit)
@@ -23,8 +25,14 @@ exports.getAllPerangkatDesa = async (req, res) => {
         perangkatDesaList.forEach(perangkat => {
             try {
                 const iv = Buffer.from(perangkat.user.iv, 'hex');
+                console.log(`Decrypting for user ${perangkat.user._id}`);
+                console.log(`IV: ${iv.toString('hex')}`);
+                console.log(`Nohp (encrypted): ${perangkat.user.nohp}`);
+                console.log(`Alamat (encrypted): ${perangkat.user.alamat}`);
                 perangkat.user.nohp = decrypt.dekripsi(perangkat.user.nohp, aesKey, iv);
                 perangkat.user.alamat = decrypt.dekripsi(perangkat.user.alamat, aesKey, iv);
+                console.log(`Nohp (decrypted): ${perangkat.user.nohp}`);
+                console.log(`Alamat (decrypted): ${perangkat.user.alamat}`);
             } catch (error) {
                 console.error(`Error decrypting data for user ${perangkat.user._id}:`, error);
             }
@@ -45,7 +53,6 @@ exports.getAllPerangkatDesa = async (req, res) => {
         });
     }
 };
-
 exports.postPerangkatDesa = async (req, res) => {
     const { name, nik, password, alamat, nohp, status, role } = req.body;
     try {
