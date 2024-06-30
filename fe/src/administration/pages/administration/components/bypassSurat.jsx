@@ -28,7 +28,7 @@ const BypassSurat = ({ suratAcaraId, role }) => {
         <>
             {error && <Alert variant="danger">{error}</Alert>}
             <Button variant="warning" onClick={handleBypassSurat} disabled={isButtonDisabled || isLoading}>
-                {isLoading ? <Spinner animation="border" size="sm" /> : 'Bypass Surat'}
+                {/* {isLoading ? <Spinner animation="border" size="sm" /> : 'Bypass Surat'} */}
             </Button>
         </>
     );
