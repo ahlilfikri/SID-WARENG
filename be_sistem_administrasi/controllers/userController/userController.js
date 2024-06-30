@@ -37,6 +37,8 @@ exports.getUserByName = async (req, res) => {
         });
     }
 };
+
+
 exports.getPaginateUser = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;

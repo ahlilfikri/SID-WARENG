@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import ModalTambahUser from './component/modal_add_user'
+import ModalTambahUser from './component/modal_add_user';
+import ModalTambahRt from './component/modal_add_rt'; 
 
 const KontrolPengguna = () => {
     const [totalData, setTotalData] = useState({});
     const [totalSurat, setTotalSurat] = useState({});
-    const [showModal, setShowModal] = useState(false);
+    const [showModalUser, setShowModalUser] = useState(false);
+    const [showModalRt, setShowModalRt] = useState(false); // State untuk ModalTambahRt
 
     const countUser = async () => {
         try {
@@ -26,15 +28,17 @@ const KontrolPengguna = () => {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
         countUser();
         countsuratAdministrasi();
     }, []);
 
-    const handleShow = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
+    const handleShowUserModal = () => setShowModalUser(true);
+    const handleCloseUserModal = () => setShowModalUser(false);
+    const handleShowRtModal = () => setShowModalRt(true); // Fungsi untuk menampilkan ModalTambahRt
+    const handleCloseRtModal = () => setShowModalRt(false); // Fungsi untuk menutup ModalTambahRt
 
     return (
         <>
@@ -68,12 +72,16 @@ const KontrolPengguna = () => {
                 </div>
             </div>
             <div className="container bg-secondary p-3">
-                <Button variant="primary" onClick={handleShow}>
+                <Button variant="primary" onClick={handleShowUserModal}>
                     Tambah User
+                </Button>
+                <Button variant="primary" onClick={handleShowRtModal}>
+                    Tambah RT
                 </Button>
             </div>
 
-            <ModalTambahUser show={showModal} handleClose={handleClose} />
+            <ModalTambahUser show={showModalUser} handleClose={handleCloseUserModal} />
+            <ModalTambahRt show={showModalRt} handleClose={handleCloseRtModal} /> {/* Render ModalTambahRt */}
         </>
     );
 };

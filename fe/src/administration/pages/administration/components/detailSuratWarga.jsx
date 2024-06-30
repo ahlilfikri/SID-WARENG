@@ -8,7 +8,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
     const [editAble, setEditAble] = useState(false);
     const [isiAcara, setIsiAcara] = useState(surat.isiAcara || []);
     const [detailSurat, setDetailSurat] = useState(null);
-    const [status, setStatus] = useState('loading'); // loading, success, error
+    const [status, setStatus] = useState('loading'); 
 
     const connditionEditAble = () => {
         if (
@@ -104,6 +104,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                                 </ul>
                             )}
                             {editAble && (
+                                console.log("Editable", editAble),  
                                 <div>
                                     {isiAcara.map((isi, index) => (
                                         <div className="form-group" key={index}>
