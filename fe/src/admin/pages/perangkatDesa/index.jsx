@@ -2,26 +2,24 @@ import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
-import AddModal from './component/AddModal';
 
 
-const PortalControl = () => {
-    const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
-    const [dataPortal, setDataPortal] = useState([]);
+const PerangkatDesaControl = () => {
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL5;
+    const [dataPerangkatDesa, setDataPerangkatDesa] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [isAdding, setIsAdding] = useState(false);
-    const [currentPortal, setCurrentPortal] = useState({});
-    const [editForm, setEditForm] = useState({ title: '', content: '', isi: '', newImages: null });
-    const [addForm, setAddForm] = useState({ title: '', content: '', isi: '', img: null });
+    const [currentPerangkatDesa, setCurrentPerangkatDesa] = useState({});
+    const [editForm, setEditForm] = useState({ name: '', nik: '', nohp: '',pekerjaan:'', newImages: null });
     const [selectedImage, setSelectedImage] = useState(null);
-    const [status, setStatus] = useState('loading'); 
+    const [status, setStatus] = useState('loading');
 
-    const getDataPortal = async () => {
+    const getDataPerangkatDesa = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/portal/get-portal`);
-            setDataPortal(res.data.data);
+            const res = await axios.get(`${port}v1/perangkatDesa/get`);
+            setDataPerangkatDesa(res.data.data);
+            console.log(res.data.data);
             setStatus('success');
         } catch (err) {
             console.error(err);
@@ -30,7 +28,7 @@ const PortalControl = () => {
     };
 
     useEffect(() => {
-        getDataPortal();
+        getDataPerangkatDesa();
     }, []);
 
     const handleImageError = (e) => {
@@ -39,30 +37,31 @@ const PortalControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/portal/delete-portal/${id}`);
-            getDataPortal();
+            await axios.delete(`${port}v1/perangkatDesa/delete/${id}`);
+            getDataPerangkatDesa();
         } catch (err) {
             console.error(err);
         }
     };
 
-    const handleEdit = (portal) => {
+    const handleEdit = (perangkatDesa) => {
         setIsEditing(true);
-        setCurrentPortal(portal);
+        setCurrentPerangkatDesa(perangkatDesa);
         setEditForm({
-            title: portal.title,
-            content: portal.content,
-            isi: portal.isi,
+            name: perangkatDesa.user.name,
+            nik: perangkatDesa.user.nik,
+            nohp: perangkatDesa.user.nohp,
+            pekerjaan: perangkatDesa.user.pekerjaan,
             newImages: null,
         });
     };
 
     const handleDeleteImage = async (image) => {
-        const updatedImages = currentPortal.img.filter(img => img !== image);
+        const updatedImages = currentPerangkatDesa.user.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
-            setCurrentPortal({ ...currentPortal, img: updatedImages });
-            getDataPortal();
+            await axios.put(`${port}v1/user/update/${currentPerangkatDesa._id}`, { ...currentPerangkatDesa, img: updatedImages });
+            setCurrentPerangkatDesa({ ...currentPerangkatDesa, img: updatedImages });
+            getDataPerangkatDesa();
         } catch (err) {
             console.error(err);
         }
@@ -70,30 +69,30 @@ const PortalControl = () => {
 
     const handleSaveEdit = async (e) => {
         e.preventDefault();
+        console.log(editForm);
         const formData = new FormData();
-        formData.append('title', editForm.title);
-        formData.append('content', editForm.content);
-        formData.append('isi', editForm.isi);
+        formData.append('name', editForm.name);
+        formData.append('pekerjaan', editForm.pekerjaan);
 
         if (editForm.newImages && editForm.newImages.length > 0) {
-            currentPortal.img.forEach(img => formData.append('img', img));
+            currentPerangkatDesa.user.img.forEach(img => formData.append('img', img));
             for (let i = 0; i < editForm.newImages.length; i++) {
                 formData.append('img', editForm.newImages[i]);
             }
         } else {
-            currentPortal.img.forEach(img => formData.append('img', img));
+            currentPerangkatDesa.user.img.forEach(img => formData.append('img', img));
         }
 
         try {
-            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, formData, {
+            await axios.put(`${port}v1/user/update/${currentPerangkatDesa.user._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             setIsEditing(false);
-            setCurrentPortal({});
-            setEditForm({ title: '', content: '', isi: '', newImages: null });
-            getDataPortal();
+            setCurrentPerangkatDesa({});
+            setEditForm({ name: '', nik: '', nohp: '',pekerjaan : '', newImages: null });
+            getDataPerangkatDesa();
         } catch (err) {
             console.error(err);
         }
@@ -103,38 +102,6 @@ const PortalControl = () => {
         setEditForm({ ...editForm, [e.target.name]: e.target.value });
     };
 
-    const handleAddFormChange = (e) => {
-        if (e.target.name === 'img') {
-            setAddForm({ ...addForm, [e.target.name]: e.target.files });
-        } else {
-            setAddForm({ ...addForm, [e.target.name]: e.target.value });
-        }
-    };
-
-    const handleSaveAdd = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', addForm.title);
-        formData.append('content', addForm.content);
-        formData.append('isi', addForm.isi);
-        for (let i = 0; i < addForm.img.length; i++) {
-            formData.append('img', addForm.img[i]);
-        }
-
-        try {
-            await axios.post(`${port}v1/portal/post-portal`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setIsAdding(false);
-            setAddForm({ title: '', content: '', isi: '', img: null });
-            getDataPortal();
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
     const renderTable = (data) => {
         return (
             <div className="table-responsive">
@@ -142,24 +109,24 @@ const PortalControl = () => {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Link</th>
-                            <th>Isi</th>
+                            <th>Name</th>
+                            <th>Nomor HP</th>
+                            <th>Alamat</th>
                             <th>Images</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((item, index) => (
-                            <tr key={item._id}>
+                            <tr key={item.user._id}>
                                 <td>{index + 1}</td>
-                                <td>{item.title}</td>
-                                <td style={{ maxWidth: '300px', overflowWrap: 'break-word' }}>{item.content}</td>
-                                <td style={{ maxWidth: '300px', overflowWrap: 'break-word' }}>{item.isi}</td>
+                                <td>{item.user.name}</td>
+                                <td>{item.user.nohp}</td>
+                                <td>{item.user.alamat}</td>
                                 <td>
                                     <div className="d-inline">
-                                        {item.img && item.img.length > 0 ? (
-                                            item.img.map((image, imgIndex) => {
+                                        {item.user.img && item.user.img.length > 0 ? (
+                                            item.user.img.map((image, imgIndex) => {
                                                 const imageSrc = `${port2}${encodeURIComponent(image)}`;
                                                 return (
                                                     <img
@@ -181,7 +148,7 @@ const PortalControl = () => {
                                 </td>
                                 <td>
                                     <button className="btn btn-primary mx-1" onClick={() => handleEdit(item)}>Edit</button>
-                                    <button className="btn btn-danger mx-1" onClick={() => handleDelete(item._id)}>Delete</button>
+                                    <button className="btn btn-danger mx-1" onClick={() => handleDelete(item.user._id)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -193,11 +160,10 @@ const PortalControl = () => {
 
     return (
         <Fragment>
-            <h1 className='my-2 my-md-5'>Daftar Portal</h1>
-            <button className="btn btn-success mb-3" onClick={() => setIsAdding(true)}>Add Portal</button>
+            <h1 className='my-2 my-md-5'>Daftar Perangkat Desa</h1>
             {status === 'loading' && <p>Loading...</p>}
             {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
-            {status === 'success' && dataPortal.length > 0 && renderTable(dataPortal)}
+            {status === 'success' && dataPerangkatDesa.length > 0 && renderTable(dataPerangkatDesa)}
 
             <EditModal
                 isEditing={isEditing}
@@ -205,18 +171,10 @@ const PortalControl = () => {
                 editForm={editForm}
                 handleEditFormChange={handleEditFormChange}
                 handleSaveEdit={handleSaveEdit}
-                currentPortal={currentPortal}
+                currentPerangkatDesa={currentPerangkatDesa}
                 handleDeleteImage={handleDeleteImage}
                 setSelectedImage={setSelectedImage}
                 handleNewImagesChange={(e) => setEditForm({ ...editForm, newImages: e.target.files })}
-            />
-
-            <AddModal
-                isAdding={isAdding}
-                setIsAdding={setIsAdding}
-                addForm={addForm}
-                handleAddFormChange={handleAddFormChange}
-                handleSaveAdd={handleSaveAdd}
             />
 
             {selectedImage && (
@@ -243,4 +201,4 @@ const PortalControl = () => {
     );
 }
 
-export default PortalControl;
+export default PerangkatDesaControl;
