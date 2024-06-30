@@ -234,6 +234,7 @@ exports.updateuserById = async (req, res) => {
                 alamat: encryptedAlamat,
                 nohp: encryptedNohp,
                 statusPerkawinan: updateData.statusPerkawinan,
+                jenisKelamin: updateData.jenisKelamin,
                 tempatlahir: updateData.tempatlahir,
                 tanggallahir: updateData.tanggallahir,
                 agama: updateData.agama,

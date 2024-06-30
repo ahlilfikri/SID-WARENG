@@ -23,7 +23,17 @@ const ModalLengkapiDataUser = ({ show, handleClose, userId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:3555/api/v1/user/update/${userId}`, formData);
+            // Uppercase conversion
+            const dataToSend = {
+                ...formData,
+                jenisKelamin: formData.jenisKelamin.toUpperCase(),
+                agama: formData.agama.toUpperCase(),
+                pekerjaan: formData.pekerjaan.toUpperCase(),
+                tempatlahir: formData.tempatlahir.toUpperCase()
+            };
+
+            const response = await axios.put(`http://localhost:3555/api/v1/user/update/${userId}`, dataToSend);
+            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);

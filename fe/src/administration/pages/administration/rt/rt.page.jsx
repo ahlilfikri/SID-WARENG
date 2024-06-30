@@ -1,9 +1,12 @@
+
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 import getToken from '../shared/functions';
 import PopUpDetailSurat from '../components/PopUpDetailSurat';
+import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
 
 const RtPage = () => {
     const port = import.meta.env.VITE_BASE_API_URL2;
@@ -14,8 +17,10 @@ const RtPage = () => {
     const [activeTab, setActiveTab] = useState('pending');
     const [searchQuery, setSearchQuery] = useState('');
     const [status, setStatus] = useState('loading');
+    const [showLengkapiDataModal, setShowLengkapiDataModal] = useState(false); // State untuk ModalLengkapiDataUser
 
     const id = getToken();
+
     useEffect(() => {
         axios.get(`${port}v1/rt/getRt/${id}`)
             .then((res) => {
@@ -77,12 +82,18 @@ const RtPage = () => {
         );
     };
 
+    const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); // Show Lengkapi Data Modal
+    const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false); // Close Lengkapi Data Modal
+
     return (
         <>
             <div className="container-fluid">
                 <Navbar className="" type={0}></Navbar>
                 <h1 className='my-2 my-md-5'>Administrasi RT</h1>
-                <div className="row">
+                <button className="btn btn-primary" onClick={handleShowLengkapiDataModal}>
+                    Lengkapi Data Diri
+                </button>
+                <div className="row mt-3">
                     <div className="col-12 col-md-6 mb-3">
                         <select
                             className="form-select"
@@ -124,6 +135,7 @@ const RtPage = () => {
                     role="rt"
                 />
             )}
+            <ModalLengkapiDataUser show={showLengkapiDataModal} handleClose={handleCloseLengkapiDataModal} userId={id} />
         </>
     );
 };
