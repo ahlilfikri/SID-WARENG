@@ -5,6 +5,7 @@ import ModalTambahUser from './component/modal_add_user';
 import ModalTambahRt from './component/modal_add_rt';
 import ModalTambahRw from './component/modal_add_rw'; 
 import ModalTambahPd from './component/modal_add_pd';
+import ModalTambahKades from './component/modal_add_kades';
 
 const KontrolPengguna = () => {
     const [totalData, setTotalData] = useState({});
@@ -13,6 +14,7 @@ const KontrolPengguna = () => {
     const [showModalRt, setShowModalRt] = useState(false); 
     const [showModalRw, setShowModalRw] = useState(false);
     const [showModalPd, setShowModalPd] = useState(false);
+    const [showModalKades, setShowModalKades] = useState(false);
 
 
     const countUser = async () => {
@@ -48,6 +50,8 @@ const KontrolPengguna = () => {
     const handleCloseRwModal = () => setShowModalRw(false);
     const handleShowPdModal = () => setShowModalPd(true);
     const handleClosePdModal = () => setShowModalPd(false);
+    const handleShowKadesModal = () => setShowModalKades(true);
+    const handleCloseKadesModal = () => setShowModalKades(false);
 
     return (
         <>
@@ -93,12 +97,16 @@ const KontrolPengguna = () => {
                 <Button variant="primary" onClick={handleShowPdModal}>
                     Tambah Perangkat Desa
                 </Button>
+                <Button variant="primary" onClick={handleShowKadesModal}>
+                    Tambah Kades
+                </Button>
             </div>
 
             <ModalTambahUser show={showModalUser} handleClose={handleCloseUserModal} />
             <ModalTambahRt show={showModalRt} handleClose={handleCloseRtModal} /> 
             <ModalTambahRw show={showModalRw} handleClose={handleCloseRwModal} />
             <ModalTambahPd show={showModalPd} handleClose={handleClosePdModal} />
+            <ModalTambahKades show={showModalKades} handleClose={handleCloseKadesModal} />
         </>
     );
 };
