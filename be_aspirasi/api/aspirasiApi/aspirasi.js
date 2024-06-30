@@ -3,8 +3,7 @@ const express = require('express');
 const Router = express.Router();
 
 Router.post('/postAspirasi/:wargaId', postAspirasi);
-Router.get('/getAspirasi/my/:id', getAspirasiByWarga); //http://localhost:3557/api/v1/aspirasi/getAspirasi/my/:id
-Router.get('/getAspirasi/:id', getAspirasiById);
+Router.get('/getAspirasi/my/:id', getAspirasiByWarga);
 Router.delete('/deleteAspirasi/:aspirasiId', deleteAspirasi);
 Router.put('/updateAspirasi/:aspirasiId', putAspirasi);
 
@@ -16,6 +15,7 @@ module.exports = Router
 
 
 //note endpoint aspirasi
+//putAspirasi : http://localhost:3557/api/v1/aspirasi/updateAspirasi/:wargaId
 //postAspirasi : http://localhost:3557/api/v1/aspirasi/postAspirasi/:wargaId
 //getAspirasi : http://localhost:3557/api/v1/aspirasi/getAspirasi
 //getAspirasiById : http://localhost:3557/api/v1/aspirasi/getAspirasi/:id

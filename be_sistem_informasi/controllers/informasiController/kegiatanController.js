@@ -8,8 +8,6 @@ exports.getKegiatanWithSearch = async (req, res) => {
     try {
         const { name, date } = req.params;
         let result;
-        console.log(name);
-        console.log(date);
 
         let searchQuery = {};
 
@@ -18,7 +16,6 @@ exports.getKegiatanWithSearch = async (req, res) => {
         }
 
         if (date && date !== '-1') {
-            console.log("test");
             const searchDate = new Date(date);
             const nextDay = new Date(searchDate);
             nextDay.setDate(searchDate.getDate() + 1);
@@ -101,8 +98,6 @@ exports.putKegiatan = async (req, res) => {
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
-                console.log('Existing Images:', img);
-                console.log('New Images:', newImages);
                 if (img && Array.isArray(img)) {
                     updateFields.img = img.concat(newImages);
                 } else {
@@ -112,7 +107,6 @@ exports.putKegiatan = async (req, res) => {
                 updateFields.img = img;
             }
 
-            console.log('Update Fields:', updateFields);
             const updatedKegiatan = await kegiatanModel.findByIdAndUpdate(id, updateFields, { new: true });
 
             if (!updatedKegiatan) {

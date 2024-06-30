@@ -134,9 +134,7 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
         });
 
         // Tambahkan nomor surat ke surat acara
-        suratAcara.nomorSurat = await setNomorSurat()
-        console.log(suratAcara.nomorSurat);
-   
+        suratAcara.nomorSurat = await setNomorSurat()   
 
         // Tambahkan ID surat acara ke array suratAcara di warga
         dataWarga.suratAcara.push(suratAcara._id);
@@ -227,8 +225,6 @@ exports.generateSuratPdf_TAVERSION = async (req, res) => {
             subSuratId: suratAcara.subSuratId,
             statusPersetujuan: suratAcara.statusPersetujuan
         };
-
-        console.log('Data:', data)
 
         const pdfBuffer = await generateSuratPDF(data);
 
@@ -326,7 +322,6 @@ exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
         const {statusPersetujuanReq} = req.body;
         const PakRt = await RtModel.findById(idRt);
 
-        console.log(statusPersetujuanReq);
         if (!PakRt) {
             console.error("RT not found with id", idRt);
             return res.status(404).send({
@@ -403,7 +398,6 @@ exports.persetujuanSuratAcaraRt_TAVERSION = async (req, res) => {
 // RW
 exports.persetujuanSuratAcaraRw_TAVERSION = async (req, res) => {
     try {
-        console.log('masuk');
         const { SuratId, RwId } = req.params;
         const { statusPersetujuanReq } = req.body;
         const PakRw = await RwModel.findById(RwId);
@@ -493,8 +487,6 @@ exports.persetujuanSuratAcaraPerangkatDesa_TAVERSION = async (req,res) => {
         const { statusPersetujuanReq } = req.body;
         const dataPD = await PerangkatDesaModel.findById(perangkatDesaId);
         const surat = await suratAcaraModel.findById(suratAcaraId);
-
-        console.log(dataPD);
         
 
         if (!dataPD || !surat) {
@@ -701,7 +693,6 @@ exports.baypassSuratAcaraRT_TAVERSION  = async (req, res)=>{
         });
     }finally{
         session.endSession();
-        console.log('session end');
     }
 }
 // RW BAYPASS
@@ -738,7 +729,6 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         }
 
         const dataPd = await PerangkatDesaModel.findById(dataSuratAcara.perangkatDesaId).session(session);
-        console.log("data perangkat desa\n\n\n\n",dataPd);
 
         if(!dataPd){
             await session.abortTransaction();
@@ -771,8 +761,6 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         await dataRt.save();
         await dataSuratAcara.save();
 
-        console.log("data perangkat desa\n\n\n\n",dataPd);
-        console.log("data rw\n\n\n\n",dataRw);
 
         await session.commitTransaction();
         return res.status(200).send({
@@ -787,7 +775,6 @@ exports.baypassSuratAcaraRW_TAVERSION = async (req, res) => {
         });
     }finally{
         session.endSession();
-        console.log('session end');
     }
 }
 // KASI BAYPASS
@@ -881,7 +868,6 @@ exports.baypassSuratAcaraKasi_TAVERSION = async (req, res)=> {
         });
     }finally{
         session.endSession();
-        console.log('session end');
     }
 }
 

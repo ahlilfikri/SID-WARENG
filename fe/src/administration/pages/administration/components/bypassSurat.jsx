@@ -14,7 +14,6 @@ const BypassSurat = ({ suratAcaraId, role }) => {
         setError('');
         try {
             const request = await axios.put(`${port}v1/surat/baypass-${role}/${suratAcaraId}`);
-            console.log(request);
             setIsButtonDisabled(true);
             setIsLoading(false);
         } catch (err) {

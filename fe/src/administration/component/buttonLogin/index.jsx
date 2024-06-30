@@ -20,7 +20,6 @@ const ButtonSignin = ({data}) => {
         e.preventDefault();
         try{
             const result = await axios.post(`${port}v1/warga/login`,dataUser);
-            console.log(result);
             if (result.data.status === 'success'){
                 window.localStorage.setItem('token',result.data.token);
                 window.location.href = '/';

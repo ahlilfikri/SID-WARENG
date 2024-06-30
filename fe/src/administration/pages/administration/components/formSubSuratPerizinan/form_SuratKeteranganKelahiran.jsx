@@ -70,10 +70,8 @@ const FormSuratKeteranganKelahiran = ({ handleCloseModal }) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        console.log(dataSurat); 
         try {
             const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
-            console.log(res.data);
             handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);

@@ -1,7 +1,6 @@
 const jenisSuratModel = require('../../../models/suratIzinModel/jenisSurat/index_jenis_surat');
 
 exports.format_suratSkck = async (subSuratId) => {
-    console.log("test ",subSuratId);
     try {
         const suratSkck = await jenisSuratModel.suratSkck.findById(subSuratId);
         if (!suratSkck) {

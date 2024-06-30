@@ -63,7 +63,6 @@ const FormPerizinanSurat = ({ handleCloseModal }) => {
                 tempatAcara,
                 isiAcara
             });
-            console.log(res.data);
             setStatus('success');
         } catch (err) {
             console.error(err.response.data);

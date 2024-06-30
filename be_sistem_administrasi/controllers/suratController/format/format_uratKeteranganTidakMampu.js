@@ -1,7 +1,6 @@
 const jenisSuratModel = require('../../../models/suratIzinModel/jenisSurat/index_jenis_surat');
 
 exports.format_suratKeteranganTidakMampu = async (subSuratId) => {
-    console.log("test ",subSuratId);
     try {
         const suratKeteranganTidakMampu = await jenisSuratModel.suratKeteranganTidakMampu.findById(subSuratId);
         if (!suratKeteranganTidakMampu) {

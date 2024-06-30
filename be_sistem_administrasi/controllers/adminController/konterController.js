@@ -6,8 +6,6 @@ exports.getDataKonter = async (req, res) => {
         const dataKonter = await konter.find();
         const totalPelayanan = await dataKonter.pelayanan;
 
-        console.log(totalPelayanan)
-
         return res.status(200).send({
             message: "Success get all konter",
             data: dataKonter,

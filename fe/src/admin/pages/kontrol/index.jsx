@@ -20,7 +20,6 @@ const KontrolPengguna = () => {
     const countUser = async () => {
         try {
             const response = await axios.get('http://localhost:3555/api/v1/admin/count-all-document');
-            console.log(response.data); 
             setTotalData(response.data); 
         } catch (error) {
             console.error(error);
@@ -30,7 +29,6 @@ const KontrolPengguna = () => {
     const countsuratAdministrasi = async () => {
         try {
             const response = await axios.get('http://localhost:3555/api/v1/admin/count-all-surat-acara');
-            console.log(response.data); 
             setTotalSurat(response.data);
         } catch (error) {
             console.error(error);

@@ -30,12 +30,10 @@ const PopUpDetailSurat = ({ surat, handleCloseModal, idTokoh, role, activeTab })
     }, [surat.jenisSurat, surat.subSuratId]);
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
-        console.log(statusPersetujuan);
         try {
             const request = await axios.put(`${port}v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
-            console.log(request);
         } catch (err) {
             console.error("Error: ", err);
         }
