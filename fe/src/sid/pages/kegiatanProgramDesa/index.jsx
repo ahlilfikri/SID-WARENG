@@ -27,7 +27,7 @@ const KegiatanProgramDesa = () => {
         setStatus('loading');
         try {
             const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
-            setData(response.data.data);
+            setData(response.data.data.data);
             setStatus('success');
         } catch (error) {
             console.log(error.message);

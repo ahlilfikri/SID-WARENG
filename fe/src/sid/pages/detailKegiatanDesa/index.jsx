@@ -50,12 +50,6 @@ const DetailKegiatanDesa = () => {
         };
     }, []);
 
-    useEffect(() => {
-        if (data.img && data.img.length > 1) {
-            console.log(data.img);
-        }
-    }, [data]);
-
     return (
         <Fragment>
             <div className="container-fluid informasi-desa-container p-0" style={{ overflow: 'hidden' }}>
@@ -72,15 +66,15 @@ const DetailKegiatanDesa = () => {
                         {status === 'error' && (
                             <p>Data tidak dapat dimuat.</p>
                         )}
-                        {status === 'success' && data.length === 0 &&(
+                        {status === 'success' && !data && (
                             <p>Belum ada data yang ditambahkan</p>
                         )}
-                        {status === 'success' && data.length > 0  &&(
+                        {status === 'success' && data && (
                             <>
                                 <div className="wrap-img p-4">
                                     <div className="py-4 mx-auto" style={{ width: '75%', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '1vw' }}>
                                         <div className="mx-auto" style={{ maxWidth: '622px', maxHeight: '266px' }}>
-                                            <img src={`${port2}${encodeURIComponent(data.img && data.img[0])}` || ImageError} alt="" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', borderRadius: '1vw' }} />
+                                            <img src={data.img && data.img.length > 0 ? `${port2}${encodeURIComponent(data.img[0])}` : ImageError} alt="" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', borderRadius: '1vw' }} onError={(e) => e.target.src = ImageError} />
                                         </div>
                                     </div>
                                 </div>

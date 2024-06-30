@@ -25,6 +25,7 @@ const Aspirasi = () => {
         axios.get(`${port}v1/warga/get/${id}`)
             .then((res) => {
                 setWarga(res.data.data);
+                console.log(res.data.data._id);
             })
             .catch((err) => {
                 console.error(err);

@@ -177,14 +177,12 @@ exports.postWarga = async (req,res) => {
 exports.postRt = async (req, res) => {
     try {
         const { idUser } = req.params;
-        // mencari model warga berdasarkan idUser dan delete
         const cekWarga = await WargaModel.findOne({user: idUser});
         if (!cekWarga) {
             throw new Error("User belum terdaftar sebagai warga");
         }
         await WargaModel.findOneAndDelete({user: idUser});
 
-        // mencari model rw berdasarkan idUser dan delete
         const cekRw = await rwModel.findOne({user: idUser});
         if (cekRw) {
             await rwModel.findOneAndDelete({user: idUser});
@@ -218,7 +216,6 @@ exports.postRt = async (req, res) => {
 exports.postRw = async (req,res) => {
     try{
         const {idUser} = req.params;
-        // mencari model warga berdasarkan idUser dan delete
         const cekWarga = await WargaModel.findOne({user: idUser});
         if (!cekWarga) {
             throw new Error("User belum terdaftar sebagai warga");
@@ -295,7 +292,6 @@ exports.postPimpinanDesa = async (req,res) => {
             throw new Error("User belum terdaftar sebagai warga");
         }
         const cekPimpinanDesa = await ppModel.findOne({rolePemimpinDesa: RolePemimpinDesa});
-        // jika pimpinan desa sudah ada yang memiliki role yang sama
         if (cekPimpinanDesa) {
             throw new Error("Pimpinan Desa sudah ada anda jangan membuat duplikat role dan melengserkan pimpinan desa yang sudah ada , anjay :)");
         }

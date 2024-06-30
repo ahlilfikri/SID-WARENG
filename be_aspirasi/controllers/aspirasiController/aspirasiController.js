@@ -100,7 +100,9 @@ exports.getAspirasiByWarga = async (req, res) => {
 
 exports.getAspirasiApproved = async (req, res) => {
     try{
-        
+        // const {page, size} = req.query;
+        // const {limit, offset} = getPagination(page, size);
+        // const data = await db.aspirasi.find({isPublish:true, siApproved:true}).limit(limit).skip(offset);
         const data = await db.aspirasi.find({isPublish:true, siApproved:true});
         if(!data){
             return res.status(404).send({message:"Not found aspirasi approved"});

@@ -19,7 +19,7 @@ const KegiatanDesa = () => {
         setStatus('loading');
         try {
             const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
-            const data = response.data.data;
+            const data = response.data.data.data;
             setData(data);
 
             if (data.length === 1) {

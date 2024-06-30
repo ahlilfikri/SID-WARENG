@@ -30,7 +30,6 @@ const ModalTambahRt = ({ show, handleClose }) => {
         }
         try {
             const response = await axios.post(`http://localhost:3555/api/v1/admin/makeRt/${selectedUser._id}`);
-            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);
