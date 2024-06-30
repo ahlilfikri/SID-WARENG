@@ -8,6 +8,8 @@ app.use(cors());
 // env
 require('dotenv').config();
 
+app.use('/upload',express.static('upload')); 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

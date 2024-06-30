@@ -5,7 +5,8 @@ import AspirasiControl from "./pages/aspirasi";
 import InformasiControl from "./pages/informasi";
 import KegiatanControl from "./pages/kegiatan";
 import PortalControl from "./pages/portal";
-import Kontrol_pengguna from "./pages/kontrol/index"
+import Kontrol_pengguna from "./pages/kontrol/index";
+import PerangkatDesa from "./pages/perangkatDesa";
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('Aspirasi');
@@ -57,6 +58,12 @@ const Dashboard = () => {
                                    onClick={() => handleActiveTab('Kontrol')}>
                                     Kontrol pengguna
                                 </p>
+                                <p href="#"
+                                    style={{cursor:'pointer'}} 
+                                   className={`list-group-item list-group-item-action bg-dark text-white ${activeTab === 'PerangkatDesa' ? 'active' : ''}`} 
+                                   onClick={() => handleActiveTab('PerangkatDesa')}>
+                                    Perangkat Desa
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -66,6 +73,7 @@ const Dashboard = () => {
                         {activeTab === 'Kegiatan' && <KegiatanControl />}
                         {activeTab === 'Portal' && <PortalControl />}
                         {activeTab === 'Kontrol' && <Kontrol_pengguna />}
+                        {activeTab === 'PerangkatDesa' && <PerangkatDesa />}
                     </div>
                 </div>
             </div>

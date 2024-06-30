@@ -3,12 +3,14 @@ const userModel = db.user;
 const crypto = require('crypto');//import crypto
 require('dotenv').config();
 const encrypt = require('../../utils/encryptDecrypt');
+const { uploadProjectImages } = require('../../middleware/ImageUpload');
+
 
 exports.getUserByName = async (req, res) => {
     try {
         const { name } = req.body;
-        console.log("Request body:", req.body); 
-        console.log("Name parameter:", name); 
+        console.log("Request body:", req.body);
+        console.log("Name parameter:", name);
 
         if (!name) {
             return res.status(400).send({
@@ -18,7 +20,7 @@ exports.getUserByName = async (req, res) => {
 
         const upperName = name.toUpperCase();
 
-        const dataUser = await userModel.findOne({name : upperName});
+        const dataUser = await userModel.findOne({ name: upperName });
         if (dataUser) {
             res.status(200).send({
                 message: "Success get user by name",
@@ -35,8 +37,8 @@ exports.getUserByName = async (req, res) => {
         });
     }
 };
-exports.getPaginateUser = async (req,res) => {
-    try{
+exports.getPaginateUser = async (req, res) => {
+    try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
@@ -45,7 +47,7 @@ exports.getPaginateUser = async (req,res) => {
         const dataUser = await userModel.find()
             .limit(limit)
             .skip((page - 1) * limit);
-            
+
 
         const dataTotal = await userModel.countDocuments();
 
@@ -57,7 +59,7 @@ exports.getPaginateUser = async (req,res) => {
             totalDocument: dataTotal
         });
 
-    }catch(error){
+    } catch (error) {
         console.log('Error while handling GET request to /api/v1/user/get:', error);
         res.status(500).send({
             message: error.message || "Some error occurred while get all user."
@@ -88,8 +90,8 @@ exports.getAllUser = async (req, res) => {
 }
 
 
-exports.getUserById = async (req,res) => {
-    try{
+exports.getUserById = async (req, res) => {
+    try {
         const { id } = req.params;
         const dataUser = await userModel.findById(id);
         res.status(200).send({
@@ -97,7 +99,7 @@ exports.getUserById = async (req,res) => {
             data: dataUser
         });
 
-    }catch(error){
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while get user by id."
         });
@@ -139,14 +141,15 @@ exports.getUserByIdDecrypt = async (req, res) => {
 
 
 exports.postUser = async (req, res) => {
+
     try {
         const { name, nik, alamat, nohp, statusPerkawinan, domisili } = req.body;
-        
+
         const aesKey = crypto.scryptSync(
-            process.env.encrypt_key_one, 
+            process.env.encrypt_key_one,
             process.env.encrypt_key_two,
             32
-        );  
+        );
         const iv = crypto.randomBytes(16);
 
         const encryptedNik = encrypt.enkripsi(nik, aesKey, iv).encryptedData;
@@ -177,11 +180,11 @@ exports.postUser = async (req, res) => {
             message: error.message || "Some error occurred while creating user."
         });
     }
-};
+}
 
 
-exports.postManyUser = async (req,res) => {
-    try{
+exports.postManyUser = async (req, res) => {
+    try {
         const { data } = req.body;
         const newUser = await userModel.insertMany(data);
         res.status(200).send({
@@ -189,7 +192,7 @@ exports.postManyUser = async (req,res) => {
             data: newUser
         });
 
-    }catch(error){
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while creating warga."
         });
@@ -198,55 +201,76 @@ exports.postManyUser = async (req,res) => {
 
 
 // untuk melengkapi data user
-exports.updateuserById = async (req,res) => {
-    try{
-        const id = req.params.id;
-        const updateData = req.body;
-        // data
-        if (updateData.name) updateData.name = updateData.name.toUpperCase();
-        if (updateData.alamat) updateData.alamat = updateData.alamat.toUpperCase();
-        if (updateData.statusPerkawinan) updateData.statusPerkawinan = updateData.statusPerkawinan.toUpperCase();
-        if (updateData.tempatlahir) updateData.tempatlahir = updateData.tempatlahir.toUpperCase();
-        if (updateData.tanggallahir) updateData.tanggallahir = updateData.tanggallahir.toUpperCase();
-        if (updateData.agama) updateData.agama = updateData.agama.toUpperCase();
-        if (updateData.jenisKelamin) updateData.jenisKelamin = updateData.jenisKelamin.toUpperCase();
-        if (updateData.pekerjaan) updateData.pekerjaan = updateData.pekerjaan.toUpperCase();
-        if (updateData.domisili) updateData.domisili = updateData.domisili.map((domisili) => domisili.toUpperCase());
+exports.updateuserById = async (req, res) => {
+    uploadProjectImages(req, res, async (error) => {
+        if (error) {
+            console.error(error);
+            console.error(error.message);
+            res.status(500).send({
+                message: error.message || "Some error occurred while update user by id."
+            });
+            return;
+        }
+        try {
+            const id = req.params.id;
+            const updateData = req.body;
+            console.log(updateData);
+            // data
+            if (updateData.name) updateData.name = updateData.name.toUpperCase();
+            if (updateData.alamat) updateData.alamat = updateData.alamat.toUpperCase();
+            if (updateData.statusPerkawinan) updateData.statusPerkawinan = updateData.statusPerkawinan.toUpperCase();
+            if (updateData.tempatlahir) updateData.tempatlahir = updateData.tempatlahir.toUpperCase();
+            if (updateData.tanggallahir) updateData.tanggallahir = updateData.tanggallahir.toUpperCase();
+            if (updateData.agama) updateData.agama = updateData.agama.toUpperCase();
+            if (updateData.jenisKelamin) updateData.jenisKelamin = updateData.jenisKelamin.toUpperCase();
+            if (updateData.pekerjaan) updateData.pekerjaan = updateData.pekerjaan.toUpperCase();
+            if (updateData.domisili) updateData.domisili = updateData.domisili.map((domisili) => domisili.toUpperCase());
 
-        const dataUdatedValid = {
-            name: updateData.name,
-            nik: updateData.nik,
-            alamat: updateData.alamat,
-            statusPerkawinan: updateData.statusPerkawinan,
-            tempatlahir: updateData.tempatlahir,
-            tanggallahir: updateData.tanggallahir,
-            agama: updateData.agama,
-            pekerjaan: updateData.pekerjaan,
-            domisili: updateData.domisili
-        };
-        const user = await userModel.findByIdAndUpdate(id,dataUdatedValid,{new: true});
-        if (!user) {
-            return res.status(404).send({
-                message: "user not found with id " + id
+            const dataUdatedValid = {
+                name: updateData.name,
+                nik: updateData.nik,
+                alamat: updateData.alamat,
+                statusPerkawinan: updateData.statusPerkawinan,
+                tempatlahir: updateData.tempatlahir,
+                tanggallahir: updateData.tanggallahir,
+                agama: updateData.agama,
+                pekerjaan: updateData.pekerjaan,
+                domisili: updateData.domisili,
+                img : updateData.img
+            };
+            console.log(dataUdatedValid);
+
+            if (req.files && req.files.length > 0) {
+                const newImages = req.files.map((file) => file.filename);
+                dataUdatedValid.img = newImages;
+            }else{
+                dataUdatedValid.img = img;
+            }
+
+            const user = await userModel.findByIdAndUpdate(id, dataUdatedValid, { new: true });
+            if (!user) {
+                return res.status(404).send({
+                    message: "user not found with id " + id
+                });
+            }
+
+            res.status(200).send({
+                message: "Success update user by id",
+                data: user
+            });
+        } catch (error) {
+            res.status(500).send({
+                message: error.message || "Some error occurred while update user by id."
             });
         }
-
-        res.status(200).send({
-            message: "Success update user by id",
-            data: user
-        });
-    }catch(error){ 
-        res.status(500).send({
-            message: error.message || "Some error occurred while update user by id."
-        });
-    }   
+    })
 };
 
 
 // use by admin
-exports.deleteUserById = async (req,res) => {
+exports.deleteUserById = async (req, res) => {
     const id = req.params.id;
-    try{
+    try {
         const user = await userModel.findByIdAndDelete(id);
         if (!user) {
             return res.status(404).send({
@@ -259,7 +283,7 @@ exports.deleteUserById = async (req,res) => {
             data: user
 
         });
-    }catch(error){
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while delete user by id."
         });
