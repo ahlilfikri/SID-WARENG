@@ -3,18 +3,34 @@ const perangkatDesa = db.PerangkatDesaModel;
 const SuratAcaraModel = db.suratAcara;
 const PimpinanDesaModel = db.pimpinanDesa;
 const WargaModel = db.warga;
+const decrypt = require('../../utils/encryptDecrypt');
+const crypto = require('crypto');
+
 
 exports.getAllPerangkatDesa = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
     try {
+        const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
         const perangkatDesaList = await perangkatDesa.find()
             .limit(limit)
             .skip((page - 1) * limit)
             .populate('user');
-        const total = await perangkatDesa.countDocuments();
 
+        console.log(perangkatDesaList);
+
+        perangkatDesaList.forEach(perangkat => {
+            try {
+                const iv = Buffer.from(perangkat.user.iv, 'hex');
+                perangkat.user.nohp = decrypt.dekripsi(perangkat.user.nohp, aesKey, iv);
+                perangkat.user.alamat = decrypt.dekripsi(perangkat.user.alamat, aesKey, iv);
+            } catch (error) {
+                console.error(`Error decrypting data for user ${perangkat.user._id}:`, error);
+            }
+        });
+
+        const total = await perangkatDesa.countDocuments();
         res.status(200).send({
             message: "Success get all konter",
             data: perangkatDesaList,
@@ -30,9 +46,9 @@ exports.getAllPerangkatDesa = async (req, res) => {
     }
 };
 
-exports.postPerangkatDesa = async (req,res) => {
-    const { name, nik,password, alamat, nohp, status,role } = req.body;
-    try{
+exports.postPerangkatDesa = async (req, res) => {
+    const { name, nik, password, alamat, nohp, status, role } = req.body;
+    try {
         const newPerangkatDesa = await perangkatDesa.create({
             name,
             nik,
@@ -48,17 +64,17 @@ exports.postPerangkatDesa = async (req,res) => {
             data: newPerangkatDesa
         });
 
-    }catch(error){
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while post konter."
         });
     }
 };
 
-exports.getPerangkatDesaById = async (req,res) => {
+exports.getPerangkatDesaById = async (req, res) => {
     const id = req.params.id;
-    try{
-        const dataPerangkatDesa = await perangkatDesa.findOne({'user': id}).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
+    try {
+        const dataPerangkatDesa = await perangkatDesa.findOne({ 'user': id }).populate('suratAcaraComing').populate('suratAcaraPending').populate('suratAcaraApproved').populate('suratAcaraRejected');
         if (!dataPerangkatDesa) {
             return res.status(404).send({
                 message: "perangkat desa not found with id " + id
@@ -69,7 +85,7 @@ exports.getPerangkatDesaById = async (req,res) => {
             message: "Success get perangkat desa by id",
             data: dataPerangkatDesa
         });
-    }catch(error){
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while get konter by id."
         });
@@ -80,30 +96,30 @@ exports.updatePerangkatDesaById = async (req, res) => {
     const id = req.params.id;
     const { name, description, tags } = req.body;
     try {
-       const konter = await perangkatDesa.findByIdAndUpdate(
-          id,
-          { name, description, tags },
-          { new: true }
-       );
-       if (!konter) {
-          return res.status(404).send({
-             message: "konter not found with id " + id,
-          });
-       }
- 
-       res.status(200).send({
-          message: "Success update konter by id",
-          data: konter,
-       });
+        const konter = await perangkatDesa.findByIdAndUpdate(
+            id,
+            { name, description, tags },
+            { new: true }
+        );
+        if (!konter) {
+            return res.status(404).send({
+                message: "konter not found with id " + id,
+            });
+        }
+
+        res.status(200).send({
+            message: "Success update konter by id",
+            data: konter,
+        });
     } catch (error) {
-       res.status(500).send({
-          message: error.message || "Some error occurred while updating konter by id.",
-       });
+        res.status(500).send({
+            message: error.message || "Some error occurred while updating konter by id.",
+        });
     }
- }; 
-exports.deletePerangkatDesaById = async (req,res) => {
+};
+exports.deletePerangkatDesaById = async (req, res) => {
     const id = req.params.id;
-    try{
+    try {
         const konter = await perangkatDesa.findByIdAndRemove(id);
         if (!konter) {
             return res.status(404).send({
@@ -114,8 +130,8 @@ exports.deletePerangkatDesaById = async (req,res) => {
         res.status(200).send({
             message: "Success delete konter by id",
             data: konter
-        });       
-    }catch(error){
+        });
+    } catch (error) {
         res.status(500).send({
             message: error.message || "Some error occurred while delete konter by id."
         });

@@ -207,7 +207,7 @@ exports.updateuserById = async (req, res) => {
             console.error(error);
             console.error(error.message);
             res.status(500).send({
-                message: error.message || "Some error occurred while update user by id."
+                message: error.message || "Some error occurred while updating user by id."
             });
             return;
         }
@@ -215,7 +215,8 @@ exports.updateuserById = async (req, res) => {
             const id = req.params.id;
             const updateData = req.body;
             console.log(updateData);
-            // data
+            
+            // Uppercase conversion
             if (updateData.name) updateData.name = updateData.name.toUpperCase();
             if (updateData.alamat) updateData.alamat = updateData.alamat.toUpperCase();
             if (updateData.statusPerkawinan) updateData.statusPerkawinan = updateData.statusPerkawinan.toUpperCase();
@@ -224,33 +225,50 @@ exports.updateuserById = async (req, res) => {
             if (updateData.agama) updateData.agama = updateData.agama.toUpperCase();
             if (updateData.jenisKelamin) updateData.jenisKelamin = updateData.jenisKelamin.toUpperCase();
             if (updateData.pekerjaan) updateData.pekerjaan = updateData.pekerjaan.toUpperCase();
+            if (updateData.nik) updateData.nik = updateData.nik.toUpperCase();
+            if (updateData.nohp) updateData.nohp = updateData.nohp.toUpperCase();
             if (updateData.domisili) updateData.domisili = updateData.domisili.map((domisili) => domisili.toUpperCase());
 
-            const dataUdatedValid = {
+            // Enkripsi data
+            const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
+            const iv = crypto.randomBytes(16);
+
+            const encryptedNik = updateData.nik ? encrypt.enkripsi(updateData.nik, aesKey, iv).encryptedData : undefined;
+            const encryptedAlamat = updateData.alamat ? encrypt.enkripsi(updateData.alamat, aesKey, iv).encryptedData : undefined;
+            const encryptedNohp = updateData.nohp ? encrypt.enkripsi(updateData.nohp, aesKey, iv).encryptedData : undefined;
+
+            console.log("Encrypted NIK:", encryptedNik);
+            console.log("Encrypted NoHP:", encryptedNohp);
+            console.log("Encrypted Alamat:", encryptedAlamat);
+
+            const dataUpdatedValid = {
                 name: updateData.name,
-                nik: updateData.nik,
-                alamat: updateData.alamat,
+                nik: encryptedNik,
+                alamat: encryptedAlamat,
+                nohp: encryptedNohp,
                 statusPerkawinan: updateData.statusPerkawinan,
                 tempatlahir: updateData.tempatlahir,
                 tanggallahir: updateData.tanggallahir,
                 agama: updateData.agama,
                 pekerjaan: updateData.pekerjaan,
                 domisili: updateData.domisili,
-                img : updateData.img
+                iv: iv.toString('hex'),
+                img: updateData.img
             };
-            console.log(dataUdatedValid);
+
+            console.log(dataUpdatedValid);
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);
-                dataUdatedValid.img = newImages;
-            }else{
-                dataUdatedValid.img = img;
+                dataUpdatedValid.img = newImages;
+            } else {
+                dataUpdatedValid.img = dataUpdatedValid.img;
             }
 
-            const user = await userModel.findByIdAndUpdate(id, dataUdatedValid, { new: true });
+            const user = await userModel.findByIdAndUpdate(id, dataUpdatedValid, { new: true });
             if (!user) {
                 return res.status(404).send({
-                    message: "user not found with id " + id
+                    message: "User not found with id " + id
                 });
             }
 
@@ -260,10 +278,10 @@ exports.updateuserById = async (req, res) => {
             });
         } catch (error) {
             res.status(500).send({
-                message: error.message || "Some error occurred while update user by id."
+                message: error.message || "Some error occurred while updating user by id."
             });
         }
-    })
+    });
 };
 
 

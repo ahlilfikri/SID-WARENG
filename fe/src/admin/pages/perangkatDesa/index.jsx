@@ -110,7 +110,8 @@ const PerangkatDesaControl = () => {
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Pekerjaan</th>
+                            <th>Nomor HP</th>
+                            <th>Alamat</th>
                             <th>Images</th>
                             <th>Actions</th>
                         </tr>
@@ -121,6 +122,7 @@ const PerangkatDesaControl = () => {
                                 <td>{index + 1}</td>
                                 <td>{item.user.name}</td>
                                 <td>{item.user.nohp}</td>
+                                <td>{item.user.alamat}</td>
                                 <td>
                                     <div className="d-inline">
                                         {item.user.img && item.user.img.length > 0 ? (
