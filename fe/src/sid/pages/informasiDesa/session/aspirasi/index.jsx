@@ -55,7 +55,7 @@ const AspirasiDesa = () => {
                                         <div className="col-10">
                                             <div className="content pt-4">
                                                 <p style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.aspirasi}</p>
-                                                <p style={{ fontFamily: 'poppins', fontSize: '12px', textAlign: 'justify' }}>{item.kategori}</p>
+                                                <p style={{ fontFamily: 'poppins', fontSize: '16px', textAlign: 'justify' }}>{item.kategori}</p>
                                             </div>
                                         </div>
                                     </div>

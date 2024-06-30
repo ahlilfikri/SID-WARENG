@@ -20,19 +20,18 @@ exports.getAllPerangkatDesa = async (req, res) => {
             .skip((page - 1) * limit)
             .populate('user');
 
-        console.log(perangkatDesaList);
-
         perangkatDesaList.forEach(perangkat => {
             try {
                 const iv = Buffer.from(perangkat.user.iv, 'hex');
-                console.log(`Decrypting for user ${perangkat.user._id}`);
-                console.log(`IV: ${iv.toString('hex')}`);
-                console.log(`Nohp (encrypted): ${perangkat.user.nohp}`);
-                console.log(`Alamat (encrypted): ${perangkat.user.alamat}`);
+                // console.log(`Decrypting for user ${perangkat.user._id}`);
+                // console.log(`IV: ${iv.toString('hex')}`);
+                // console.log(`Nohp (encrypted): ${perangkat.user.nohp}`);
+                // console.log(`Alamat (encrypted): ${perangkat.user.alamat}`);
                 perangkat.user.nohp = decrypt.dekripsi(perangkat.user.nohp, aesKey, iv);
                 perangkat.user.alamat = decrypt.dekripsi(perangkat.user.alamat, aesKey, iv);
-                console.log(`Nohp (decrypted): ${perangkat.user.nohp}`);
-                console.log(`Alamat (decrypted): ${perangkat.user.alamat}`);
+                perangkat.user.nik = decrypt.dekripsi(perangkat.user.nik, aesKey, iv);
+                // console.log(`Nohp (decrypted): ${perangkat.user.nohp}`);
+                // console.log(`Alamat (decrypted): ${perangkat.user.alamat}`);
             } catch (error) {
                 console.error(`Error decrypting data for user ${perangkat.user._id}:`, error);
             }

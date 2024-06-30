@@ -232,13 +232,16 @@ exports.updateuserById = async (req, res) => {
             if (updateData.domisili) updateData.domisili = updateData.domisili.map((domisili) => domisili.toUpperCase());
 
             // Enkripsi data
+            console.log("jsbdjs",updateData.nik);
             const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
             const iv = crypto.randomBytes(16);
-
             const encryptedNik = updateData.nik ? encrypt.enkripsi(updateData.nik, aesKey, iv).encryptedData : undefined;
             const encryptedAlamat = updateData.alamat ? encrypt.enkripsi(updateData.alamat, aesKey, iv).encryptedData : undefined;
             const encryptedNohp = updateData.nohp ? encrypt.enkripsi(updateData.nohp, aesKey, iv).encryptedData : undefined;
-
+            
+            console.log("Before Encrypted NIK:", updateData.nik);
+            console.log("Before Encrypted NoHP:", updateData.nohp);
+            console.log("Before Encrypted Alamat:", updateData.alamat);
             console.log("Encrypted NIK:", encryptedNik);
             console.log("Encrypted NoHP:", encryptedNohp);
             console.log("Encrypted Alamat:", encryptedAlamat);
@@ -257,8 +260,6 @@ exports.updateuserById = async (req, res) => {
                 iv: iv.toString('hex'),
                 img: updateData.img
             };
-
-            console.log(dataUpdatedValid);
 
             if (req.files && req.files.length > 0) {
                 const newImages = req.files.map((file) => file.filename);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ImageError from '../../../../assets/ImageErrorHandling.svg';
 
-const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentPerangkatDesa, handleDeleteImage, setSelectedImage, handleNewImagesChange }) => {
+const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentKepalaDesa, handleDeleteImage, setSelectedImage, handleNewImagesChange }) => {
     const port = import.meta.env.VITE_BASE_API_URL4;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
             await handleSaveEdit(e);
             setIsEditing(false);
         } catch (err) {
-            setError('Failed to save perangkat desa');
+            setError('Failed to save Kepala desa');
         } finally {
             setLoading(false);
         }
@@ -29,7 +29,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Perangkat Desa</h5>
+                        <h5 className="modal-title">Edit Kepala Desa</h5>
                         <button type="button" className="close" onClick={() => setIsEditing(false)}>
                             <span>&times;</span>
                         </button>
@@ -83,7 +83,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
                             <div className="form-group">
                                 <label>Images</label>
                                 <div>
-                                    {currentPerangkatDesa.img && currentPerangkatDesa.img.map((image, imgIndex) => {
+                                    {currentKepalaDesa.img && currentKepalaDesa.img.map((image, imgIndex) => {
                                         const imageSrc = `${port}${encodeURIComponent(image)}`;
                                         return (
                                             <div key={imgIndex} className="d-inline-block position-relative mx-1">

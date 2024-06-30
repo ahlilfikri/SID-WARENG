@@ -3,22 +3,21 @@ import axios from 'axios';
 import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 
-
-const PerangkatDesaControl = () => {
+const KepalaDesaControl = () => {
     const port = import.meta.env.VITE_BASE_API_URL2;
     const port2 = import.meta.env.VITE_BASE_API_URL5;
-    const [dataPerangkatDesa, setDataPerangkatDesa] = useState([]);
+    const [dataKepalaDesa, setDataKepalaDesa] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [currentPerangkatDesa, setCurrentPerangkatDesa] = useState({});
-    const [editForm, setEditForm] = useState({ name: '', nik: '', nohp: '', alamat : '', newImages: null });
+    const [currentKepalaDesa, setCurrentKepalaDesa] = useState({});
+    const [editForm, setEditForm] = useState({ name: '', nik: '', nohp: '', alamat: '', newImages: null });
     const [selectedImage, setSelectedImage] = useState(null);
     const [status, setStatus] = useState('loading');
 
-    const getDataPerangkatDesa = async () => {
+    const getDataKepalaDesa = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/perangkatDesa/get`);
-            setDataPerangkatDesa(res.data.data);
+            const res = await axios.get(`${port}v1/pimpinanDesa/get`);
+            setDataKepalaDesa(res.data.data);
             console.log(res.data.data);
             setStatus('success');
         } catch (err) {
@@ -28,7 +27,7 @@ const PerangkatDesaControl = () => {
     };
 
     useEffect(() => {
-        getDataPerangkatDesa();
+        getDataKepalaDesa();
     }, []);
 
     const handleImageError = (e) => {
@@ -37,31 +36,31 @@ const PerangkatDesaControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/perangkatDesa/delete/${id}`);
-            getDataPerangkatDesa();
+            await axios.delete(`${port}v1/pimpinanDesa/delete/${id}`);
+            getDataKepalaDesa();
         } catch (err) {
             console.error(err);
         }
     };
 
-    const handleEdit = (perangkatDesa) => {
+    const handleEdit = (kepalaDesa) => {
         setIsEditing(true);
-        setCurrentPerangkatDesa(perangkatDesa);
+        setCurrentKepalaDesa(kepalaDesa);
         setEditForm({
-            name: perangkatDesa.user.name,
-            nik: perangkatDesa.user.nik,
-            nohp: perangkatDesa.user.nohp,
-            alamat: perangkatDesa.user.alamat,
+            name: kepalaDesa.user.name,
+            nik: kepalaDesa.user.nik,
+            nohp: kepalaDesa.user.nohp,
+            alamat: kepalaDesa.user.alamat,
             newImages: null,
         });
     };
 
     const handleDeleteImage = async (image) => {
-        const updatedImages = currentPerangkatDesa.user.img.filter(img => img !== image);
+        const updatedImages = currentKepalaDesa.user.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/user/update/${currentPerangkatDesa._id}`, { ...currentPerangkatDesa, img: updatedImages });
-            setCurrentPerangkatDesa({ ...currentPerangkatDesa, img: updatedImages });
-            getDataPerangkatDesa();
+            await axios.put(`${port}v1/user/update/${currentKepalaDesa._id}`, { ...currentKepalaDesa, img: updatedImages });
+            setCurrentKepalaDesa({ ...currentKepalaDesa, img: updatedImages });
+            getDataKepalaDesa();
         } catch (err) {
             console.error(err);
         }
@@ -77,24 +76,24 @@ const PerangkatDesaControl = () => {
         formData.append('alamat', editForm.alamat);
 
         if (editForm.newImages && editForm.newImages.length > 0) {
-            currentPerangkatDesa.user.img.forEach(img => formData.append('img', img));
+            currentKepalaDesa.user.img.forEach(img => formData.append('img', img));
             for (let i = 0; i < editForm.newImages.length; i++) {
                 formData.append('img', editForm.newImages[i]);
             }
         } else {
-            currentPerangkatDesa.user.img.forEach(img => formData.append('img', img));
+            currentKepalaDesa.user.img.forEach(img => formData.append('img', img));
         }
 
         try {
-            await axios.put(`${port}v1/user/update/${currentPerangkatDesa.user._id}`, formData, {
+            await axios.put(`${port}v1/user/update/${currentKepalaDesa.user._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             setIsEditing(false);
-            setCurrentPerangkatDesa({});
-            setEditForm({ name: '', nik: '', nohp: '', alamat :'', newImages: null });
-            getDataPerangkatDesa();
+            setCurrentKepalaDesa({});
+            setEditForm({ name: '', nik: '', nohp: '',  alamat: '', newImages: null });
+            getDataKepalaDesa();
         } catch (err) {
             console.error(err);
         }
@@ -164,10 +163,10 @@ const PerangkatDesaControl = () => {
 
     return (
         <Fragment>
-            <h1 className='my-2 my-md-5'>Daftar Perangkat Desa</h1>
+            <h1 className='my-2 my-md-5'>Daftar Kepala Desa</h1>
             {status === 'loading' && <p>Loading...</p>}
             {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
-            {status === 'success' && dataPerangkatDesa.length > 0 && renderTable(dataPerangkatDesa)}
+            {status === 'success' && dataKepalaDesa.length > 0 && renderTable(dataKepalaDesa)}
 
             <EditModal
                 isEditing={isEditing}
@@ -175,7 +174,7 @@ const PerangkatDesaControl = () => {
                 editForm={editForm}
                 handleEditFormChange={handleEditFormChange}
                 handleSaveEdit={handleSaveEdit}
-                currentPerangkatDesa={currentPerangkatDesa}
+                currentKepalaDesa={currentKepalaDesa}
                 handleDeleteImage={handleDeleteImage}
                 setSelectedImage={setSelectedImage}
                 handleNewImagesChange={(e) => setEditForm({ ...editForm, newImages: e.target.files })}
@@ -203,6 +202,6 @@ const PerangkatDesaControl = () => {
             )}
         </Fragment>
     );
-}
+};
 
-export default PerangkatDesaControl;
+export default KepalaDesaControl;

@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const KadesModel = db.pimpinanDesa
 const SuratAcaraModel = db.suratAcara;
 
+const decrypt = require('../../utils/encryptDecrypt');
+const crypto = require('crypto');
+
+
 
 exports.getKades = async (req, res) => {
     try{
@@ -49,7 +53,21 @@ exports.getPimpinanDesaById = async (req, res) => {
 
 exports.getAllPimpinanDesa = async (req, res) => {
     try{
+        const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
+        
         const dataKades = await KadesModel.find().populate('user');
+        
+        dataKades.forEach(perangkat => {
+            try {
+                const iv = Buffer.from(perangkat.user.iv, 'hex');
+                perangkat.user.nohp = decrypt.dekripsi(perangkat.user.nohp, aesKey, iv);
+                perangkat.user.alamat = decrypt.dekripsi(perangkat.user.alamat, aesKey, iv);
+                perangkat.user.nik = decrypt.dekripsi(perangkat.user.nik, aesKey, iv);
+            } catch (error) {
+                console.error(`Error decrypting data for user ${perangkat.user._id}:`, error);
+            }
+        });
+
         if (!dataKades){
             return res.status(404).send({
                 message: "Data kades not found"

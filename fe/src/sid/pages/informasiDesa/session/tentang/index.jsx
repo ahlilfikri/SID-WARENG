@@ -51,7 +51,7 @@ const Tentang = () => {
                             <div className="d-flex justify-content-between">
                                 <Link to="/full-article" style={{ fontSize: '16px', color: '#00BF7C' }}>Baca lebih banyak</Link>
                                 <div className="d-flex">
-                                <a href="https://www.instagram.com/desawareng/"><img className="mx-1 mx-md-2" src={Instagram} alt="" /></a>
+                                    <a href="https://www.instagram.com/desawareng/"><img className="mx-1 mx-md-2" src={Instagram} alt="" /></a>
                                     <a href="https://maps.app.goo.gl/a7hadzg6Qsodr9RA9"><img className="mx-1 mx-md-2" src={Google} alt="" /></a>
                                     <a href="https://www.facebook.com/masyarakatdesawareng/"><img className="mx-1 mx-md-2" src={Facebook} alt="" /></a>
                                 </div>
