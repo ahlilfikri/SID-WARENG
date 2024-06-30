@@ -34,7 +34,7 @@ const Aspirasi = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
+            await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
             setData({
                 aspirasi: '',

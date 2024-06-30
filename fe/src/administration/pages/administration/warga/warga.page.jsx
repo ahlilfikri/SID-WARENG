@@ -324,6 +324,7 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`${port}v1/warga/get/${id}`);
             setDataWarga(response.data.data);
+            console.log(response.data.data);
             setStatusSurat('success');
         } catch (error) {
             console.error('Error getting data warga:', error);
@@ -331,13 +332,42 @@ const WargaPage = () => {
         }
     };
 
+    // ini controller backend nya
+    // exports.getAspirasiById = async (req, res) => {
+    //     const id = req.params.id;
+    //     try {
+    //         const data = await db.aspirasi.find({wargaId:id});
+    //         if (!data) {
+    //             return res.status(404).send({ message: "Not found aspirasi with id " + id });
+    //         }
+    
+    //         const arrAspirasi = [];
+    
+    //         data.map((aspirasi) => {
+    //             arrAspirasi.push(aspirasi);
+    //         }
+    //         );
+    
+    
+            
+    //         res.status(200).send({
+    //             "data": arrAspirasi
+    //         });
+    //     } catch (error) {
+    //         res.status(500).send({
+    //             message: error.message || "Some error occurred while retrieving aspirasi."
+    //         });
+    //     }
+    // }
+
     const GetDataAspirasiWarga = async () => {
         try {
-            const response = await axios.get(`${port2}v1/aspirasi/getAspirasi/my/${id}`);
-            setDataAspirasi(response.data);
+            const response = await axios.get(`http://localhost:3557/api/v1/aspirasi/getAspirasi/${DataWarga._id}`);
+            setDataAspirasi(response.data.data);
+            console.log(response.data.data);
             setStatusAspirasi('success');
         } catch (error) {
-            console.error('Error getting data warga:', error);
+            console.error('Error getting data aspirasi:', error);
             setStatusAspirasi('error');
         }
     };
@@ -393,9 +423,9 @@ const WargaPage = () => {
         surat.jenisSurat.toLowerCase().includes(searchQuerySurat.toLowerCase())
     );
 
-    const filteredAspirasi = DataAspirasi.filter(aspirasi =>
-        aspirasi.aspirasi.toLowerCase().includes(searchQueryAspirasi.toLowerCase())
-    );
+    // const filteredAspirasi = DataAspirasi.filter(aspirasi =>
+    //     aspirasi.aspirasi.toLowerCase().includes(searchQueryAspirasi.toLowerCase())
+    // );
 
     const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); // Show Lengkapi Data Modal
     const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false); // Close Lengkapi Data Modal
@@ -473,7 +503,7 @@ const WargaPage = () => {
                     />
                     {statusAspirasi === 'loading' && <p>Loading...</p>}
                     {statusAspirasi === 'error' && <p>Data tidak berhasil dimuat.</p>}
-                    {statusAspirasi === 'success' && filteredAspirasi && filteredAspirasi.length > 0 ? (
+                    {statusAspirasi === 'success' &&  (
                         <table className="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -485,7 +515,7 @@ const WargaPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredAspirasi.map((aspirasi, index) => (
+                                {DataAspirasi.map((aspirasi, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{aspirasi.aspirasi}</td>
@@ -503,7 +533,7 @@ const WargaPage = () => {
                                 ))}
                             </tbody>
                         </table>
-                    ) : <p>Belum ada aspirasi</p>}
+                    ) }
                 </div>
 
                 <ModalLengkapiDataUser show={showLengkapiDataModal} handleClose={handleCloseLengkapiDataModal} userId={id} />

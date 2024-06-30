@@ -172,7 +172,9 @@ exports.getAspirasiKadesPagination = async (req, res) => {
         if(!aspirasiKades){
             return res.status(404).send({message:"Not found aspirasi kades"});
         }
-        res.status(200).send(aspirasiKades);
+        res.status(200).send({
+            "data" : aspirasiKades,
+    });
     }catch(error){
         res.status(500).send({
             message: error.message || "Some error occurred while retrieving aspirasi."
@@ -183,7 +185,35 @@ exports.getAspirasiKadesPagination = async (req, res) => {
 exports.getAspirasiById = async (req, res) => {
     const id = req.params.id;
     try {
-        const data = await db.aspirasi.findById(id);
+        const data = await db.aspirasi.find({wargaId:id});
+        if (!data) {
+            return res.status(404).send({ message: "Not found aspirasi with id " + id });
+        }
+
+        const arrAspirasi = [];
+
+        data.map((aspirasi) => {
+            arrAspirasi.push(aspirasi);
+        }
+        );
+
+
+        
+        res.status(200).send({
+            "data": arrAspirasi
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving aspirasi."
+        });
+    }
+}
+
+// controller untuk get aspirasi dari id user
+exports.getAspirasiByWarga = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await db.aspirasi.find({ wargaId: id });
         if (!data) {
             return res.status(404).send({ message: "Not found aspirasi with id " + id });
         }
