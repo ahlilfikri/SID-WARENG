@@ -135,6 +135,7 @@ exports.wargaCreateSurat_TAVERSION = async (req, res) => {
 
         // Tambahkan nomor surat ke surat acara
         suratAcara.nomorSurat = await setNomorSurat()
+        console.log(suratAcara.nomorSurat);
    
 
         // Tambahkan ID surat acara ke array suratAcara di warga

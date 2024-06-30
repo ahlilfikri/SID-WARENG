@@ -4,14 +4,11 @@ const suratAcaraModel = db.suratAcara;
 exports.setNomorSurat = async (req,res) => {
     try{
         const date = new Date();
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);   
-        const countSuratAcara = await suratAcaraModel.countDocuments({
-            createdAt: {
-                $gte: firstDay,
-                $lt: lastDay
-            }
-        });
+        // const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        // const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);   
+        const countSuratAcara = await suratAcaraModel.countDocuments();
+
+        console.log("-----------------",countSuratAcara);
 
         // mengkonfersi bulan pada field createdAt di varibale suratAcara ke dalam bentuk string berupa angka romawi (januari = I, februari = II, dst)
         const month = date.toLocaleString('default', { month: 'long' });

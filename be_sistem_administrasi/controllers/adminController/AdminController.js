@@ -264,7 +264,7 @@ exports.postPerangkatDesa = async (req,res) => {
 
         const newPerangkatDesa = await pdModel.create({
             user: idUser,
-            rolePD : rolePerangkatDesa
+            rolePD : rolePerangkatDesa // 1 = kasi pelayanan, 2 = kasi pemerintahan, 3 = kasi kersa
         });
 
         await dataUser.save();
