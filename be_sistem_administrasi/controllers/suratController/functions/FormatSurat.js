@@ -80,31 +80,33 @@ const TTD_kades = (statusPersetujuan,formattedDate) => {
         `;
     }
 }
+
+
 const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara, RtName, RwName, user, subSuratId, statusPersetujuan }) => {
-    const aesKey = crypto.scryptSync(
-        process.env.encrypt_key_one,
-        process.env.encrypt_key_two,
-        32
-    );
-    const iv = user.iv; // Pastikan IV diambil dari data user dan memiliki panjang yang benar
-    console.log('AES Key:', aesKey.toString('hex'));
-    console.log('IV:', iv);
-    console.log('User NIK (Encrypted):', user.nik);
-    console.log('User Alamat (Encrypted):', user.alamat);
 
-    const formattedDate = formatTime(new Date()).slice(0, -5);
-    const isiSurat = await suratDecider(jenisSurat, subSuratId);
 
-    let decryptedNIK, decryptedAlamat;
     try {
-        decryptedNIK = encrypt.dekripsi(user.nik, aesKey, iv);
-        decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, iv);
-    } catch (err) {
-        console.error('Decryption error:', err);
-        throw new Error('Decryption failed. Please check the key, IV, and encrypted data.');
-    }
-
-    return `
+        const aesKey = crypto.scryptSync(
+            process.env.encrypt_key_one,
+            process.env.encrypt_key_two,
+            32
+        );
+    
+        console.log('----------------------------------------')
+        console.log("user               :         ", user)
+        console.log('----------------------------------------')
+    
+        const iv = user.iv; // Pastikan IV diambil dari data user dan memiliki panjang yang benar
+        console.log('AES Key:', aesKey.toString('hex'));
+        console.log('IV:', iv);
+        console.log('User NIK (Encrypted):', user.nik);
+        console.log('User Alamat (Encrypted):', user.alamat);
+    
+        const formattedDate = formatTime(new Date()).slice(0, -5);
+        const isiSurat = await suratDecider(jenisSurat, subSuratId);
+        const decryptedNIK = encrypt.dekripsi(user.nik, aesKey, iv);
+        const decryptedAlamat = encrypt.dekripsi(user.alamat, aesKey, iv);
+        return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -136,8 +138,6 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
                 padding-left: 40px;
                 padding-right: 40px;
             }
-
-            
             .cop-header{
                 display: flex;
                 border-bottom: 4px ridge black;
@@ -293,7 +293,16 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
     </body>
     </html>
     `;
+    } catch (err) {
+        console.error('Decryption error:', err);
+        throw new Error('Decryption failed. Please check the key, IV, and encrypted data.');
+    }
+
+    
 };
+
+
+
 
 
 const formatTime = (timeString) => {

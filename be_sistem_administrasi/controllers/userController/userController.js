@@ -138,7 +138,6 @@ exports.getUserByIdDecrypt = async (req, res) => {
 
 
 exports.postUser = async (req, res) => {
-
     try {
         const { name, nik, alamat, nohp, statusPerkawinan, domisili } = req.body;
 
@@ -148,11 +147,15 @@ exports.postUser = async (req, res) => {
             32
         );
         const iv = crypto.randomBytes(16);
+        console.log("------------------------------------------------------------------")
+        console.log('IV:', iv.toString('hex'));
+        console.log('AES Key:', aesKey.toString('hex'));
+        console.log('IV Length:', iv.toString('hex').length);
+        console.log("------------------------------------------------------------------")
 
         const encryptedNik = encrypt.enkripsi(nik, aesKey, iv).encryptedData;
         const encryptedAlamat = encrypt.enkripsi(alamat, aesKey, iv).encryptedData;
         const encryptedNohp = encrypt.enkripsi(nohp, aesKey, iv).encryptedData;
-
 
         const newUser = await userModel.create({
             name: name.toUpperCase(),
@@ -173,7 +176,8 @@ exports.postUser = async (req, res) => {
             message: error.message || "Some error occurred while creating user."
         });
     }
-}
+};
+
 
 
 exports.postManyUser = async (req, res) => {

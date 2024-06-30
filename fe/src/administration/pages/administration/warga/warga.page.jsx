@@ -167,8 +167,9 @@ const WargaPage = () => {
                                             >
                                                 View
                                             </button>
-                                            <button
-                                                className="btn btn-secondary ms-2"
+                                            {/* ini di hilangkan dulu */}
+                                            <button 
+                                                className="btn btn-secondary ms-2 d-none"
                                                 onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
                                             >
                                                 Download PDF
