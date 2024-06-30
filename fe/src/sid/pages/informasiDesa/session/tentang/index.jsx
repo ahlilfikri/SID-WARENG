@@ -30,7 +30,7 @@ const Tentang = () => {
 
     return (
         <Fragment>
-            <div className="container-fluid tentang-container mt-3 mt-md-5 mb-3 mb-md-5">
+            <div className="container-fluid tentang-container mt-5 pt-5 mt-md-5 mb-3 mb-md-5">
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'error' && <p>Data tidak berhasil dimuat.</p>}
                 {status === 'success' && data.length === 0 && (
@@ -46,13 +46,13 @@ const Tentang = () => {
                                 </div>
                             )
                         })}
-                        <div className="col-12 col-md-8 mt-3 mt-md-0">
+                        <div className="col-12 col-md-8 mt-5 mt-md-0 p-3">
                             <p style={{ fontSize: '48px', fontWeight: 'bold' }}>Desa <span style={{ color: '#005F51' }}>Wareng</span></p>
                             {data.length > 0 && (
                                 <p style={{ fontSize: '20px', color: '#184D47', maxWidth: '80%', textAlign: 'justify' }}>{data[0].content}</p>
                             )}
-                            <div className="d-flex justify-content-between">
-                                <Link to="/full-article" style={{ fontSize: '16px', color: '#00BF7C' }}>Baca lebih banyak</Link>
+                            <div className="d-flex justify-content-between mt-5">
+                                {/* <Link to="/full-article" style={{ fontSize: '16px', color: '#00BF7C' }}>Baca lebih banyak</Link> */}
                                 <div className="d-flex">
                                     <a href="https://www.instagram.com/desawareng/"><img className="mx-1 mx-md-2" src={Instagram} alt="" /></a>
                                     <a href="https://maps.app.goo.gl/a7hadzg6Qsodr9RA9"><img className="mx-1 mx-md-2" src={Google} alt="" /></a>
