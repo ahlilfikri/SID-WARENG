@@ -136,6 +136,8 @@ const generateHTML = async ({ nomoSurat, nameAcara, jenisSurat, isiAcara, tangga
                 padding-left: 40px;
                 padding-right: 40px;
             }
+
+            
             .cop-header{
                 display: flex;
                 border-bottom: 4px ridge black;
