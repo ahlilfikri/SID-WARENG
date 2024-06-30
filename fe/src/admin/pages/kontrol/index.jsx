@@ -7,6 +7,7 @@ import ModalTambahRw from './component/modal_add_rw';
 import ModalTambahPd from './component/modal_add_pd';
 import ModalTambahKades from './component/modal_add_kades';
 
+
 const KontrolPengguna = () => {
     const [totalData, setTotalData] = useState({});
     const [totalSurat, setTotalSurat] = useState({});
@@ -53,58 +54,66 @@ const KontrolPengguna = () => {
 
     return (
         <>
+        <div className="container-fluid">
+
+        
             <h1 className='my-2 my-md-5'>Daftar Portal</h1>
-            <div className="container bg-secondary p-3">
-                <div className="row">
-                    <div className="col-4 m-1 d-block">
-                        <p>User</p>
-                        <p>{totalData.totalUser}</p>
-                    </div>
-                    <div className="col-4 m-1">
-                        <p>Rt</p>
-                        <p>{totalData.totalRt}</p>
-                    </div>
-                    <div className="col-4 m-1">
-                        <p>Rw</p>
-                        <p>{totalData.totalRw}</p>
-                    </div>
-                    <div className="col-4 m-1">
-                        <p>Perangkat Desa</p>
-                        <p>{totalData.totalPerangkatDesa}</p>
-                    </div>
-                    <div className="col-4 m-1">
-                        <p>Kades</p>
-                        <p>{totalData.totalPimpinanDesa}</p>
-                    </div>
-                    <div className="col-4 m-1">
-                        <p>Surat Administrasi</p>
-                        <p>{totalSurat.totalSurat}</p>
-                    </div>
+            <div className="container p-3">
+                <div className="row justify-content-between">
+                    {[
+                        { label: 'User', value: totalData.totalUser },
+                        { label: 'Rt', value: totalData.totalRt },
+                        { label: 'Rw', value: totalData.totalRw },
+                        { label: 'Perangkat Desa', value: totalData.totalPerangkatDesa },
+                        { label: 'Kades', value: totalData.totalPimpinanDesa },
+                        { label: 'Surat Administrasi', value: totalSurat.totalSurat }
+                    ].map((item, index) => (
+                        <div className="col-12 col-md-4 mb-3" key={index}>
+                            <div className="p-3" style={{
+                                backgroundColor: '#DCFFFA',
+                                padding: '10px',
+                                borderRadius: '8px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                textAlign: 'center'
+                            }}>
+                                <p className="mb-1" style={{ fontWeight: 'bold' }}>{item.label}</p>
+                                <p style={{ fontSize: '1.5rem' }}>{item.value}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
-            <div className="container bg-secondary p-3">
-                <Button variant="primary" onClick={handleShowUserModal}>
+            <div className="container p-4 mx-2 d-flex justify-content-around align-items-center" style={{
+                borderTop: '1px solid #DCFFFA',
+                backgroundColor: '#DCFFFA',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                fontSize: '30px'
+            }}>
+                <Button variant="primary" className="btn-lg mx-1" onClick={handleShowUserModal}>
                     Tambah User
                 </Button>
-                <Button variant="primary" onClick={handleShowRtModal}>
+                <Button variant="primary" className="btn-lg mx-1" onClick={handleShowRtModal}>
                     Tambah RT
                 </Button>
-                <Button variant="primary" onClick={handleShowRwModal}>
+                <Button variant="primary" className="btn-lg mx-1" onClick={handleShowRwModal}>
                     Tambah RW
                 </Button>
-                <Button variant="primary" onClick={handleShowPdModal}>
+                <Button variant="primary" className="btn-lg mx-1" onClick={handleShowPdModal}>
                     Tambah Perangkat Desa
                 </Button>
-                <Button variant="primary" onClick={handleShowKadesModal}>
+                <Button variant="primary" className="btn-lg mx-1" onClick={handleShowKadesModal}>
                     Tambah Kades
                 </Button>
             </div>
+
 
             <ModalTambahUser show={showModalUser} handleClose={handleCloseUserModal} />
             <ModalTambahRt show={showModalRt} handleClose={handleCloseRtModal} /> 
             <ModalTambahRw show={showModalRw} handleClose={handleCloseRwModal} />
             <ModalTambahPd show={showModalPd} handleClose={handleClosePdModal} />
             <ModalTambahKades show={showModalKades} handleClose={handleCloseKadesModal} />
+            </div>
         </>
     );
 };

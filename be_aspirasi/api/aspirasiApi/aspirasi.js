@@ -11,6 +11,15 @@ Router.put('/updateAspirasi/:aspirasiId', putAspirasi);
 Router.get('/getAspirasiKades', getAspirasiKades);
 Router.get('/getAspirasiAdmin', getAspirasiAdmin);
 Router.get('/getAspirasiApproved', getAspirasiApproved);
+
+
+
+
+
+// test
+Router.get('/getAspirasi/:id', getAspirasiById); //http://localhost:3557/api/v1/aspirasi/getAspirasi
+
+
 module.exports = Router
 
 
