@@ -13,7 +13,7 @@ const AdminAspirasiPage = () => {
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedAspirasi, setSelectedAspirasi] = useState(null); // State for selected aspirasi
+    const [selectedAspirasi, setSelectedAspirasi] = useState(null); 
 
     const id = getToken();
 
@@ -68,7 +68,7 @@ const AdminAspirasiPage = () => {
         const fetchData = async () => {
             await getAspirasi();
             await getAdmin();
-            setIsLoading(false); // Set loading to false after data is fetched
+            setIsLoading(false); 
         };
         fetchData();
     }, [id]);
@@ -81,12 +81,10 @@ const AdminAspirasiPage = () => {
         }
     }, [dataAspirasi]);
 
-    // Function to handle click on row and set selected aspirasi
     const handleRowClick = (aspirasi) => {
         setSelectedAspirasi(aspirasi);
     };
 
-    // Function to close modal
     const handleCloseModal = () => {
         setSelectedAspirasi(null);
     };

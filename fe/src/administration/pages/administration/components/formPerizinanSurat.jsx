@@ -13,7 +13,7 @@ const FormPerizinanSurat = ({ handleCloseModal }) => {
         tanggalSelesai: '',
         tempatAcara: '',
     });
-    const [status, setStatus] = useState('idle'); // idle, loading, success, error
+    const [status, setStatus] = useState('idle'); 
 
     const { nameAcara, jenisSurat, isiAcara, tanggalMulai, tanggalSelesai, tempatAcara } = dataSurat;
 

@@ -16,7 +16,7 @@ const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, ha
         setLoading(true);
         setError(null);
         try {
-            await handleSaveEdit(e, newImages); // Call handleSaveEdit with new images
+            await handleSaveEdit(e, newImages); 
             setIsEditing(false);
         } catch (err) {
             setError('Failed to save information');

@@ -73,7 +73,7 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
         try {
             const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             console.log(res.data);
-            handleCloseModal(); // Close modal after successful submit
+            handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);
             setError('Failed to submit form');

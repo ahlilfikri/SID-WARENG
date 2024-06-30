@@ -15,7 +15,6 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        // Additional effect if needed
     }, [activeTab]);
 
     return (

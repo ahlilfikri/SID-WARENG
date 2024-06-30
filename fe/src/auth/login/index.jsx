@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Updated import
+import { Link, useNavigate } from 'react-router-dom'; 
 import NavBar from '../../shared/layout/navBar';
 import Footer from '../../shared/layout/footer';
 import axios from 'axios';
