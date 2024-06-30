@@ -45,7 +45,6 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
             const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
             const subSuratId = surat.subSuratId;
             const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
-            console.log("Detail surat: ", request.data.data); 
             setDetailSurat(request.data.data);
             setStatus('success');
         } catch (err) {
@@ -56,11 +55,9 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
 
     const handleSave = async () => {
         try {
-            console.log("Saving surat with ID:", surat._id); 
             const response = await axios.put(`${port}v1/surat/revisi-surat-warga/${surat._id}`, {
                 "newIsiAcara": isiAcara
             });
-            console.log("Success edit surat acara:", response.data);
             handleCloseModal();
         } catch (error) {
             console.error("Error editing surat acara:", error);
@@ -104,7 +101,6 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
                                 </ul>
                             )}
                             {editAble && (
-                                console.log("Editable", editAble),  
                                 <div>
                                     {isiAcara.map((isi, index) => (
                                         <div className="form-group" key={index}>

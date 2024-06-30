@@ -1,7 +1,6 @@
 const jenisSuratModel = require('../../../models/suratIzinModel/jenisSurat/index_jenis_surat');
 
 exports.format_suratIzinBepergian = async (subSuratId) => {
-    console.log("test ",subSuratId);
     try {
         const suratIzinBepergian = await jenisSuratModel.suratIzinBepergian.findById(subSuratId);
         if (!suratIzinBepergian) {

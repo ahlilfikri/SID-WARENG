@@ -8,7 +8,6 @@ exports.getAllRw = async (req,res)=>{
     try{
         const page = parseInt(req.query.page) || 1; 
         const limit = parseInt(req.query.limit) || 10;
-        console.log(`Received GET request to /api/v1/rw/get with page: ${page}, limit: ${limit}`);
         
         const dataRw  = await RwModel.find()
             .limit(limit)

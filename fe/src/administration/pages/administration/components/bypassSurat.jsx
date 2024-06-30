@@ -14,7 +14,6 @@ const BypassSurat = ({ suratAcaraId, role }) => {
         setError('');
         try {
             const request = await axios.put(`${port}v1/surat/baypass-${role}/${suratAcaraId}`);
-            console.log(request);
             setIsButtonDisabled(true);
             setIsLoading(false);
         } catch (err) {
@@ -28,7 +27,7 @@ const BypassSurat = ({ suratAcaraId, role }) => {
         <>
             {error && <Alert variant="danger">{error}</Alert>}
             <Button variant="warning" onClick={handleBypassSurat} disabled={isButtonDisabled || isLoading}>
-                {isLoading ? <Spinner animation="border" size="sm" /> : 'Bypass Surat'}
+                {/* {isLoading ? <Spinner animation="border" size="sm" /> : 'Bypass Surat'} */}
             </Button>
         </>
     );

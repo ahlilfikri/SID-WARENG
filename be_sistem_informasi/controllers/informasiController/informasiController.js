@@ -32,7 +32,6 @@ exports.postInformasi = async (req, res) => {
 
         try {
             const { title, content } = req.body;
-            console.log(title, content);
             const imgs = req.files.map((file) => file.filename);
             const newInformasi = new informasiModel({
                 title,
@@ -95,7 +94,6 @@ exports.putInformasi = async (req, res) => {
 exports.deleteInformasi = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id);
         const result = await informasiModel.findByIdAndDelete(id);
         response(200, res, result, 'Success delete informasi');
 

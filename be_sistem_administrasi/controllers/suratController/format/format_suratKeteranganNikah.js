@@ -3,7 +3,6 @@ const jenisSuratModel = require('../../../models/suratIzinModel/jenisSurat/index
 exports.format_suratKeteranganNikah = async (subSuratId) => {
     try{
         const suratNikah = await jenisSuratModel.suratKeteranganNikah.findById(subSuratId);
-        console.log(suratNikah);
 
         return `
             <table>       

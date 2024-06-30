@@ -72,7 +72,6 @@ const FormSuratBantuanSosial = ({ handleCloseModal }) => {
         setError(null);
         try {
             const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
-            console.log(res.data);
             handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);

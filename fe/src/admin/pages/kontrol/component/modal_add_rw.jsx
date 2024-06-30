@@ -22,7 +22,6 @@ const ModalTambahRw = ({ show, handleClose }) => {
 
     const handleSelectUser = (user) => {
         setSelectedUser(user);
-        console.log(user);
         
         setSearchResult(null); 
     };
@@ -34,9 +33,7 @@ const ModalTambahRw = ({ show, handleClose }) => {
             return;
         }
         try {
-            console.log(selectedUser._id);
             const response = await axios.post(`http://localhost:3555/api/v1/admin/makeRw/${selectedUser._id}`);
-            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);

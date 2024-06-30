@@ -25,16 +25,12 @@ const SignUp = () => {
         e.preventDefault();
 
         try {
-            console.log('Sending request with data:', { name: name.toUpperCase(), password: password });
-
             const res = await axios.post(`${port}v1/warga/login`, {
                 name: name.toUpperCase(),
                 password: password
             });
-            console.log('Response from server:', res);
 
             setResponse(res);
-            console.log("response : ", response);
 
             if (res.data && res.data.data && res.data.data.token) {
                 localStorage.setItem('token', res.data.data.token);

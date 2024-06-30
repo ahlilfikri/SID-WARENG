@@ -35,7 +35,6 @@ const ModalTambahKades = ({ show, handleClose }) => {
         }
         try {
             const response = await axios.post(`http://localhost:3555/api/v1/admin/post-pimpinan-desa/${selectedUser._id}`, { RolePemimpinDesa: roleInput });
-            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);

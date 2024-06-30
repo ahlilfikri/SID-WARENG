@@ -31,7 +31,6 @@ exports.LoginWarga = async (req, res) => {
         }
 
         const comparePassword = await bcrypt.compare(password, dataUser.password);
-        console.log('comparePassword:', comparePassword);
         if (!comparePassword) {
             return res.status(400).send({
                 message: "Invalid Password!"
@@ -120,7 +119,6 @@ exports.RegisterWarga = async (req, res) => {
 
 exports.LogOutWarga = async (req,res) => {
     try{
-        console.log('test')
         const {id} = req.params;
         const dataUser = await userModel.findById(id);
         if (!dataUser) {
@@ -128,8 +126,6 @@ exports.LogOutWarga = async (req,res) => {
                 message: "User not found with id " + id
             });
         }
-
-        console.log('dataUser:', dataUser);
 
         dataUser.token = '';
         await dataUser.save();
@@ -154,7 +150,6 @@ exports.ForgotPassword = async (req, res) => {
         const { nik, newPassword } = req.body;
 
         const dataWarga = await userModel.findOneAndUpdate({ nik: nik });
-        console.log('dataWarga:', dataWarga);
         if (!dataWarga) {
             return res.status(404).send({
                 status: 'failed',
@@ -241,8 +236,6 @@ exports.getAllWarga = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; // Menambahkan nilai default jika query parameter tidak ada
         const limitt = parseInt(req.query.limit) || 10; // Menambahkan nilai default jika query parameter tidak ada
-
-        console.log(`Received GET request to /api/v1/warga/get with page: ${page}, limit: ${limitt}`);
         
         const warga = await WargaModel.find()
             .populate('user')
@@ -311,7 +304,6 @@ exports.getAllwargaLessDetail = async (req, res) => {
             totalDocument: total
         });
 
-        console.log(`Received GET request to /api/v1/warga/get with page: ${page}, limit: ${limit}`);
     } catch (error) {
         console.error('Error while handling GET request to /api/v1/warga/get:', error);
         res.status(500).send({
@@ -495,7 +487,6 @@ exports.pengajuanSuratAcara = async (req, res) => {
         // memasukan surat acara ke dalam array yang berada di Rt.suratAcaraPending
         Rt[0].suratAcaraPending.push(suratAcara._id);
         await Rt[0].save();
-        // console.log('RT updated:', Rt);
 
         if (suratAcara.wargaId.toString() !== warga._id.toString()) {
             return res.status(403).send({

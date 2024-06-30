@@ -34,7 +34,6 @@ const ModalTambahUser = ({ show, handleClose }) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3555/api/v1/user/post-user', formData);
-            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);

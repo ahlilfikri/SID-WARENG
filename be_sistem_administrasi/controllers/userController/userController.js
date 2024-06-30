@@ -9,7 +9,6 @@ const { uploadProjectImages } = require('../../middleware/ImageUpload');
 exports.getUserByName = async (req, res) => {
     try {
         const { name } = req.body;
-        console.log("Request body:", req.body); 
         
         if (!name) {
             return res.status(400).send({
@@ -18,7 +17,6 @@ exports.getUserByName = async (req, res) => {
         }
         
         const upperName = name.toUpperCase();
-        console.log("Name parameter:", upperName); 
 
         const dataUser = await userModel.findOne({ name: upperName });
         if (dataUser) {
@@ -43,8 +41,6 @@ exports.getPaginateUser = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
-
-        console.log(`Received GET request to /api/v1/user/get with page: ${page}, limit: ${limit}`);
 
         const dataUser = await userModel.find()
             .limit(limit)
@@ -71,7 +67,6 @@ exports.getPaginateUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        console.log(`Received GET request to /api/v1/user/get without pagination`);
 
         const dataUser = await userModel.find();
 
@@ -159,10 +154,6 @@ exports.postUser = async (req, res) => {
         const encryptedNohp = encrypt.enkripsi(nohp, aesKey, iv).encryptedData;
 
 
-        console.log("Encrypted NIK:", encryptedNik);
-        console.log("Encrypted NoHP:", encryptedNohp);
-        console.log("Encrypted Alamat:", encryptedAlamat);
-
         const newUser = await userModel.create({
             name: name.toUpperCase(),
             nik: encryptedNik,
@@ -216,7 +207,6 @@ exports.updateuserById = async (req, res) => {
         try {
             const id = req.params.id;
             const updateData = req.body;
-            console.log(updateData);
             
             // Uppercase conversion
             if (updateData.name) updateData.name = updateData.name.toUpperCase();
@@ -232,19 +222,11 @@ exports.updateuserById = async (req, res) => {
             if (updateData.domisili) updateData.domisili = updateData.domisili.map((domisili) => domisili.toUpperCase());
 
             // Enkripsi data
-            console.log("jsbdjs",updateData.nik);
             const aesKey = crypto.scryptSync(process.env.encrypt_key_one, process.env.encrypt_key_two, 32);
             const iv = crypto.randomBytes(16);
             const encryptedNik = updateData.nik ? encrypt.enkripsi(updateData.nik, aesKey, iv).encryptedData : undefined;
             const encryptedAlamat = updateData.alamat ? encrypt.enkripsi(updateData.alamat, aesKey, iv).encryptedData : undefined;
             const encryptedNohp = updateData.nohp ? encrypt.enkripsi(updateData.nohp, aesKey, iv).encryptedData : undefined;
-            
-            console.log("Before Encrypted NIK:", updateData.nik);
-            console.log("Before Encrypted NoHP:", updateData.nohp);
-            console.log("Before Encrypted Alamat:", updateData.alamat);
-            console.log("Encrypted NIK:", encryptedNik);
-            console.log("Encrypted NoHP:", encryptedNohp);
-            console.log("Encrypted Alamat:", encryptedAlamat);
 
             const dataUpdatedValid = {
                 name: updateData.name,
