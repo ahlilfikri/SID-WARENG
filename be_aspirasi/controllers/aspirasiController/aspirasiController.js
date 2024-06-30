@@ -145,6 +145,14 @@ exports.getAspirasiKades = async (req, res) => {
             message: error.message || "Some error occurred while retrieving aspirasi."
         });
     }
+
+
+
+
+
+
+
+    
 };
 
 exports.getAspirasiAdmin = async(req,res) => {
