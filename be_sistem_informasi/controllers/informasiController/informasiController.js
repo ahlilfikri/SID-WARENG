@@ -51,6 +51,7 @@ exports.postInformasi = async (req, res) => {
                 content,
                 img: imgs,
             });
+            console.log(newInformasi);
 
             const savedInformasi = await newInformasi.save();
 

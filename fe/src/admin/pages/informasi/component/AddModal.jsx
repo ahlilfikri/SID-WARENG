@@ -9,7 +9,7 @@ const AddModal = ({ isAdding, setIsAdding, addForm, handleAddFormChange, handleS
         setLoading(true);
         setError(null);
         try {
-            await handleSaveAdd();
+            await handleSaveAdd(e);
             setIsAdding(false);
         } catch (err) {
             setError('Failed to save information');
