@@ -30,12 +30,16 @@ const VisiMisi = () => {
                 {status === 'success' && data.length === 0 && (
                     <p>Belum ada data yang ditambahkan</p>
                 )}
-                {status === 'success' && data.length > 0 && (
+               {status === 'success' && data.length > 0 && (
                     <>
                         <p style={{ color: 'white', fontSize: '48px', fontWeight: 'bold' }}>Visi</p>
-                        <p style={{ color: 'white', fontSize: '20px', textAlign: 'justify' }}>{data.length > 0 ? data[0]?.visi : 'Data tidak dapat ditampilkan'}</p>
+                        <p style={{ color: 'white', fontSize: '20px', textAlign: 'justify' }}>{data[0]?.visi || 'Data tidak dapat ditampilkan'}</p>
                         <p style={{ color: 'white', fontSize: '48px', fontWeight: 'bold' }}>Misi</p>
-                        <p style={{ color: 'white', fontSize: '20px', textAlign: 'justify' }}>{data.length > 0 ? data[0]?.misi : 'Data tidak dapat ditampilkan'}</p>
+                        <ul style={{ color: 'white', fontSize: '20px', textAlign: 'justify' }}>
+                            {data[0]?.misi ? data[0].misi.split('\n').map((item, index) => (
+                                <li className="my-2" style={{color:'white', listStyle:'none'}}key={index}>{item}</li>
+                            )) : <li>Data tidak dapat ditampilkan</li>}
+                        </ul>
                     </>
                 )}
             </div>

@@ -71,7 +71,6 @@ const PerangkatDesa = () => {
                                         <div className="col-6 p-0">
                                             <div className="content p-2" style={{ marginLeft: '12px' }}>
                                                 <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.user.name}</p>
-                                                <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.user.nohp}</p>
                                                 <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.user.alamat}</p>
                                             </div>
                                         </div>
@@ -92,7 +91,6 @@ const PerangkatDesa = () => {
                                         <div className="col-6 p-0">
                                             <div className="content p-2" style={{ marginLeft: '12px' }}>
                                                 <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '20px' }}>{item.user.name}</p>
-                                                <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.user.nohp}</p>
                                                 <p className="p-0 m-0 mt-1 mt-md-2 " style={{ fontFamily: 'poppins', fontWeight: 'bold', fontSize: '16px', textAlign: 'justify' }}>{item.user.alamat}</p>
                                             </div>
                                         </div>
