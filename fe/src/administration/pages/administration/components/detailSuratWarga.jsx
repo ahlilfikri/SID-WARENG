@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 const DetailSuratWarga = ({ surat, handleCloseModal }) => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [editAble, setEditAble] = useState(false);
     const [isiAcara, setIsiAcara] = useState(surat.isiAcara || []);
     const [detailSurat, setDetailSurat] = useState(null);
@@ -44,7 +44,7 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         try {
             const jenis_surat = surat.jenisSurat.replace(/\s/g, '_');
             const subSuratId = surat.subSuratId;
-            const request = await axios.get(`${port}v1/surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
+            const request = await axios.get(`${port}surat/get/detail-surat/${subSuratId}/${jenis_surat}`);
             setDetailSurat(request.data.data);
             setStatus('success');
         } catch (err) {
@@ -53,16 +53,6 @@ const DetailSuratWarga = ({ surat, handleCloseModal }) => {
         }
     };
 
-    // const handleSave = async () => {
-    //     try {
-    //         const response = await axios.put(`${port}v1/surat/revisi-surat-warga/${surat._id}`, {
-    //             "newIsiAcara": isiAcara
-    //         });
-    //         handleCloseModal();
-    //     } catch (error) {
-    //         console.error("Error editing surat acara:", error);
-    //     }
-    // };
 
     return (
         <>

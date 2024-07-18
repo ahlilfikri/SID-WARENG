@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const PopUpDetailAspirasi = ({ surat, handleCloseModal, refreshData }) => {
-    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -15,7 +15,7 @@ const PopUpDetailAspirasi = ({ surat, handleCloseModal, refreshData }) => {
                 isPending: false
             };
 
-            const request = await axios.put(`${port}v1/aspirasi/updateAspirasi/${surat._id}`, update);
+            const request = await axios.put(`${port}aspirasi/updateAspirasi/${surat._id}`, update);
             refreshData();
             handleCloseModal();
         } catch (err) {

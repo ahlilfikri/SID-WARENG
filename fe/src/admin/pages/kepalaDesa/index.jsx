@@ -4,8 +4,9 @@ import ImageError from '../../../assets/ImageErrorHandling.svg';
 import EditModal from './component/EditModal';
 
 const KepalaDesaControl = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
-    const port2 = import.meta.env.VITE_BASE_API_URL5;
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
+    const port3 = import.meta.env.VITE_BASE_API_URL4;
     const [dataKepalaDesa, setDataKepalaDesa] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentKepalaDesa, setCurrentKepalaDesa] = useState({});
@@ -16,7 +17,7 @@ const KepalaDesaControl = () => {
     const getDataKepalaDesa = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/pimpinanDesa/get`);
+            const res = await axios.get(`${port}pimpinanDesa/get`);
             setDataKepalaDesa(res.data.data);
             setStatus('success');
         } catch (err) {
@@ -35,7 +36,7 @@ const KepalaDesaControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/pimpinanDesa/delete/${id}`);
+            await axios.delete(`${port}pimpinanDesa/delete/${id}`);
             getDataKepalaDesa();
         } catch (err) {
             console.error(err);
@@ -57,7 +58,7 @@ const KepalaDesaControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentKepalaDesa.user.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/user/update/${currentKepalaDesa._id}`, { ...currentKepalaDesa, img: updatedImages });
+            await axios.put(`${port3}user/update/${currentKepalaDesa._id}`, { ...currentKepalaDesa, img: updatedImages });
             setCurrentKepalaDesa({ ...currentKepalaDesa, img: updatedImages });
             getDataKepalaDesa();
         } catch (err) {
@@ -83,7 +84,7 @@ const KepalaDesaControl = () => {
         }
 
         try {
-            await axios.put(`${port}v1/user/update/${currentKepalaDesa.user._id}`, formData, {
+            await axios.put(`${port3}user/update/${currentKepalaDesa.user._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

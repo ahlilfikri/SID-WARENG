@@ -9,7 +9,7 @@ import PopUpDetailSurat from '../components/PopUpDetailSurat';
 import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser';
 
 const KasiPage = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [DataKasi, setDataKasi] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
@@ -22,7 +22,7 @@ const KasiPage = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`${port}v1/perangkatDesa/get/${id}`)
+        axios.get(`${port}perangkatDesa/get/${id}`)
             .then((res) => {
                 setDataKasi(res.data.data);
                 setStatus('success');

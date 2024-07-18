@@ -32,7 +32,6 @@ const AspirasiDesa = () => {
             }
             setStatus('success');
         } catch (error) {
-            console.log(error.message);
             setStatus('error');
         }
     };

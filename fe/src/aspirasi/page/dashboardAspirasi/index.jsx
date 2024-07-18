@@ -6,8 +6,8 @@ import getToken from '../../../administration/pages/administration/shared/functi
 import './index.css';
 
 const Aspirasi = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
-    const port2 = import.meta.env.VITE_BASE_API_URL3;
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL2;
     const [warga, setWarga] = useState([]);
     const [data, setData] = useState({
         aspirasi: '',
@@ -22,7 +22,7 @@ const Aspirasi = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`${port}v1/warga/get/${id}`)
+        axios.get(`${port}warga/get/${id}`)
             .then((res) => {
                 setWarga(res.data.data);
             })
@@ -54,7 +54,7 @@ const Aspirasi = () => {
         }
 
         try {
-            await axios.post(`${port2}v1/aspirasi/postAspirasi/${warga._id}`, data);
+            await axios.post(`${port2}aspirasi/postAspirasi/${warga._id}`, data);
             alert('Aspirasi berhasil dikirim');
             setData({
                 aspirasi: '',

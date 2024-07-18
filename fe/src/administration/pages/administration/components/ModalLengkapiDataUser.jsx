@@ -33,7 +33,6 @@ const ModalLengkapiDataUser = ({ show, handleClose, userId }) => {
             };
 
             const response = await axios.put(`http://localhost:3555/api/v1/user/update/${userId}`, dataToSend);
-            console.log(response.data);
             handleClose();
         } catch (error) {
             console.error(error);

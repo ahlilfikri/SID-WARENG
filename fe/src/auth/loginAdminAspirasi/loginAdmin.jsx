@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 const LoginAdmin = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL4;
     const [formData, setFormData] = useState({
         name: '',
         password: ''
@@ -19,7 +19,7 @@ const LoginAdmin = () => {
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${port}v1/admin/login-admin`, {
+            const res = await axios.post(`${port}admin/login-admin`, {
                 name: name,
                 password: password
             });

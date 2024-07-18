@@ -7,7 +7,7 @@ import AddModal from './component/AddModal';
 
 const PortalControl = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [dataPortal, setDataPortal] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -20,7 +20,7 @@ const PortalControl = () => {
     const getDataPortal = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/portal/get-portal`);
+            const res = await axios.get(`${port}portal/get-portal`);
             setDataPortal(res.data.data.data);
             setStatus('success');
         } catch (err) {
@@ -39,7 +39,7 @@ const PortalControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/portal/delete-portal/${id}`);
+            await axios.delete(`${port}portal/delete-portal/${id}`);
             getDataPortal();
         } catch (err) {
             console.error(err);
@@ -60,7 +60,7 @@ const PortalControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentPortal.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
+            await axios.put(`${port}portal/update-portal/${currentPortal._id}`, { ...currentPortal, img: updatedImages });
             setCurrentPortal({ ...currentPortal, img: updatedImages });
             getDataPortal();
         } catch (err) {
@@ -85,7 +85,7 @@ const PortalControl = () => {
         }
 
         try {
-            await axios.put(`${port}v1/portal/update-portal/${currentPortal._id}`, formData, {
+            await axios.put(`${port}portal/update-portal/${currentPortal._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -122,7 +122,7 @@ const PortalControl = () => {
         }
 
         try {
-            await axios.post(`${port}v1/portal/post-portal`, formData, {
+            await axios.post(`${port}portal/post-portal`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

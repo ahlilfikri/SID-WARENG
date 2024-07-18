@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import {PropTypes} from 'prop-types';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-const port = import.meta.env.VITE_BASE_API_URL;
 
 const ButtonSignin = ({data}) => {
+    const port = import.meta.env.VITE_BASE_API_URL3;
 
     const dataUser = {
         name : data.username,
@@ -19,7 +19,7 @@ const ButtonSignin = ({data}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const result = await axios.post(`${port}v1/warga/login`,dataUser);
+            const result = await axios.post(`${port}warga/login`,dataUser);
             if (result.data.status === 'success'){
                 window.localStorage.setItem('token',result.data.token);
                 window.location.href = '/';

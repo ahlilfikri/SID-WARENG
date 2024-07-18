@@ -9,10 +9,9 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
 
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try {
-            const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
+            const request = await axios.put(`http://localhost:3555/api/v1/administrasi/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
-            console.log(request);
             refreshData();
             handleCloseModal();
         } catch (err) {
@@ -28,7 +27,6 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
             };
 
             const request = await axios.put(`http://localhost:3557/api/v1/aspirasi/updateAspirasi/${surat._id}`, update);
-            console.log(request);
             refreshData(); 
             handleCloseModal();
         } catch (err) {

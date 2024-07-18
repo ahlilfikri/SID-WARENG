@@ -5,9 +5,9 @@ import NavBar from '../../../shared/layout/navBar';
 import Footer from '../../../shared/layout/footer';
 
 const AdminAspirasiPage = () => {
-    const port = import.meta.env.VITE_BASE_API_URL3;
-    const port2 = import.meta.env.VITE_BASE_API_URL;
-    const port3 = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL5;
+    const port3 = import.meta.env.VITE_BASE_API_URL5;
     const [dataAdmin, setDataAdmin] = useState(null);
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [wargaNames, setWargaNames] = useState({});
@@ -19,7 +19,7 @@ const AdminAspirasiPage = () => {
 
     const getAspirasi = async () => {
         try {
-            const res = await axios.get(`${port}v1/aspirasi/getAspirasiAdmin`);
+            const res = await axios.get(`${port}aspirasi/getAspirasiAdmin`);
             if (res.data && res.data.length > 0) {
                 setDataAspirasi(res.data);
                 setIsLoading(false);
@@ -48,7 +48,7 @@ const AdminAspirasiPage = () => {
 
     const getAdmin = async () => {
         try {
-            const res = await axios.get(`${port2}v1/admin/get-admin/${id}`);
+            const res = await axios.get(`${port2}admin/get-admin/${id}`);
             setDataAdmin(res.data);
         } catch (err) {
             console.error(err);
@@ -59,7 +59,7 @@ const AdminAspirasiPage = () => {
     const fetchWargaName = async (idWarga) => {
         if (!wargaNames[idWarga]) {
             try {
-                const res = await axios.get(`${port3}v1/user/get/${idWarga}`);
+                const res = await axios.get(`${port3}user/get/${idWarga}`);
                 if (res.data && res.data.data && res.data.data.name) {
                     setWargaNames(prevNames => ({ ...prevNames, [idWarga]: res.data.data.name }));
                 } else {

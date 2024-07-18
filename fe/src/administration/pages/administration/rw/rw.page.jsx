@@ -7,7 +7,7 @@ import PopUpDetailSurat from '../components/PopUpDetailSurat';
 import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
 
 const RwPage = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [DataRw, setDataRw] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
@@ -20,7 +20,7 @@ const RwPage = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`${port}v1/rw/get/${id}`)
+        axios.get(`${port}rw/get/${id}`)
             .then((res) => {
                 setDataRw(res.data.data);
                 setStatus('success');

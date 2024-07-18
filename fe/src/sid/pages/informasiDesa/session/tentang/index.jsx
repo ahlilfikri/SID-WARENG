@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const Tentang = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading');
 
@@ -40,6 +40,7 @@ const Tentang = () => {
                     <div className="row p-0">
                         {data[0]?.img.map((item, index) => {
                             const imageSrc = `${port2}${encodeURIComponent(item)}`;
+                            console.log(imageSrc);
                             return (
                                 <div className="col-12 col-md-4 p-0 px-md-3 my-2" key={index}>
                                     <ImageTentang Foto={imageSrc} />

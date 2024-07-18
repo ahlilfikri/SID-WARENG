@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ImageError from '../../../../assets/ImageErrorHandling.svg';
 
 const EditModal = ({ isEditing, setIsEditing, editForm, handleEditFormChange, handleSaveEdit, currentKegiatan, handleDeleteImage, setSelectedImage }) => {
-    const port = import.meta.env.VITE_BASE_API_URL4;
+    const port = import.meta.env.VITE_BASE_API_URL6;
     const [newImages, setNewImages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

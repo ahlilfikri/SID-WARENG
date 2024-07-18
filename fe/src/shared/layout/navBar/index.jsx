@@ -56,7 +56,6 @@ const Navbar = ({ type }) => {
             if (!token) {
                 return;
             }
-            console.log(`${port2}user/get/${id}`);
             try {
                 const res = await axios.get(`${port2}user/get/${id}`, {
                     headers: {

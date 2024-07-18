@@ -10,7 +10,7 @@ import getSettings from '../../../../constant/carouselSertting';
 
 const KegiatanDesa = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [data, setData] = useState([]);
     const [slidesToShow, setSlidesToShow] = useState(3);
     const [status, setStatus] = useState('');

@@ -6,7 +6,7 @@ import AddModal from './component/AddModal';
 
 const KegiatanControl = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [dataKegiatan, setDataKegiatan] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -22,7 +22,7 @@ const KegiatanControl = () => {
     const getDataKegiatan = async (page, limit) => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/kegiatan/get-kegiatan?page=${page}&limit=${limit}`);
+            const res = await axios.get(`${port}kegiatan/get-kegiatan?page=${page}&limit=${limit}`);
             setDataKegiatan(res.data.data.data);
             setTotalPages(res.data.data.totalPages);
             setStatus('success');
@@ -42,7 +42,7 @@ const KegiatanControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/kegiatan/delete-kegiatan/${id}`);
+            await axios.delete(`${port}kegiatan/delete-kegiatan/${id}`);
             getDataKegiatan(page, limit);
         } catch (err) {
             console.error(err);
@@ -63,7 +63,7 @@ const KegiatanControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentKegiatan.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
+            await axios.put(`${port}kegiatan/update-kegiatan/${currentKegiatan._id}`, { ...currentKegiatan, img: updatedImages });
             setCurrentKegiatan({ ...currentKegiatan, img: updatedImages });
             getDataKegiatan(page, limit);
         } catch (err) {
@@ -89,7 +89,7 @@ const KegiatanControl = () => {
         }
 
         try {
-            await axios.put(`${port}v1/kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
+            await axios.put(`${port}kegiatan/update-kegiatan/${currentKegiatan._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -127,7 +127,7 @@ const KegiatanControl = () => {
         }
 
         try {
-            await axios.post(`${port}v1/kegiatan/post-kegiatan`, formData, {
+            await axios.post(`${port}kegiatan/post-kegiatan`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
