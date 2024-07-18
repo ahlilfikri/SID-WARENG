@@ -17,7 +17,7 @@ const DetailKegiatanDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${id}`);
+            const response = await axios.get(`${port}kegiatan/get-kegiatan/${id}`);
             setData(response.data.data);
             setStatus('success');
         } catch (error) {

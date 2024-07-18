@@ -6,7 +6,7 @@ import axios from 'axios';
 import './index.css';
 
 const SignUp = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [formData, setFormData] = useState({
         name: '',
         password: ''
@@ -25,7 +25,7 @@ const SignUp = () => {
         e.preventDefault();
 
         try {
-            const res = await axios.post(`${port}v1/warga/login`, {
+            const res = await axios.post(`${port}warga/login`, {
                 name: name.toUpperCase(),
                 password: password
             });

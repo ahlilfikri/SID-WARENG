@@ -18,7 +18,7 @@ const KegiatanDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
+            const response = await axios.get(`${port}kegiatan/get-kegiatan`);
             const data = response.data.data.data;
             setData(data);
 

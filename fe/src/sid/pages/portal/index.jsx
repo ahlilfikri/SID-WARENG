@@ -19,7 +19,7 @@ const Portal = () => {
 
     const GetFromAPI = async () => {
         try {
-            const response = await axios.get(`${port}v1/portal/get-portal`);
+            const response = await axios.get(`${port}portal/get-portal`);
             const data = response.data.data.data;
             setData(data);
             setStatus('success');

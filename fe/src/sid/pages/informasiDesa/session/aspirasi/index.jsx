@@ -8,7 +8,7 @@ import getSettings from '../../../../constant/carouselSertting';
 
 
 const AspirasiDesa = () => {
-    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [data, setData] = useState([]);
     const [slidesToShow, setSlidesToShow] = useState(3);
     const [status, setStatus] = useState('');
@@ -16,7 +16,7 @@ const AspirasiDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/aspirasi/getAspirasiApproved`);
+            const response = await axios.get(`${port}aspirasi/getAspirasiApproved`);
             var data = response.data;
             if (data.length > 10) {
                 data = data.slice(0, 10);

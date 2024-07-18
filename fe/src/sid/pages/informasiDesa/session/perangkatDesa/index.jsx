@@ -7,7 +7,7 @@ import ImageError from '../../../../../assets/ImageErrorHandling.svg';
 import Setting from '../../../../constant/carouselSertting2';
 
 const PerangkatDesa = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const port2 = import.meta.env.VITE_BASE_API_URL5;
     const [data, setData] = useState([]);
     const [dataKades, setDataKades] = useState([]);
@@ -16,8 +16,9 @@ const PerangkatDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/perangkatDesa/get`);
-            const response2 = await axios.get(`${port}v1/pimpinanDesa/get`);
+            const response = await axios.get(`${port}perangkatDesa/get`);
+            console.log("dbaohdisahdihsaipdhiasphdouabsdinsbub",`${port}perangkatDesa/get`);
+            const response2 = await axios.get(`${port}pimpinanDesa/get`);
             setData(response.data.data);
             setDataKades(response2.data.data);
             setStatus('success');

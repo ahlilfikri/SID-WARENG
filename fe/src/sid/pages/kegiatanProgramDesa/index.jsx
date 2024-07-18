@@ -26,7 +26,7 @@ const KegiatanProgramDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
+            const response = await axios.get(`${port}kegiatan/get-kegiatan`);
             setData(response.data.data.data);
             setStatus('success');
         } catch (error) {
@@ -56,9 +56,9 @@ const KegiatanProgramDesa = () => {
         try {
             let response;
             if (searchName === '' && selectedDate != null) {
-                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/-1/${selectedDate}`);
+                response = await axios.get(`${port}kegiatan/get-kegiatan/-1/${selectedDate}`);
             } else if (searchName !== '' && selectedDate == null) {
-                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/-1`);
+                response = await axios.get(`${port}kegiatan/get-kegiatan/${searchName}/-1`);
             } else {
                 response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/${selectedDate}`);
             }

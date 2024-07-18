@@ -15,7 +15,7 @@ const Tentang = () => {
 
     const GetFromAPI = async () => {
         try {
-            const response = await axios.get(`${port}v1/informasi/get-informasi`);
+            const response = await axios.get(`${port}informasi/get-informasi`);
             setData(response.data.data.data);
             setStatus('success');
         } catch (error) {
