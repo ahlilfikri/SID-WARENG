@@ -17,8 +17,8 @@ import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_S
 import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
 
 const WargaPage = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
-    const port2 = import.meta.env.VITE_BASE_API_URL3;
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL2;
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [DataWarga, setDataWarga] = useState({});
@@ -35,7 +35,7 @@ const WargaPage = () => {
 
     const GetDataWarga = async () => {
         try {
-            const response = await axios.get(`${port}v1/warga/get/${id}`);
+            const response = await axios.get(`${port}warga/get/${id}`);
             setDataWarga(response.data.data);
             setIdWarga(response.data.data._id)
             setStatusSurat('success');
@@ -47,7 +47,7 @@ const WargaPage = () => {
 
     const GetDataAspirasiWarga = async () => {
         try {
-            const response = await axios.get(`${port2}v1/aspirasi/getAspirasi/${idWarga}`);
+            const response = await axios.get(`${port2}aspirasi/getAspirasi/${idWarga}`);
             setDataAspirasi(response.data.data);
             setStatusAspirasi('success');
         } catch (error) {
@@ -86,7 +86,7 @@ const WargaPage = () => {
         console.log('idSuratAcara:', idSuratAcara);
         console.log('nameAcara:', nameAcara);
         try {
-            const response = await axios.get(`${port}v1/surat/get/generatePdf/${idSuratAcara}`, {
+            const response = await axios.get(`${port}surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
 
