@@ -17,7 +17,7 @@ import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_S
 import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
 
 const WargaPage = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL_ADMINISTRASI;
     const port2 = import.meta.env.VITE_BASE_API_URL3;
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
@@ -35,7 +35,7 @@ const WargaPage = () => {
 
     const GetDataWarga = async () => {
         try {
-            const response = await axios.get(`${port}v1/warga/get/${id}`);
+            const response = await axios.get(`${port}v1/administrasi/warga/get/${id}`);
             setDataWarga(response.data.data);
             setIdWarga(response.data.data._id)
             setStatusSurat('success');

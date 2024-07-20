@@ -156,7 +156,7 @@ const KasiPage = () => {
     const id = getToken();
 
     useEffect(() => {
-        axios.get(`${port}v1/perangkatDesa/get/${id}`)
+        axios.get(`${port}v1/administrasi/perangkatDesa/get/${id}`) 
             .then((res) => {
                 setDataKasi(res.data.data);
                 setStatus('success');

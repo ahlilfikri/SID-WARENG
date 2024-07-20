@@ -8,7 +8,7 @@ import './index.css';
 import getToken from '../../functions/functions.jsx';
 
 const Navbar = ({ type }) => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL_ADMINISTRASI;
     const location = useLocation();
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
@@ -24,7 +24,7 @@ const Navbar = ({ type }) => {
 
     const handleLogout = async () => {
         try {
-            const res = await axios.post(`${port}v1/warga/logout/${id}`);
+            const res = await axios.post(`${port}v1/administrasi/warga/logout/${id}`);
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login');
@@ -37,7 +37,7 @@ const Navbar = ({ type }) => {
     };
     const handleLogoutAdmin = async () => {
         try {
-            const res = await axios.post(`${port}v1/admin/logout-admin/${id}`);
+            const res = await axios.post(`${port}v1/userApi/admin/logout-admin/${id}`);
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login-admin');
@@ -57,7 +57,7 @@ const Navbar = ({ type }) => {
             }
 
             try {
-                const res = await axios.get(`${port}v1/user/get/${id}`, {
+                const res = await axios.get(`${port}v1/userApi/user/get/dec/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -75,7 +75,7 @@ const Navbar = ({ type }) => {
             }
 
             try {
-                const res = await axios.get(`${port}v1/admin/get-admin/${id}`, {
+                const res = await axios.get(`${port}v1/userApi/admin/get-admin/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
