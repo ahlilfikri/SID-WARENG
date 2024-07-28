@@ -375,6 +375,7 @@ const TestPage = () => {
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
     const [dataLengkapSurat, setDataLengkapSurat] = useState({}); 
+    // const [arsipSurat, setArsipSurat] = useState('');
 
     const id = getToken();
     const [idWarga, setIdWarga] = useState('')
@@ -383,6 +384,7 @@ const TestPage = () => {
         try {
             const response = await axios.get(`${port}warga/get/${id}`);
             setDataWarga(response.data.data);
+            console.log(response.data.data);
             setDataLengkapSurat({"data" : response.data.data.suratAcara});
             setIdWarga(response.data.data._id)
             setStatusSurat('success');
@@ -403,6 +405,19 @@ const TestPage = () => {
         }
     };
 
+    // http://localhost:3555/api/v1/surat/archive/:suratAcaraId
+    const handleArsipSurat = async (idSuratAcara) => {
+        try{
+            const response = await axios.put(`${port}surat/archive/${idSuratAcara}`);   
+            if(response.status === 200){
+                console.log('Surat berhasil diarsipkan');
+                console.log(response.data);
+            }
+        }catch(err){
+            console.error('Error archiving surat:', err);   
+        }
+    };
+
     const aspirasiDecider = (isPublish) => {
         return isPublish ? 'Untuk umum' : 'Untuk kades';
     }
@@ -418,7 +433,7 @@ const TestPage = () => {
         }
     }, [idWarga]);
 
-    // const handleShowModal = () => setShowModal(true);
+    const handleShowModal = () => setShowModal(true);
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -487,33 +502,46 @@ const TestPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredSuratAcara.map((surat, index) => (
+                            {
+                                filteredSuratAcara
+                                    .filter(surat => !surat.isArchive)  // Filter out archived items
+                                    .map((surat, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{surat.jenisSurat}</td>
                                         <td>{surat.statusAcara}</td>
                                         <td>{surat.statusPersetujuan}</td>
                                         <td>
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleShowDetail(surat)}
-                                            >
-                                                View
-                                            </button>
-                                            {/* ini di hilangkan dulu */}
-                                            <button 
-                                                className="btn btn-secondary ms-2 d-none"
-                                                onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
-                                            >
-                                                Download PDF
-                                            </button>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleShowDetail(surat)}
+                                        >
+                                            View
+                                        </button>
+                                        <button
+                                            className="btn btn-secondary ms-2"
+                                            onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
+                                        >
+                                            unduh PDF
+                                        </button>
+                                        <button
+                                            className="btn btn-warning ms-2"
+                                            onClick={() => handleArsipSurat(surat._id)}
+                                        >
+                                            arsip
+                                        </button>
                                         </td>
                                     </tr>
-                                ))}
+                                    ))
+                                }
+
                             </tbody>
                         </table>
                     ) : <p>Belum ada surat acara</p>}
                     {/* surat  */}
+                    <button className="btn btn-primary ms-1" onClick={handleShowModal}>
+                        Tampilkan Form Perizinan Surat
+                    </button>
                     <ContainerDataSurat DataAllSurat={{"data": dataLengkapSurat}} />
                 </div>
             );
