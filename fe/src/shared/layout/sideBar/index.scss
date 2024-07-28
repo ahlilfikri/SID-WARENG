@@ -291,7 +291,6 @@
 // }
 
 
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
 * {
@@ -305,6 +304,7 @@ body {
   --main-container-bg: #fff;
   --container-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   --text-color: #00071d;
+  --active-item-bg: #e0e0e0; // Add active item background color
 }
 
 body.dark {
@@ -474,7 +474,7 @@ body {
     position: relative;
  
     .shrink & span { visibility: hidden; }
-    &.active a { background-color: var(--main-bg); }
+    &.active a { background-color: var(--active-item-bg); }
     &:not(.active) a:hover {
       background-color: var(--item-hover);
     }
@@ -535,7 +535,7 @@ body {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var (--text-color);
+      color: var(--text-color);
     }
     
     .shrink & span { display: none; }
