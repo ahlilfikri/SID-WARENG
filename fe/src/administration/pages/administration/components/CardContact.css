@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+.card-item-contact {
+    position: relative;
+    font-family: 'Poppins' !important;
+    -webkit-font-smoothing: antialiased;  
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fefefefe;
+    border-radius: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-bottom: 48px;
+    max-width: 323px;
+    list-style-type: none;
+    transition: all 0.3s;
+}
+
+.card-3 {
+border-top: 5px solid #44c4a1;
+}
+
+.card-title-contact {
+color: #171f46;
+
+font-size: 24px;
+font-weight: 500;
+}
+
+.card-description-contact {
+color: #64748b;
+
+font-size: 18px;
+}
+
+.img-container-contact {
+display: flex;
+justify-content: flex-end;
+}
+
+/* buat hover untuk class card-3 */
+
+.card-3:hover {
+    border-top: 5px solid  #44c4a1;
+    border-top-width: 10px;
+    transition: border-top-width 0.5s;
+}
