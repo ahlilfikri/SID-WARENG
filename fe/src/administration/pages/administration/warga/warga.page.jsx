@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
+import DetailAspirasi from '../components/detailAspirasi';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 
@@ -21,11 +22,13 @@ const WargaPage = () => {
     const port2 = import.meta.env.VITE_BASE_API_URL2;
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
+    const [showDetailAspirasi, setShowDetailAspirasi] = useState(false);
     const [DataWarga, setDataWarga] = useState({});
     const [DataAspirasi, setDataAspirasi] = useState([]);
     const [statusSurat, setStatusSurat] = useState('loading');
     const [statusAspirasi, setStatusAspirasi] = useState('loading');
     const [selectedSurat, setSelectedSurat] = useState(null);
+    const [selectedAspirasi, setSelectedAspirasi] = useState(null);
     const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
@@ -49,6 +52,7 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`${port2}aspirasi/getAspirasi/${idWarga}`);
             setDataAspirasi(response.data.data);
+            console.log(response.data.data);
             setStatusAspirasi('success');
         } catch (error) {
             console.error('Error getting data aspirasi:', error);
@@ -66,7 +70,7 @@ const WargaPage = () => {
 
     useEffect(() => {
         GetDataWarga();
-        if(idWarga){
+        if (idWarga) {
             GetDataAspirasiWarga();
         }
     }, [idWarga]);
@@ -75,6 +79,10 @@ const WargaPage = () => {
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedForm(null);
+    };
+    const handleShowDetailAspirasi = (surat) => {
+        setSelectedAspirasi(surat);
+        setShowDetailAspirasi(true);
     };
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
@@ -212,7 +220,7 @@ const WargaPage = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(aspirasi)}
+                                                onClick={() => handleShowDetailAspirasi(aspirasi)}
                                             >
                                                 View
                                             </button>
@@ -237,18 +245,18 @@ const WargaPage = () => {
                             </div>
                             <div className="modal-body">
                                 {selectedForm === null && (
-                                    <div 
+                                    <div
                                         className="d-flex flex-column justify-content-center align-items-center"
                                         style={{ height: '50vh' }}
                                     >
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormPencatatanKependudukan')}>Form Pencatatan Kependudukan</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKuasaAktaKematian')}>Form Surat Kuasa Akta Kematian</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinBepergian')}>Form Surat Izin Bepergian</button>
-                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>  
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button> 
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
                                     </div>
                                 )}
 
@@ -292,6 +300,13 @@ const WargaPage = () => {
                         handleCloseModal={handleCloseDetail}
                     />
                 )}
+                {showDetailAspirasi && (
+                    <DetailAspirasi
+                        aspirasi={selectedAspirasi}
+                        handleCloseModal={() => setShowDetailAspirasi(false)}
+                    />
+                )}
+
                 <Footer type={3}></Footer>
             </div>
         </>

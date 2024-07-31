@@ -7,9 +7,9 @@ import { PropTypes } from 'prop-types';
 const Sidebar = ({ isShrinkView, setIsShrinkView, setSelectedContent }) => {
   const [activeItem, setActiveItem] = useState('administrasi');
 
-  const handleSidebarView = () => {
-    setIsShrinkView(!isShrinkView);
-  };
+//   const handleSidebarView = () => {
+//     toggleShrinkView();
+//   };
 
   const handleItemClick = (item) => {
     setActiveItem(item);

@@ -28,7 +28,7 @@ import getToken from "./shared/functions/functions";
 import DashboardAdmin from "./admin";
 
 import App from "./App";
-import TestPage from "./administration/pages/administration/warga/test";
+// import TestPage from "./administration/pages/administration/warga/test";
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
   const port = import.meta.env.VITE_BASE_API_URL4;
@@ -176,10 +176,10 @@ const Routing = createBrowserRouter([
           authorizedRoles={[1, 2, 3, 4, 5]}
         />
       },
-      {
-        path: "/testPage",
-        element: <TestPage />,
-      }
+      // {
+      //   path: "/testPage",
+      //   element: <TestPage />,
+      // }
 
     ],
   },
