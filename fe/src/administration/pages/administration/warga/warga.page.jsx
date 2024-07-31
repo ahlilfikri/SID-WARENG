@@ -16,7 +16,6 @@ import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_Sur
 import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
 import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
-// import Sidebar from '../../../../shared/layout/sideBar';
 
 const WargaPage = () => {
     const port = import.meta.env.VITE_BASE_API_URL3;
@@ -128,7 +127,6 @@ const WargaPage = () => {
         <>
             <div className="container-fluid">
                 <Navbar className="" type={0}></Navbar>
-                {/* <Sidebar/> */}
                 <h1 className='my-2 my-md-5'>Administrasi Warga</h1>
                 <div className="d-flex">
                     <button className="btn btn-primary me-1" onClick={handleShowLengkapiDataModal}>
@@ -176,8 +174,8 @@ const WargaPage = () => {
                                                 View
                                             </button>
                                             {/* ini di hilangkan dulu */}
-                                            <button
-                                                className="btn btn-secondary ms-2 d-none"
+                                            <button 
+                                                className="btn btn-secondary ms-2"
                                                 onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
                                             >
                                                 Download PDF
