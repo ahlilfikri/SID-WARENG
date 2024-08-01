@@ -15,7 +15,7 @@ import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
 import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
 import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
-import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
+import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; 
 
 const WargaPage = () => {
     const port = import.meta.env.VITE_BASE_API_URL3;
@@ -32,7 +32,7 @@ const WargaPage = () => {
     const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
-    const [showLengkapiDataModal, setShowLengkapiDataModal] = useState(false); // State untuk ModalLengkapiDataUser
+    const [showLengkapiDataModal, setShowLengkapiDataModal] = useState(false); 
     const id = getToken();
     const [idWarga, setIdWarga] = useState('')
 
@@ -119,8 +119,8 @@ const WargaPage = () => {
         aspirasi.aspirasi.toLowerCase().includes(searchQueryAspirasi.toLowerCase())
     );
 
-    const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); // Show Lengkapi Data Modal
-    const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false); // Close Lengkapi Data Modal
+    const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); 
+    const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false);
 
     return (
         <>
