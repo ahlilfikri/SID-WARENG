@@ -15,59 +15,63 @@ const ContainerDataSurat = ({ DataAllSurat }) => {
     return dataSurat?.data?.data?.filter(surat => surat.jenisSurat === jenisSurat).length ?? 0;
   };
 
-  const renderCard = (title, count) => {
+  const renderCard = (title, count, bgColor) => {
     return count > 0 ? (
-      <div className="box-card d-flex pt-2 me-1">
-        <h6 className="card-title" style={{ color: "white" }}>{title}{" : "}{count}</h6>
+      <div className="col-sm-4 mb-3">
+        <div className={`box-card card h-100 text-white ${bgColor}`}>
+          <div className="card-body d-flex justify-content-between align-items-center">
+            <h6 className="card-title mb-0 text-light">{title}</h6>
+            <span className="badge bg-secondary text-light">{count}</span>
+          </div>
+        </div>
       </div>
     ) : null;
   };
 
   return (
-    <>
+    <div className="container mt-4">
+      <div className="row mb-4">
+        <div className="col text-center">
+          <h5 className="text-uppercase">Data Surat</h5>
+        </div>
+      </div>
       <div className="row">
-        <div className="col-12">
-          <h1 className="text-center">Data Surat</h1>
-
-          <div className="row">
-            <div className="col-2">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Total Surat</h5>
-                  <h1 className="card-text">{totalSurat}</h1>
-                </div>
-              </div>
-            </div>
-            <div className="col-8">
-              <div className="row">
-                {renderCard("SKCK", hitungByJenisSurat('surat pengantar skck'))}
-                {renderCard("Keterangan Usaha", hitungByJenisSurat('surat keterangan usaha'))}
-                {renderCard("Keterangan Kependudukan", hitungByJenisSurat('surat keterangan kependudukan'))}
-                {renderCard("Keterangan Domisili", hitungByJenisSurat('surat keterangan domisili'))}
-                {renderCard("Kenal Lahir", hitungByJenisSurat('surat kenal lahir'))}
-                {renderCard("Pindah", hitungByJenisSurat('surat pindah'))}
-                {renderCard("Izin Keramaian", hitungByJenisSurat('surat izin keramaian'))}
-                {renderCard("Izin Pepergian", hitungByJenisSurat('surat izin pepergian'))}
-                {renderCard("Pembuatan KK Baru", hitungByJenisSurat('pembuatan kk baru'))}
-                {renderCard("Pembuatan KTP Baru", hitungByJenisSurat('pembuatan ktp baru'))}
-                {renderCard("Pembuatan KTP Lama", hitungByJenisSurat('pembuatan ktp lama'))}
-                {renderCard("Pemecahan KK Lama", hitungByJenisSurat('pemecahan kk lama'))}
-                {renderCard("PBB-P2", hitungByJenisSurat('pbb-p2'))}
-                {renderCard("Mutasi PBB", hitungByJenisSurat('mutasi pbb'))}
-                {renderCard("Pencatatan Kependudukan", hitungByJenisSurat('pencatatan kependudukan'))}
-                {renderCard("Surat Kematian", hitungByJenisSurat('surat kematian'))}
-                {renderCard("Surat Kelahiran", hitungByJenisSurat('surat kelahiran'))}
-                {renderCard("Santunan Kematian", hitungByJenisSurat('santunan kematian'))}
-                {renderCard("Pengajuan JKN-KIS", hitungByJenisSurat('pengajuan jkn-kis'))}
-                {renderCard("Koordinator RTLH", hitungByJenisSurat('koordinator rtlh'))}
-                {renderCard("Pendataan Masalah Sosial", hitungByJenisSurat('pendataan masalah sosial'))}
-                {renderCard("Bantuan Sosial", hitungByJenisSurat('bantuan sosial'))}
-              </div>
+        <div className="col-lg-4 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h5 className="card-title">Total Surat</h5>
+              <h1 className="card-text display-4">{totalSurat}</h1>
             </div>
           </div>
         </div>
+        <div className="col-lg-8">
+          <div className="row">
+            {renderCard("SKCK", hitungByJenisSurat('surat pengantar skck'), "bg-primary")}
+            {renderCard("Keterangan Usaha", hitungByJenisSurat('surat keterangan usaha'), "bg-primary")}
+            {renderCard("Keterangan Kependudukan", hitungByJenisSurat('surat keterangan kependudukan'), "bg-primary")}
+            {renderCard("Keterangan Domisili", hitungByJenisSurat('surat keterangan domisili'), "bg-primary")}
+            {renderCard("Kenal Lahir", hitungByJenisSurat('surat kenal lahir'), "bg-primary")}
+            {renderCard("Pindah", hitungByJenisSurat('surat pindah'), "bg-primary")}
+            {renderCard("Izin Keramaian", hitungByJenisSurat('surat izin keramaian'), "bg-primary")}
+            {renderCard("Izin Pepergian", hitungByJenisSurat('surat izin pepergian'), "bg-primary")}
+            {renderCard("Pembuatan KK Baru", hitungByJenisSurat('pembuatan kk baru'), "bg-primary")}
+            {renderCard("Pembuatan KTP Baru", hitungByJenisSurat('pembuatan ktp baru'), "bg-primary")}
+            {renderCard("Pembuatan KTP Lama", hitungByJenisSurat('pembuatan ktp lama'), "bg-primary")}
+            {renderCard("Pemecahan KK Lama", hitungByJenisSurat('pemecahan kk lama'), "bg-primary")}
+            {renderCard("PBB-P2", hitungByJenisSurat('pbb-p2'), "bg-primary")}
+            {renderCard("Mutasi PBB", hitungByJenisSurat('mutasi pbb'), "bg-primary")}
+            {renderCard("Pencatatan Kependudukan", hitungByJenisSurat('pencatatan kependudukan'), "bg-primary")}
+            {renderCard("Surat Kematian", hitungByJenisSurat('surat kematian'), "bg-primary")}
+            {renderCard("Surat Kelahiran", hitungByJenisSurat('surat kelahiran'), "bg-primary")}
+            {renderCard("Santunan Kematian", hitungByJenisSurat('santunan kematian'), "bg-primary")}
+            {renderCard("Pengajuan JKN-KIS", hitungByJenisSurat('pengajuan jkn-kis'), "bg-primary")}
+            {renderCard("Koordinator RTLH", hitungByJenisSurat('koordinator rtlh'), "bg-primary")}
+            {renderCard("Pendataan Masalah Sosial", hitungByJenisSurat('pendataan masalah sosial'), "bg-primary")}
+            {renderCard("Bantuan Sosial", hitungByJenisSurat('bantuan sosial'), "bg-primary")}
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

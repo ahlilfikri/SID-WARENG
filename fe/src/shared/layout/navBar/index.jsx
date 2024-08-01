@@ -29,8 +29,6 @@ const Navbar = ({ type }) => {
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login');
-            } else {
-                console.log(res);
             }
         } catch (err) {
             console.error(err);
@@ -42,8 +40,6 @@ const Navbar = ({ type }) => {
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login-admin');
-            } else {
-                console.log(res);
             }
         } catch (err) {
             console.error(err);
@@ -118,9 +114,6 @@ const Navbar = ({ type }) => {
                         <li className="nav-item dropdown px-1">
                             <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/portal-terintegrasi' ? 'active underline' : ''}`} to="/portal-terintegrasi">Portal Terintegrasi</Link>
                         </li>
-                        {/* <li className="nav-item dropdown px-1">
-                            <Link style={{ color: type ? 'white' : 'black' }} className={`nav-link ${location.pathname === '/testPage' ? 'active underline' : ''}`} to="/testPage">testPage</Link>
-                        </li> */}
                         {userData == null && (
                             <li className="nav-item px-1" style={{ borderLeft: '2px solid white' }}>
                                 <Link className='nav-link' to="/login" >

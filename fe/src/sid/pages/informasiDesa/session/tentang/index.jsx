@@ -40,7 +40,6 @@ const Tentang = () => {
                     <div className="row p-0">
                         {data[0]?.img.map((item, index) => {
                             const imageSrc = `${port2}${encodeURIComponent(item)}`;
-                            console.log(imageSrc);
                             return (
                                 <div className="col-12 col-md-4 p-0 px-md-3 my-2" key={index}>
                                     <ImageTentang Foto={imageSrc} />

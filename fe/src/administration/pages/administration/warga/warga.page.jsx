@@ -52,7 +52,6 @@ const WargaPage = () => {
         try {
             const response = await axios.get(`${port2}aspirasi/getAspirasi/${idWarga}`);
             setDataAspirasi(response.data.data);
-            console.log(response.data.data);
             setStatusAspirasi('success');
         } catch (error) {
             console.error('Error getting data aspirasi:', error);
