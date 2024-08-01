@@ -39,7 +39,7 @@ const TestPage = () => {
     const [showDetailAspirasi, setShowDetailAspirasi] = useState(false);
     const [selectedAspirasi, setSelectedAspirasi] = useState(null);
 
-    const  [listContact, setListContact] = useState({});
+    const [listContact, setListContact] = useState({});
     // const [arsipSurat, setArsipSurat] = useState('');
 
     const id = getToken();
@@ -47,16 +47,16 @@ const TestPage = () => {
 
     const GetContact = async () => {
         // http://localhost:3555/api/v1/userApi/user/get-contact/6686715f3775858d955468fa
-        try{
+        try {
             const response = await axios.get(`${port3}/user/get-contact/${id}`);
-            
-            if(response.status === 200){
-                setListContact( response.data)
-                
-            }
-            
 
-        }catch(err){
+            if (response.status === 200) {
+                setListContact(response.data)
+
+            }
+
+
+        } catch (err) {
             console.error('Error getting contact:', err);
         }
     }
@@ -88,15 +88,15 @@ const TestPage = () => {
     };
 
     // http://localhost:3555/api/v1/surat/archive/:suratAcaraId
-    const handleArsipSurat = async (idSuratAcara,isArchive) => {
-        try{
-            const response = await axios.put(`${port}surat/archive/${idSuratAcara}/${isArchive}`);   
-            if(response.status === 200){
+    const handleArsipSurat = async (idSuratAcara, isArchive) => {
+        try {
+            const response = await axios.put(`${port}surat/archive/${idSuratAcara}/${isArchive}`);
+            if (response.status === 200) {
                 console.log('Surat berhasil diarsipkan');
                 console.log(response.data);
             }
-        }catch(err){
-            console.error('Error archiving surat:', err);   
+        } catch (err) {
+            console.error('Error archiving surat:', err);
         }
     };
 
@@ -168,7 +168,6 @@ const TestPage = () => {
         if (selectedContent === 'administrasi') {
             return (
                 <div className="container-test-page " style={{ padding: '20px', borderRadius: '10px', width: '100%' }}>
-                    {/* surat  */}
                     <h3>Surat Acara</h3>
                     <input
                         type="text"
@@ -180,52 +179,53 @@ const TestPage = () => {
                     {statusSurat === 'loading' && <p>Loading...</p>}
                     {statusSurat === 'error' && <p>Data tidak berhasil dimuat.</p>}
                     {statusSurat === 'success' && filteredSuratAcara && filteredSuratAcara.length > 0 ? (
-                        <table className="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Jenis Surat</th>
-                                    <th>Status Acara</th>
-                                    <th>Status Persetujuan</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                filteredSuratAcara
-                                    .filter(surat => !surat.isArchive)  
-                                    .map((surat, index) => (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{surat.jenisSurat}</td>
-                                        <td>{surat.statusAcara}</td>
-                                        <td>{surat.statusPersetujuan}</td>
-                                        <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleShowDetail(surat)}
-                                        >
-                                            View
-                                        </button>
-                                        <button
-                                            className="btn btn-secondary ms-2"
-                                            onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
-                                        >
-                                            unduh PDF
-                                        </button>
-                                        <button
-                                            className="btn btn-warning ms-2"
-                                            onClick={() => handleArsipSurat(surat._id, true)}
-                                        >
-                                            arsip
-                                        </button>
-                                        </td>
+                        <div className="table-responsive" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                            <table className="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Jenis Surat</th>
+                                        <th>Status Acara</th>
+                                        <th>Status Persetujuan</th>
+                                        <th>Action</th>
                                     </tr>
-                                    ))
-                                }
-
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {
+                                        filteredSuratAcara
+                                            .filter(surat => !surat.isArchive)
+                                            .map((surat, index) => (
+                                                <tr key={index}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{surat.jenisSurat}</td>
+                                                    <td>{surat.statusAcara}</td>
+                                                    <td>{surat.statusPersetujuan}</td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-primary m-2"
+                                                            onClick={() => handleShowDetail(surat)}
+                                                        >
+                                                            View
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-secondary m-2"
+                                                            onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
+                                                        >
+                                                            unduh PDF
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-warning m-2"
+                                                            onClick={() => handleArsipSurat(surat._id, true)}
+                                                        >
+                                                            arsip
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     ) : <p>Belum ada surat acara</p>}
                     <button className="btn btn-primary ms-1" onClick={handleShowModal}>
                         Tampilkan Form Perizinan Surat
@@ -282,7 +282,7 @@ const TestPage = () => {
                     <ContainerDataAspirasi DataAllAspirasi={{ "data": DataAspirasi }} />
                 </div>
             );
-        }else if (selectedContent === 'arsip'){
+        } else if (selectedContent === 'arsip') {
             return (
                 <div className="container-test-page mt-md-5 mt-3" style={{ padding: '20px', borderRadius: '10px', width: '100%' }}>
                     {/* surat  */}
@@ -320,19 +320,19 @@ const TestPage = () => {
                                                     <td>{surat.statusPersetujuan}</td>
                                                     <td>
                                                         <button
-                                                            className="btn btn-primary"
+                                                            className="btn btn-primary m-2"
                                                             onClick={() => handleShowDetail(surat)}
                                                         >
                                                             View
                                                         </button>
                                                         <button
-                                                            className="btn btn-secondary ms-2"
+                                                            className="btn btn-secondary m-2"
                                                             onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
                                                         >
                                                             Unduh PDF
                                                         </button>
                                                         <button
-                                                            className="btn btn-success ms-2"
+                                                            className="btn btn-success m-2"
                                                             onClick={() => handleArsipSurat(surat._id, false)}
                                                         >
                                                             Tampilkan
@@ -348,36 +348,36 @@ const TestPage = () => {
                     <ContainerDataSurat DataAllSurat={{ "data": dataLengkapSurat }} />
                 </div>
             );
-        }else if(selectedContent === 'contact'){
+        } else if (selectedContent === 'contact') {
             GetContact();
             return (
-            <div className="container-test-page mt-md-5 mt-3" style={{ padding: '20px', borderRadius: '10px', width: '100%' }}>
-                <h3>Contact</h3>
-                <div className='row mt-4
+                <div className="container-test-page mt-md-5 mt-3" style={{ padding: '20px', borderRadius: '10px', width: '100%' }}>
+                    <h3>Contact</h3>
+                    <div className='row mt-4
                  justify-content-center align-items-center
                 '
-                
-                
-                >
-                    <CardContact cardDetails={{ title: 'Rt', whatsappNumber: listContact.nomorRt, className: 'card-3' }} />
-                    <CardContact cardDetails={{ title: 'Rw', whatsappNumber: listContact.nomorRw, className: 'card-3' }} />
-                    {
-                        listContact.nomorPd ? listContact.nomorPd.map((pd, index) => (
-                            <CardContact
-                                key={index}
-                                cardDetails={{ title: `Pd ${index + 1}`, whatsappNumber: pd, className: `card-3` }}
-                            />
-                        ))
-                        : null
-                    }
-                    {/* kades */}
-                    <CardContact cardDetails={{ title: 'Kades', whatsappNumber: listContact.nomorPp, className: 'card-3' }} />
+
+
+                    >
+                        <CardContact cardDetails={{ title: 'Rt', whatsappNumber: listContact.nomorRt, className: 'card-3' }} />
+                        <CardContact cardDetails={{ title: 'Rw', whatsappNumber: listContact.nomorRw, className: 'card-3' }} />
+                        {
+                            listContact.nomorPd ? listContact.nomorPd.map((pd, index) => (
+                                <CardContact
+                                    key={index}
+                                    cardDetails={{ title: `Pd ${index + 1}`, whatsappNumber: pd, className: `card-3` }}
+                                />
+                            ))
+                                : null
+                        }
+                        {/* kades */}
+                        <CardContact cardDetails={{ title: 'Kades', whatsappNumber: listContact.nomorPp, className: 'card-3' }} />
+                    </div>
                 </div>
-            </div>
             )
         }
     };
-    
+
 
     return (
         <div className="container-fluid" style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
