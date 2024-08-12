@@ -9,13 +9,13 @@ import axios from 'axios';
 
 const Tentang = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading');
 
     const GetFromAPI = async () => {
         try {
-            const response = await axios.get(`${port}v1/informasi/get-informasi`);
+            const response = await axios.get(`${port}informasi/get-informasi`);
             setData(response.data.data.data);
             setStatus('success');
         } catch (error) {

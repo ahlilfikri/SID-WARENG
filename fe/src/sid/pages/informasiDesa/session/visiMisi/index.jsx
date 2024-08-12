@@ -9,7 +9,7 @@ const VisiMisi = () => {
     const getFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${Port}v1/visi-misi/get-visi-misi`);
+            const response = await axios.get(`${Port}visi-misi/get-visi-misi`);
             setData(response.data.data);
             setStatus('success');
         } catch (error) {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const FormPerizinanSurat = ({ handleCloseModal }) => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [warga, setWarga] = useState('');
     const [dataSurat, setDataSurat] = useState({
         nameAcara: '',
@@ -30,7 +30,7 @@ const FormPerizinanSurat = ({ handleCloseModal }) => {
 
     useEffect(() => {
         setStatus('loading');
-        axios.get(`${port}v1/warga/get/${idWarga}`)
+        axios.get(`${port}warga/get/${idWarga}`)
             .then((res) => {
                 setWarga(res.data.data._id);
                 setStatus('success');
@@ -55,7 +55,7 @@ const FormPerizinanSurat = ({ handleCloseModal }) => {
         e.preventDefault();
         setStatus('loading');
         try {
-            const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, {
+            const res = await axios.post(`${port}surat/create/suratAcara/TAversion/${warga}`, {
                 nameAcara,
                 jenisSurat,
                 tanggalMulai,

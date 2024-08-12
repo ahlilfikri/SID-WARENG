@@ -3,7 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const FormSuratKeteranganKelahiran = ({ handleCloseModal }) => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [warga, setWarga] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -42,7 +42,7 @@ const FormSuratKeteranganKelahiran = ({ handleCloseModal }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${port}v1/warga/get/${idWarga}`);
+                const res = await axios.get(`${port}warga/get/${idWarga}`);
                 setWarga(res.data.data._id);
             } catch (err) {
                 console.error(err);
@@ -71,7 +71,7 @@ const FormSuratKeteranganKelahiran = ({ handleCloseModal }) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.post(`${port}v1/surat/create/suratAcara/TAversion/${warga}`, dataSurat);
+            const res = await axios.post(`${port}surat/create/suratAcara/TAversion/${warga}`, dataSurat);
             handleCloseModal(); 
         } catch (err) {
             console.error(err.response.data);

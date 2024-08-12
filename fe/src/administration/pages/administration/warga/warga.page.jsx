@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getToken from '../shared/functions';
 import DetailSuratWarga from '../components/detailSuratWarga';
+import DetailAspirasi from '../components/detailAspirasi';
 import Footer from "../../../../shared/layout/footer";
 import Navbar from "../../../../shared/layout/navBar";
 
@@ -14,28 +15,39 @@ import FormSuratSKCK from '../components/formSubSuratPerizinan/form_SuratSKCK';
 import FormSuratBantuanSosial from '../components/formSubSuratPerizinan/form_SuratBantuanSosial';
 import FormSuratKeteranganNikah from '../components/formSubSuratPerizinan/form_SuratKeteranganNikah';
 
-import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; // Import ModalLengkapiDataUser
+import ModalLengkapiDataUser from '../components/ModalLengkapiDataUser'; 
 
 const WargaPage = () => {
+<<<<<<< HEAD
     const port = import.meta.env.VITE_BASE_API_URL_ADMINISTRASI;
     const port2 = import.meta.env.VITE_BASE_API_URL3;
+=======
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL2;
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
     const [showModal, setShowModal] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
+    const [showDetailAspirasi, setShowDetailAspirasi] = useState(false);
     const [DataWarga, setDataWarga] = useState({});
     const [DataAspirasi, setDataAspirasi] = useState([]);
     const [statusSurat, setStatusSurat] = useState('loading');
     const [statusAspirasi, setStatusAspirasi] = useState('loading');
     const [selectedSurat, setSelectedSurat] = useState(null);
+    const [selectedAspirasi, setSelectedAspirasi] = useState(null);
     const [selectedForm, setSelectedForm] = useState(null);
     const [searchQuerySurat, setSearchQuerySurat] = useState('');
     const [searchQueryAspirasi, setSearchQueryAspirasi] = useState('');
-    const [showLengkapiDataModal, setShowLengkapiDataModal] = useState(false); // State untuk ModalLengkapiDataUser
+    const [showLengkapiDataModal, setShowLengkapiDataModal] = useState(false); 
     const id = getToken();
     const [idWarga, setIdWarga] = useState('')
 
     const GetDataWarga = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`${port}v1/administrasi/warga/get/${id}`);
+=======
+            const response = await axios.get(`${port}warga/get/${id}`);
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
             setDataWarga(response.data.data);
             setIdWarga(response.data.data._id)
             setStatusSurat('success');
@@ -47,7 +59,7 @@ const WargaPage = () => {
 
     const GetDataAspirasiWarga = async () => {
         try {
-            const response = await axios.get(`${port2}v1/aspirasi/getAspirasi/${idWarga}`);
+            const response = await axios.get(`${port2}aspirasi/getAspirasi/${idWarga}`);
             setDataAspirasi(response.data.data);
             setStatusAspirasi('success');
         } catch (error) {
@@ -66,7 +78,7 @@ const WargaPage = () => {
 
     useEffect(() => {
         GetDataWarga();
-        if(idWarga){
+        if (idWarga) {
             GetDataAspirasiWarga();
         }
     }, [idWarga]);
@@ -76,6 +88,10 @@ const WargaPage = () => {
         setShowModal(false);
         setSelectedForm(null);
     };
+    const handleShowDetailAspirasi = (surat) => {
+        setSelectedAspirasi(surat);
+        setShowDetailAspirasi(true);
+    };
     const handleShowDetail = (surat) => {
         setSelectedSurat(surat);
         setShowDetail(true);
@@ -83,10 +99,8 @@ const WargaPage = () => {
     const handleCloseDetail = () => setShowDetail(false);
 
     const handleDownloadPdf = async (idSuratAcara, nameAcara) => {
-        console.log('idSuratAcara:', idSuratAcara);
-        console.log('nameAcara:', nameAcara);
         try {
-            const response = await axios.get(`${port}v1/surat/get/generatePdf/${idSuratAcara}`, {
+            const response = await axios.get(`${port}surat/get/generatePdf/${idSuratAcara}`, {
                 responseType: 'blob',
             });
 
@@ -114,8 +128,8 @@ const WargaPage = () => {
         aspirasi.aspirasi.toLowerCase().includes(searchQueryAspirasi.toLowerCase())
     );
 
-    const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); // Show Lengkapi Data Modal
-    const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false); // Close Lengkapi Data Modal
+    const handleShowLengkapiDataModal = () => setShowLengkapiDataModal(true); 
+    const handleCloseLengkapiDataModal = () => setShowLengkapiDataModal(false);
 
     return (
         <>
@@ -169,7 +183,7 @@ const WargaPage = () => {
                                             </button>
                                             {/* ini di hilangkan dulu */}
                                             <button 
-                                                className="btn btn-secondary ms-2 d-none"
+                                                className="btn btn-secondary ms-2"
                                                 onClick={() => handleDownloadPdf(surat._id, surat.nameAcara)}
                                             >
                                                 Download PDF
@@ -214,7 +228,7 @@ const WargaPage = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleShowDetail(aspirasi)}
+                                                onClick={() => handleShowDetailAspirasi(aspirasi)}
                                             >
                                                 View
                                             </button>
@@ -239,18 +253,18 @@ const WargaPage = () => {
                             </div>
                             <div className="modal-body">
                                 {selectedForm === null && (
-                                    <div 
+                                    <div
                                         className="d-flex flex-column justify-content-center align-items-center"
                                         style={{ height: '50vh' }}
                                     >
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormPencatatanKependudukan')}>Form Pencatatan Kependudukan</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKuasaAktaKematian')}>Form Surat Kuasa Akta Kematian</button>
                                         <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinBepergian')}>Form Surat Izin Bepergian</button>
-                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>  
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button> 
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
-                                        <button className = "btn btn-primary my-1" onClick = {() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratIzinKeramaian')}>Form Surat Izin Keramaian</button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKeteranganKelahiran')}> Form Surat Keterangan Kelahiran </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratSKCK')}> Form Surat SKCK </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratBantuanSosial')}> Form Surat Bantuan Sosial </button>
+                                        <button className="btn btn-primary my-1" onClick={() => setSelectedForm('FormSuratKeteranganNikah')}> Form Surat Keterangan Nikah </button>
                                     </div>
                                 )}
 
@@ -294,6 +308,13 @@ const WargaPage = () => {
                         handleCloseModal={handleCloseDetail}
                     />
                 )}
+                {showDetailAspirasi && (
+                    <DetailAspirasi
+                        aspirasi={selectedAspirasi}
+                        handleCloseModal={() => setShowDetailAspirasi(false)}
+                    />
+                )}
+
                 <Footer type={3}></Footer>
             </div>
         </>

@@ -28,9 +28,10 @@ import getToken from "./shared/functions/functions";
 import DashboardAdmin from "./admin";
 
 import App from "./App";
-const port = import.meta.env.VITE_BASE_API_URL2;
+import TestPage from "./administration/pages/administration/warga/test";
 
 const ProtectedRoute = ({ element, authorizedRoles }) => {
+  const port = import.meta.env.VITE_BASE_API_URL4;
   const [userData, setUserData] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const id = getToken();
@@ -41,7 +42,7 @@ const ProtectedRoute = ({ element, authorizedRoles }) => {
       const token = localStorage.getItem('token');
 
       try {
-        const res = await axios.get(`${port}v1/user/get/${id}`, {
+        const res = await axios.get(`${port}user/get/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -175,6 +176,10 @@ const Routing = createBrowserRouter([
           authorizedRoles={[1, 2, 3, 4, 5]}
         />
       },
+      {
+        path: "/testPage",
+        element: <TestPage />,
+      }
 
     ],
   },

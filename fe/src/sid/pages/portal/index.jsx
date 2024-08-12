@@ -12,14 +12,14 @@ import axios from 'axios';
 
 const Portal = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [data, setData] = useState([]);
     const [status, setStatus] = useState('loading');
     const [slidesToShow, setSlidesToShow] = useState(3);
 
     const GetFromAPI = async () => {
         try {
-            const response = await axios.get(`${port}v1/portal/get-portal`);
+            const response = await axios.get(`${port}portal/get-portal`);
             const data = response.data.data.data;
             setData(data);
             setStatus('success');

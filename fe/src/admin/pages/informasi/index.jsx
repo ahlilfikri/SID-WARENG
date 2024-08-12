@@ -7,7 +7,7 @@ import AddModal from './component/AddModal';
 
 const InformasiControl = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [dataInformasi, setDataInformasi] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -23,7 +23,7 @@ const InformasiControl = () => {
     const getDataInformasi = async (page, limit) => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/informasi/get-informasi?page=${page}&limit=${limit}`);
+            const res = await axios.get(`${port}informasi/get-informasi?page=${page}&limit=${limit}`);
             setDataInformasi(res.data.data.data);
             setTotalPages(res.data.data.totalPages);
             setStatus('success');
@@ -43,7 +43,7 @@ const InformasiControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/informasi/delete-informasi/${id}`);
+            await axios.delete(`${port}informasi/delete-informasi/${id}`);
             getDataInformasi(page, limit);
         } catch (err) {
             console.error(err);
@@ -62,7 +62,7 @@ const InformasiControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentInformasi.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/informasi/update-informasi/${currentInformasi._id}`, { ...currentInformasi, img: updatedImages });
+            await axios.put(`${port}informasi/update-informasi/${currentInformasi._id}`, { ...currentInformasi, img: updatedImages });
             setCurrentInformasi({ ...currentInformasi, img: updatedImages });
             getDataInformasi(page, limit);
         } catch (err) {
@@ -86,7 +86,7 @@ const InformasiControl = () => {
         }
 
         try {
-            await axios.put(`${port}v1/informasi/update-informasi/${currentInformasi._id}`, formData, {
+            await axios.put(`${port}informasi/update-informasi/${currentInformasi._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -122,7 +122,7 @@ const InformasiControl = () => {
         }
 
         try {
-            await axios.post(`${port}v1/informasi/post-informasi`, formData, {
+            await axios.post(`${port}informasi/post-informasi`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

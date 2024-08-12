@@ -4,7 +4,7 @@ import { Button, Spinner, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 const BypassSurat = ({ suratAcaraId, role }) => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port = import.meta.env.VITE_BASE_API_URL3;
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -13,7 +13,7 @@ const BypassSurat = ({ suratAcaraId, role }) => {
         setIsLoading(true);
         setError('');
         try {
-            const request = await axios.put(`${port}v1/surat/baypass-${role}/${suratAcaraId}`);
+            const request = await axios.put(`${port}surat/baypass-${role}/${suratAcaraId}`);
             setIsButtonDisabled(true);
             setIsLoading(false);
         } catch (err) {

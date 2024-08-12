@@ -6,7 +6,7 @@ import PopUpDetailAspirasi from './component/PopUpDetailAspirasi';
 
 
 const AspirasiControl = () => {
-    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port = import.meta.env.VITE_BASE_API_URL2;
     const [dataAspirasi, setDataAspirasi] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSurat, setSelectedSurat] = useState(null);
@@ -19,7 +19,7 @@ const AspirasiControl = () => {
     const getDataAspirasi = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/aspirasi/getAspirasiAdmin`);
+            const res = await axios.get(`${port}aspirasi/getAspirasiAdmin`);
             setDataAspirasi(res.data);
             setStatus('success');
         } catch (err) {

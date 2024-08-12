@@ -5,8 +5,9 @@ import EditModal from './component/EditModal';
 
 
 const PerangkatDesaControl = () => {
-    const port = import.meta.env.VITE_BASE_API_URL2;
-    const port2 = import.meta.env.VITE_BASE_API_URL5;
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port3 = import.meta.env.VITE_BASE_API_URL6;
     const [dataPerangkatDesa, setDataPerangkatDesa] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentPerangkatDesa, setCurrentPerangkatDesa] = useState({});
@@ -17,7 +18,7 @@ const PerangkatDesaControl = () => {
     const getDataPerangkatDesa = async () => {
         setStatus('loading');
         try {
-            const res = await axios.get(`${port}v1/perangkatDesa/get`);
+            const res = await axios.get(`${port}perangkatDesa/get`);
             setDataPerangkatDesa(res.data.data);
             setStatus('success');
         } catch (err) {
@@ -36,7 +37,7 @@ const PerangkatDesaControl = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${port}v1/perangkatDesa/delete/${id}`);
+            await axios.delete(`${port}perangkatDesa/delete/${id}`);
             getDataPerangkatDesa();
         } catch (err) {
             console.error(err);
@@ -58,7 +59,7 @@ const PerangkatDesaControl = () => {
     const handleDeleteImage = async (image) => {
         const updatedImages = currentPerangkatDesa.user.img.filter(img => img !== image);
         try {
-            await axios.put(`${port}v1/user/update/${currentPerangkatDesa._id}`, { ...currentPerangkatDesa, img: updatedImages });
+            await axios.put(`${port2}user/update/${currentPerangkatDesa._id}`, { ...currentPerangkatDesa, img: updatedImages });
             setCurrentPerangkatDesa({ ...currentPerangkatDesa, img: updatedImages });
             getDataPerangkatDesa();
         } catch (err) {
@@ -84,7 +85,7 @@ const PerangkatDesaControl = () => {
         }
 
         try {
-            await axios.put(`${port}v1/user/update/${currentPerangkatDesa.user._id}`, formData, {
+            await axios.put(`${port2}user/update/${currentPerangkatDesa.user._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -129,7 +130,7 @@ const PerangkatDesaControl = () => {
                                     <div className="d-inline">
                                         {item.user.img && item.user.img.length > 0 ? (
                                             item.user.img.map((image, imgIndex) => {
-                                                const imageSrc = `${port2}${encodeURIComponent(image)}`;
+                                                const imageSrc = `${port3}${encodeURIComponent(image)}`;
                                                 return (
                                                     <img
                                                         className='my-2'

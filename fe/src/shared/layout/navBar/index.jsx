@@ -8,7 +8,12 @@ import './index.css';
 import getToken from '../../functions/functions.jsx';
 
 const Navbar = ({ type }) => {
+<<<<<<< HEAD
     const port = import.meta.env.VITE_BASE_API_URL_ADMINISTRASI;
+=======
+    const port = import.meta.env.VITE_BASE_API_URL3;
+    const port2 = import.meta.env.VITE_BASE_API_URL4;
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
     const location = useLocation();
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
@@ -24,12 +29,14 @@ const Navbar = ({ type }) => {
 
     const handleLogout = async () => {
         try {
+<<<<<<< HEAD
             const res = await axios.post(`${port}v1/administrasi/warga/logout/${id}`);
+=======
+            const res = await axios.post(`${port}warga/logout/${id}`);
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login');
-            } else {
-                console.log(res);
             }
         } catch (err) {
             console.error(err);
@@ -37,12 +44,14 @@ const Navbar = ({ type }) => {
     };
     const handleLogoutAdmin = async () => {
         try {
+<<<<<<< HEAD
             const res = await axios.post(`${port}v1/userApi/admin/logout-admin/${id}`);
+=======
+            const res = await axios.post(`${port2}admin/logout-admin/${id}`);
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
             if (res.status === 200) {
                 localStorage.removeItem('token');
                 navigate('/login-admin');
-            } else {
-                console.log(res);
             }
         } catch (err) {
             console.error(err);
@@ -55,9 +64,12 @@ const Navbar = ({ type }) => {
             if (!token) {
                 return;
             }
-
             try {
+<<<<<<< HEAD
                 const res = await axios.get(`${port}v1/userApi/user/get/dec/${id}`, {
+=======
+                const res = await axios.get(`${port2}user/get/${id}`, {
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -75,7 +87,11 @@ const Navbar = ({ type }) => {
             }
 
             try {
+<<<<<<< HEAD
                 const res = await axios.get(`${port}v1/userApi/admin/get-admin/${id}`, {
+=======
+                const res = await axios.get(`${port2}admin/get-admin/${id}`, {
+>>>>>>> 43c49a5c03091a9df5b92e4e735d4b459d1fb875
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

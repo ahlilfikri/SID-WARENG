@@ -12,7 +12,7 @@ import Logo from '../../../assets/LogoWareng.svg';
 
 const KegiatanProgramDesa = () => {
     const port = import.meta.env.VITE_BASE_API_URL;
-    const port2 = import.meta.env.VITE_BASE_API_URL4;
+    const port2 = import.meta.env.VITE_BASE_API_URL6;
     const [data, setData] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
@@ -26,7 +26,7 @@ const KegiatanProgramDesa = () => {
     const GetFromAPI = async () => {
         setStatus('loading');
         try {
-            const response = await axios.get(`${port}v1/kegiatan/get-kegiatan`);
+            const response = await axios.get(`${port}kegiatan/get-kegiatan`);
             setData(response.data.data.data);
             setStatus('success');
         } catch (error) {
@@ -56,9 +56,9 @@ const KegiatanProgramDesa = () => {
         try {
             let response;
             if (searchName === '' && selectedDate != null) {
-                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/-1/${selectedDate}`);
+                response = await axios.get(`${port}kegiatan/get-kegiatan/-1/${selectedDate}`);
             } else if (searchName !== '' && selectedDate == null) {
-                response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/-1`);
+                response = await axios.get(`${port}kegiatan/get-kegiatan/${searchName}/-1`);
             } else {
                 response = await axios.get(`${port}v1/kegiatan/get-kegiatan/${searchName}/${selectedDate}`);
             }
@@ -139,7 +139,7 @@ const KegiatanProgramDesa = () => {
                                     return (
                                         <div className="col-12 col-md-6 mb-5" style={{ position: 'relative' }} key={index}>
                                             <div>
-                                                <img src={imageSrc} alt="" style={{ width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
+                                                <img src={imageSrc} alt="" style={{ height: '250px', width: '100%', maxHeight: '100%', borderRadius: '1vw' }} onError={(e) => { e.target.src = ImageError; }} />
                                                 <Link to={`/detail-kegiatan-desa/${item._id}`}>
                                                     <button className="btn text-light" style={{ position: 'absolute', bottom: '200px', right: '10%', fontSize: '14px', background: '#00917C' }}>Lihat selengkapnya</button>
                                                 </Link>

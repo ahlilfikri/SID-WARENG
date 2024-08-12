@@ -6,13 +6,13 @@ import { format } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
 const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, activeTab, refreshData }) => {
-
+    const port = import.meta.env.VITE_BASE_API_URL2;
+    const port2 = import.meta.env.VITE_BASE_API_URL3;
     const handlePersetujuanSurat = async (statusPersetujuan) => {
         try {
-            const request = await axios.put(`http://localhost:3555/api/v1/surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
+            const request = await axios.put(`${port2}surat/persetujuan-surat-acara-${role}/${idTokoh}/${surat._id}`, {
                 statusPersetujuanReq: statusPersetujuan
             });
-            console.log(request);
             refreshData();
             handleCloseModal();
         } catch (err) {
@@ -27,9 +27,8 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
                 isPending: false
             };
 
-            const request = await axios.put(`http://localhost:3557/api/v1/aspirasi/updateAspirasi/${surat._id}`, update);
-            console.log(request);
-            refreshData(); 
+            const request = await axios.put(`${port}aspirasi/updateAspirasi/${surat._id}`, update);
+            refreshData();
             handleCloseModal();
         } catch (err) {
             console.error("Error: ", err);
@@ -45,13 +44,14 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
             return 'pd';
         }
     }
-    
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return format(date, 'dd-MMMM-yyyy', { locale: idLocale });
-    } 
-    
+    }
+
+    const formattedDate = format(new Date(surat.createdAt), 'dd-MM-yyyy');
 
     return (
         <>
@@ -63,7 +63,10 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
                     {jenisSurat === 'aspirasi' ? (
                         <>
                             <p>Isi Aspirasi: {surat.aspirasi}</p>
-                            <p>Status : {surat.siApproved ? 'disetujui' : surat.isPending ? 'pending': 'ditolak'}</p>
+                            <p>Status: {surat.isPublish ? 'Untuk umum' : 'Untuk kades'}</p>
+                            <p>Status Pengajuan: {`${surat.isPending ? 'Sedang diajukan' : surat.siApproved ? 'disetujui' : 'ditolak'}`}</p>
+                            <p>Kategori: {surat.kategori}</p>
+                            <p>Diajukan Pada Tanggal: {formattedDate}</p>
                         </>
                     ) : (
                         <>
@@ -97,7 +100,7 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
                             }}>
                                 Tolak
                             </Button>
-                    
+
                         </>
                     ) : (
                         <>
