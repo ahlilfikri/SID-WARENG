@@ -28,7 +28,6 @@ const PopUpDetailSurat = ({ surat, jenisSurat, handleCloseModal, idTokoh, role, 
             };
 
             const request = await axios.put(`${port}aspirasi/updateAspirasi/${surat._id}`, update);
-            console.log(request);
             refreshData();
             handleCloseModal();
         } catch (err) {
